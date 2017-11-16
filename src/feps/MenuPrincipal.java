@@ -94,6 +94,7 @@ public class MenuPrincipal extends JFrame {
 		this.setOpacity(0.95f);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(MAXIMIZED_BOTH);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		this.setPreferredSize(dimension);
 		main.setPreferredSize(dimension);
@@ -162,7 +163,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblStatusProd.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblStatusProd.setText("Iniciar/Encerrar sistema");
-		lblStatusProd.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblStatusProd.setVerticalAlignment(SwingConstants.CENTER);
 		lblStatusProd.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblStatusProd.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblStatusProd.setHorizontalAlignment(SwingConstants.CENTER);
@@ -170,7 +171,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblImpressaoOrdem.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblImpressaoOrdem.setText("Impressão");
-		lblImpressaoOrdem.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblImpressaoOrdem.setVerticalAlignment(SwingConstants.CENTER);
 		lblImpressaoOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblImpressaoOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
@@ -178,7 +179,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblSaidaGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblSaidaGTM.setText("Saída e emissão de GTM");
-		lblSaidaGTM.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblSaidaGTM.setVerticalAlignment(SwingConstants.CENTER);
 		lblSaidaGTM.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblSaidaGTM.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblSaidaGTM.setHorizontalAlignment(SwingConstants.CENTER);
@@ -186,7 +187,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblMonitorCarga.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblMonitorCarga.setText("Monitor de carga/Impressão");
-		lblMonitorCarga.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblMonitorCarga.setVerticalAlignment(SwingConstants.CENTER);
 		lblMonitorCarga.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblMonitorCarga.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblMonitorCarga.setHorizontalAlignment(SwingConstants.CENTER);
@@ -194,7 +195,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblUsuarios.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblUsuarios.setText("Cadastro de Usuários");
-		lblUsuarios.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblUsuarios.setVerticalAlignment(SwingConstants.CENTER);
 		lblUsuarios.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblUsuarios.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
@@ -202,7 +203,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblReimpressao.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblReimpressao.setText("Reimpressão");
-		lblReimpressao.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblReimpressao.setVerticalAlignment(SwingConstants.CENTER);
 		lblReimpressao.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblReimpressao.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblReimpressao.setHorizontalAlignment(SwingConstants.CENTER);
@@ -210,7 +211,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblReverseGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblReverseGTM.setText("Estorno de GTM");
-		lblReverseGTM.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblReverseGTM.setVerticalAlignment(SwingConstants.CENTER);
 		lblReverseGTM.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblReverseGTM.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblReverseGTM.setHorizontalAlignment(SwingConstants.CENTER);
@@ -218,14 +219,14 @@ public class MenuPrincipal extends JFrame {
 		
 		lblOrdemManual.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblOrdemManual.setText("Ordem Manual");
-		lblOrdemManual.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblOrdemManual.setVerticalAlignment(SwingConstants.CENTER);
 		lblOrdemManual.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblOrdemManual.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblOrdemManual.setToolTipText("Ordem Manual");
 		
 		lblManAvan.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblManAvan.setText("Manutenção avançada");
-		lblManAvan.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblManAvan.setVerticalAlignment(SwingConstants.CENTER);
 		lblManAvan.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblManAvan.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblManAvan.setHorizontalAlignment(SwingConstants.CENTER);
@@ -233,7 +234,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblApagarOrdem.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblApagarOrdem.setText("Apagar Ordem");
-		lblApagarOrdem.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblApagarOrdem.setVerticalAlignment(SwingConstants.CENTER);
 		lblApagarOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblApagarOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblApagarOrdem.setHorizontalAlignment(SwingConstants.CENTER);
@@ -241,7 +242,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblOrdemBuffer.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblOrdemBuffer.setText("Ordem Buffer");
-		lblOrdemBuffer.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblOrdemBuffer.setVerticalAlignment(SwingConstants.CENTER);
 		lblOrdemBuffer.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblOrdemBuffer.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblOrdemBuffer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -249,7 +250,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblPropriedades.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblPropriedades.setText("Propriedades");
-		lblPropriedades.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblPropriedades.setVerticalAlignment(SwingConstants.CENTER);
 		lblPropriedades.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblPropriedades.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPropriedades.setHorizontalAlignment(SwingConstants.CENTER);
@@ -257,7 +258,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblSaidaBuffer.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblSaidaBuffer.setText("Saída Buffer");
-		lblSaidaBuffer.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblSaidaBuffer.setVerticalAlignment(SwingConstants.CENTER);
 		lblSaidaBuffer.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblSaidaBuffer.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblSaidaBuffer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -373,7 +374,7 @@ public class MenuPrincipal extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				if (label == lblFechar)
-					System.exit(0);
+					System.exit(getDefaultCloseOperation());
 				else if (label == lblMinimizar)
 					setExtendedState(JFrame.ICONIFIED);
 				else {

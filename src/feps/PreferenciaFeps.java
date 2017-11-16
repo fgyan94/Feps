@@ -11,19 +11,35 @@ import javax.swing.SwingConstants;
 
 public class PreferenciaFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
+
+	private JLabel lblParametrosDoSistema = new JLabel("Parametros do Sistema");
+	private JLabel lblMascArq = new JLabel("Máscara do arquivo:");
+	private JLabel lblDirCarga = new JLabel("Diretório de carga:");
+	private JLabel lblDirLido = new JLabel("Diretório lidos:");
+	private JLabel lblRefresh = new JLabel("Tempo do refresh:");
+	private JLabel lblQtdeGTM = new JLabel("Quantidade GTM:");
+	private JLabel lblMascArqVazio = new JLabel("Mascara arquivo vazio:");
+	private JLabel lblTemMax = new JLabel("Tempo máx. chamada:");
+	private JLabel lblAtraso = new JLabel("Indicador de Atraso:");
+	private JLabel lblUltimaChamada = new JLabel("Última chamada/hora:");
+	private JLabel lblDataSistema = new JLabel("Data do sistema:");
+	private JLabel lblStatus = new JLabel("Status:");
 	
-	private static JTextField textField;
-	private static JTextField textField_1;
-	private static JTextField textField_2;
-	private static JTextField textField_3;
-	private static JTextField textField_4;
-	private static JTextField mascArqVaz;
-	private static JTextField textField_6;
-	private static JTextField textField_7;
-	private static JTextField textField_8;
-	private static JTextField textField_9;
-	private static JTextField textField_10;
-	private static JTextField textField_11;
+	private static JTextField txtMascArq;
+	private static JTextField txtDirCarga;
+	private static JTextField txtDirLido;
+	private static JTextField txtRefresh;
+	private static JTextField txtQtdeGTM;
+	private static JTextField txtMascArqVazio;
+	private static JTextField txtTemMax;
+	private static JTextField txtAtraso;
+	private static JTextField txtUltimoArq;
+	private static JTextField txtHora;
+	private static JTextField txtDataSistema;
+	private static JTextField txtStatus;
+	
+	private JButton btnSalvar = new JButton("salvar");
+	private JButton btnCancelar = new JButton("cancelar");
 	
 	public PreferenciaFeps() {
 		buildPanel();
@@ -31,180 +47,191 @@ public class PreferenciaFeps extends JPanel {
 	}
 
 	private void buildPanel() {
-		setBounds(0, 0, 1440, 900);
+		setBounds(0, 0, 1366, 728);
 		setBackground(new Color(255, 200, 50));
 		setLayout(null);
-		
-		JButton btnSalvar = new JButton("salvar");
-		btnSalvar.setBounds(273, 626, 81, 26);
-		add(btnSalvar);
-		
-		JButton btnCancelar = new JButton("cancelar");
-		btnCancelar.setBounds(354, 626, 81, 26);
-		add(btnCancelar);
-		
-		JLabel lblMscaraDoArquivo = new JLabel("Máscara do arquivo:");
-		lblMscaraDoArquivo.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMscaraDoArquivo.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblMscaraDoArquivo.setBounds(434, 196, 150, 25);
-		add(lblMscaraDoArquivo);
-		
-		JLabel lblDiretrioDeCarga = new JLabel("Diretório de carga:");
-		lblDiretrioDeCarga.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblDiretrioDeCarga.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblDiretrioDeCarga.setBounds(273, 333, 150, 25);
-		add(lblDiretrioDeCarga);
-		
-		JLabel lblDiretrioLidos = new JLabel("Diret\u00F3rio lidos:");
-		lblDiretrioLidos.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblDiretrioLidos.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblDiretrioLidos.setBounds(273, 363, 150, 25);
-		add(lblDiretrioLidos);
-		
-		JLabel lblTempoDoRefresh = new JLabel("Tempo do refresh:");
-		lblTempoDoRefresh.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblTempoDoRefresh.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTempoDoRefresh.setBounds(273, 393, 150, 25);
-		add(lblTempoDoRefresh);
-		
-		JLabel lblQuantidadeGtm = new JLabel("Quantidade GTM:");
-		lblQuantidadeGtm.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblQuantidadeGtm.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblQuantidadeGtm.setBounds(273, 423, 150, 25);
-		add(lblQuantidadeGtm);
-		
-		JLabel lblMascaraDoArquivo = new JLabel("Mascara arquivo vazio:");
-		lblMascaraDoArquivo.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblMascaraDoArquivo.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMascaraDoArquivo.setBounds(273, 453, 150, 25);
-		add(lblMascaraDoArquivo);
-		
-		textField = new JTextField();
-		textField.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		textField.setBounds(594, 196, 310, 40);
-		add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_1.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_1.setColumns(10);
-		textField_1.setBounds(594, 257, 310, 40);
-		add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_2.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_2.setColumns(10);
-		textField_2.setBounds(594, 319, 310, 40);
-		add(textField_2);
-		
-		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_3.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_3.setBounds(594, 370, 120, 40);
-		add(textField_3);
-		textField_3.setColumns(10);
-		
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_4.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_4.setColumns(10);
-		textField_4.setBounds(594, 423, 120, 40);
-		add(textField_4);
-		
-		mascArqVaz = new JTextField();
-		mascArqVaz.setFont(new Font("Palatino", Font.PLAIN, 14));
-		mascArqVaz.setHorizontalAlignment(SwingConstants.LEFT);
-		mascArqVaz.setColumns(10);
-		mascArqVaz.setBounds(433, 453, 120, 25);
-		add(mascArqVaz);
-		
-		JLabel lblTempoMxChamadas = new JLabel("Tempo m\u00E1x. chamada:");
-		lblTempoMxChamadas.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTempoMxChamadas.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblTempoMxChamadas.setBounds(273, 483, 150, 25);
-		add(lblTempoMxChamadas);
-		
-		textField_6 = new JTextField();
-		textField_6.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_6.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_6.setColumns(10);
-		textField_6.setBounds(433, 483, 120, 25);
-		add(textField_6);
-		
-		JLabel lblIndicadorDeAtraso = new JLabel("Indicador de Atraso:");
-		lblIndicadorDeAtraso.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblIndicadorDeAtraso.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblIndicadorDeAtraso.setBounds(273, 513, 150, 25);
-		add(lblIndicadorDeAtraso);
-		
-		textField_7 = new JTextField();
-		textField_7.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_7.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_7.setColumns(10);
-		textField_7.setBounds(433, 513, 120, 25);
-		add(textField_7);
-		
-		JLabel lblltimaChamadahora = new JLabel("\u00DAltima chamada/hora:");
-		lblltimaChamadahora.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblltimaChamadahora.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblltimaChamadahora.setBounds(273, 543, 150, 25);
-		add(lblltimaChamadahora);
-		
-		textField_8 = new JTextField();
-		textField_8.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_8.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_8.setColumns(10);
-		textField_8.setBounds(433, 543, 120, 25);
-		add(textField_8);
-		
-		textField_9 = new JTextField();
-		textField_9.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_9.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_9.setColumns(10);
-		textField_9.setBounds(563, 543, 180, 25);
-		add(textField_9);
-		
-		JLabel lblDataDoSistema = new JLabel("Data do sistema:");
-		lblDataDoSistema.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblDataDoSistema.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblDataDoSistema.setBounds(273, 573, 150, 25);
-		add(lblDataDoSistema);
-		
-		textField_10 = new JTextField();
-		textField_10.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_10.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_10.setColumns(10);
-		textField_10.setBounds(433, 573, 120, 25);
-		add(textField_10);
-		
-		JLabel lblStatus = new JLabel("Status:");
-		lblStatus.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStatus.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblStatus.setBounds(563, 573, 50, 25);
-		add(lblStatus);
-		
-		textField_11 = new JTextField();
-		textField_11.setFont(new Font("Palatino", Font.PLAIN, 14));
-		textField_11.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_11.setColumns(10);
-		textField_11.setBounds(623, 572, 120, 25);
-		add(textField_11);
-		
-		JLabel lblParametrosDoSistema = new JLabel("Parametros do Sistema");
-		lblParametrosDoSistema.setHorizontalAlignment(SwingConstants.CENTER);
-		lblParametrosDoSistema.setForeground(Color.BLACK);
-		lblParametrosDoSistema.setFont(new Font("Broadway", Font.PLAIN, 40));
-		lblParametrosDoSistema.setBounds(442, 50, 555, 100);
-		add(lblParametrosDoSistema);
 	}
 
 	private void inicializaComponentes() {
+		lblParametrosDoSistema.setHorizontalAlignment(SwingConstants.CENTER);
+		lblParametrosDoSistema.setForeground(Color.BLACK);
+		lblParametrosDoSistema.setFont(new Font("Broadway", Font.PLAIN, 40));
+		lblParametrosDoSistema.setBounds(408, 50, 550, 100);
+		add(lblParametrosDoSistema);
+		
+		lblMascArq.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblMascArq.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblMascArq.setBounds(418, 161, 250, 40);
+		add(lblMascArq);
+		
+		lblDirCarga.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblDirCarga.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDirCarga.setBounds(418, 211, 250, 40);
+		add(lblDirCarga);
+		
+		lblDirLido.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblDirLido.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDirLido.setBounds(418, 261, 250, 40);
+		add(lblDirLido);
+		
+		lblRefresh.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblRefresh.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblRefresh.setBounds(418, 311, 250, 40);
+		add(lblRefresh);
+		
+		lblQtdeGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblQtdeGTM.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblQtdeGTM.setBounds(418, 361, 250, 40);
+		add(lblQtdeGTM);
+		
+		lblMascArqVazio.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblMascArqVazio.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblMascArqVazio.setBounds(418, 411, 250, 40);
+		add(lblMascArqVazio);
+		
+		lblTemMax.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTemMax.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblTemMax.setBounds(418, 461, 250, 40);
+		add(lblTemMax);
+
+		lblAtraso.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAtraso.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblAtraso.setBounds(418, 511, 250, 40);
+		add(lblAtraso);
+		
+		lblUltimaChamada.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUltimaChamada.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblUltimaChamada.setBounds(418, 561, 250, 40);
+		add(lblUltimaChamada);
+		
+		lblDataSistema.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDataSistema.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblDataSistema.setBounds(418, 611, 250, 40);
+		add(lblDataSistema);
+		
+		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
+		lblStatus.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblStatus.setBounds(800, 611, 60, 40);
+		add(lblStatus);
+		
+		txtMascArq = new JTextField();
+		txtMascArq.setForeground(Color.DARK_GRAY);
+		txtMascArq.setEditable(false);
+		txtMascArq.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtMascArq.setHorizontalAlignment(SwingConstants.LEFT);
+		txtMascArq.setBounds(680, 161, 290, 40);
+		add(txtMascArq);
+		txtMascArq.setColumns(10);
+		
+		txtDirCarga = new JTextField();
+		txtDirCarga.setForeground(Color.DARK_GRAY);
+		txtDirCarga.setEditable(false);
+		txtDirCarga.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtDirCarga.setHorizontalAlignment(SwingConstants.LEFT);
+		txtDirCarga.setColumns(10);
+		txtDirCarga.setBounds(680, 211, 290, 40);
+		add(txtDirCarga);
+		
+		txtDirLido = new JTextField();
+		txtDirLido.setForeground(Color.DARK_GRAY);
+		txtDirLido.setEditable(false);
+		txtDirLido.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtDirLido.setHorizontalAlignment(SwingConstants.LEFT);
+		txtDirLido.setColumns(10);
+		txtDirLido.setBounds(680, 261, 290, 40);
+		add(txtDirLido);
+		
+		txtRefresh = new JTextField();
+		txtRefresh.setForeground(Color.DARK_GRAY);
+		txtRefresh.setEditable(false);
+		txtRefresh.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtRefresh.setHorizontalAlignment(SwingConstants.LEFT);
+		txtRefresh.setBounds(680, 311, 120, 40);
+		add(txtRefresh);
+		txtRefresh.setColumns(10);
+		
+		txtQtdeGTM = new JTextField();
+		txtQtdeGTM.setForeground(Color.DARK_GRAY);
+		txtQtdeGTM.setEditable(false);
+		txtQtdeGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtQtdeGTM.setHorizontalAlignment(SwingConstants.LEFT);
+		txtQtdeGTM.setColumns(10);
+		txtQtdeGTM.setBounds(680, 361, 120, 40);
+		add(txtQtdeGTM);
+		
+		txtMascArqVazio = new JTextField();
+		txtMascArqVazio.setForeground(Color.DARK_GRAY);
+		txtMascArqVazio.setEditable(false);
+		txtMascArqVazio.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtMascArqVazio.setHorizontalAlignment(SwingConstants.LEFT);
+		txtMascArqVazio.setColumns(10);
+		txtMascArqVazio.setBounds(680, 411, 120, 40);
+		add(txtMascArqVazio);
+		
+		txtTemMax = new JTextField();
+		txtTemMax.setForeground(Color.DARK_GRAY);
+		txtTemMax.setEditable(false);
+		txtTemMax.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtTemMax.setHorizontalAlignment(SwingConstants.LEFT);
+		txtTemMax.setColumns(10);
+		txtTemMax.setBounds(680, 461, 120, 40);
+		add(txtTemMax);
+		
+		txtAtraso = new JTextField();
+		txtAtraso.setForeground(Color.DARK_GRAY);
+		txtAtraso.setEditable(false);
+		txtAtraso.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtAtraso.setHorizontalAlignment(SwingConstants.LEFT);
+		txtAtraso.setColumns(10);
+		txtAtraso.setBounds(680, 511, 120, 40);
+		add(txtAtraso);
+		
+		txtUltimoArq = new JTextField();
+		txtUltimoArq.setForeground(Color.DARK_GRAY);
+		txtUltimoArq.setEditable(false);
+		txtUltimoArq.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtUltimoArq.setHorizontalAlignment(SwingConstants.LEFT);
+		txtUltimoArq.setColumns(10);
+		txtUltimoArq.setBounds(680, 561, 120, 40);
+		add(txtUltimoArq);
+		
+		txtHora = new JTextField();
+		txtHora.setForeground(Color.DARK_GRAY);
+		txtHora.setEditable(false);
+		txtHora.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtHora.setHorizontalAlignment(SwingConstants.LEFT);
+		txtHora.setColumns(10);
+		txtHora.setBounds(810, 561, 160, 40);
+		add(txtHora);
+		
+		txtDataSistema = new JTextField();
+		txtDataSistema.setForeground(Color.DARK_GRAY);
+		txtDataSistema.setEditable(false);
+		txtDataSistema.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtDataSistema.setHorizontalAlignment(SwingConstants.LEFT);
+		txtDataSistema.setColumns(10);
+		txtDataSistema.setBounds(680, 611, 120, 40);
+		add(txtDataSistema);
+		
+		txtStatus = new JTextField();
+		txtStatus.setForeground(Color.DARK_GRAY);
+		txtStatus.setEditable(false);
+		txtStatus.setFont(new Font("Broadway", Font.PLAIN, 14));
+		txtStatus.setHorizontalAlignment(SwingConstants.LEFT);
+		txtStatus.setColumns(10);
+		txtStatus.setBounds(860, 611, 110, 40);
+		add(txtStatus);
+
+		btnSalvar.setFont(new Font("Broadway", Font.PLAIN, 14));
+		btnSalvar.setBounds(740, 680, 110, 40);
+		add(btnSalvar);
+		
+		btnCancelar.setFont(new Font("Broadway", Font.PLAIN, 14));
+		btnCancelar.setBounds(860, 680, 110, 40);
+		add(btnCancelar);
 	}
 	
 	public static String getMascArqVazio(){
-		return mascArqVaz.getText();
+		return txtMascArqVazio.getText();
 	}
 }
