@@ -3,6 +3,7 @@ package feps;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -40,6 +41,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Cursor;
+import java.awt.Dimension;
 
 public class MonitorCarga extends JPanel {
 	private static final long serialVersionUID = 1L;

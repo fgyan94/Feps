@@ -46,7 +46,7 @@ public class PreferenciaFeps extends JPanel {
 		JLabel lblMscaraDoArquivo = new JLabel("Máscara do arquivo:");
 		lblMscaraDoArquivo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMscaraDoArquivo.setFont(new Font("Palatino", Font.PLAIN, 14));
-		lblMscaraDoArquivo.setBounds(273, 303, 150, 25);
+		lblMscaraDoArquivo.setBounds(434, 196, 150, 25);
 		add(lblMscaraDoArquivo);
 		
 		JLabel lblDiretrioDeCarga = new JLabel("Diretório de carga:");
@@ -82,7 +82,7 @@ public class PreferenciaFeps extends JPanel {
 		textField = new JTextField();
 		textField.setFont(new Font("Palatino", Font.PLAIN, 14));
 		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		textField.setBounds(433, 303, 310, 25);
+		textField.setBounds(594, 196, 310, 40);
 		add(textField);
 		textField.setColumns(10);
 		
@@ -90,20 +90,20 @@ public class PreferenciaFeps extends JPanel {
 		textField_1.setFont(new Font("Palatino", Font.PLAIN, 14));
 		textField_1.setHorizontalAlignment(SwingConstants.LEFT);
 		textField_1.setColumns(10);
-		textField_1.setBounds(433, 333, 310, 25);
+		textField_1.setBounds(594, 257, 310, 40);
 		add(textField_1);
 		
 		textField_2 = new JTextField();
 		textField_2.setFont(new Font("Palatino", Font.PLAIN, 14));
 		textField_2.setHorizontalAlignment(SwingConstants.LEFT);
 		textField_2.setColumns(10);
-		textField_2.setBounds(433, 363, 310, 25);
+		textField_2.setBounds(594, 319, 310, 40);
 		add(textField_2);
 		
 		textField_3 = new JTextField();
 		textField_3.setFont(new Font("Palatino", Font.PLAIN, 14));
 		textField_3.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_3.setBounds(433, 393, 120, 25);
+		textField_3.setBounds(594, 370, 120, 40);
 		add(textField_3);
 		textField_3.setColumns(10);
 		
@@ -111,7 +111,7 @@ public class PreferenciaFeps extends JPanel {
 		textField_4.setFont(new Font("Palatino", Font.PLAIN, 14));
 		textField_4.setHorizontalAlignment(SwingConstants.LEFT);
 		textField_4.setColumns(10);
-		textField_4.setBounds(433, 423, 120, 25);
+		textField_4.setBounds(594, 423, 120, 40);
 		add(textField_4);
 		
 		mascArqVaz = new JTextField();
@@ -197,7 +197,7 @@ public class PreferenciaFeps extends JPanel {
 		lblParametrosDoSistema.setHorizontalAlignment(SwingConstants.CENTER);
 		lblParametrosDoSistema.setForeground(Color.BLACK);
 		lblParametrosDoSistema.setFont(new Font("Broadway", Font.PLAIN, 40));
-		lblParametrosDoSistema.setBounds(442, 53, 555, 98);
+		lblParametrosDoSistema.setBounds(442, 50, 555, 100);
 		add(lblParametrosDoSistema);
 	}
 

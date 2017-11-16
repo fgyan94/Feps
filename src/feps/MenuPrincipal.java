@@ -4,6 +4,9 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -20,12 +23,12 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
-import sun.nio.ch.WindowsAsynchronousChannelProvider;
-
 public class MenuPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
-
+	
+	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	private static JPanel cardPanel = new JPanel(new CardLayout());
+	
 	private JPanel main = new JPanel();
 	private CardFeps card = new CardFeps();
 
@@ -88,23 +91,25 @@ public class MenuPrincipal extends JFrame {
 
 	private void buildFrame() {
 		this.setUndecorated(true);
-//		this.setBounds(0, 0, 1440, 900);
 		this.setOpacity(0.95f);
 		this.setLocationRelativeTo(null);
-//		this.setExtendedState(MAXIMIZED_BOTH);
-		this.setMinimumSize(new Dimension(1024, 768));
+		this.setExtendedState(MAXIMIZED_BOTH);
 		
-//		main.setPreferredSize(new Dimension(1440, 900));
-		main.setMinimumSize(new Dimension(1024, 768));
+		this.setPreferredSize(dimension);
+		main.setPreferredSize(dimension);
+		cardPanel.setPreferredSize(dimension);
 		
-//		main.setBounds(0, 0, 1440, 900);
+		this.setBackground(new Color(255, 200, 50));
 		main.setBackground(new Color(255, 200, 50));
-		cardPanel.setBounds(0, 0, 1440, 900);
 		cardPanel.setBackground(new Color(255, 200, 50));
+
+		this.setMinimumSize(new Dimension(1366, 768));
+		main.setMinimumSize(new Dimension(1366, 768));
+		cardPanel.setMinimumSize(new Dimension(1366, 768));
 		
-		this.setBounds(0, 0, 1024, 768);
-		main.setBounds(0, 0, 1024, 768);
-		cardPanel.setBounds(0, 0, 1024, 768);
+		this.setBounds(new Rectangle(new Point(0, 0), dimension));
+		main.setBounds(new Rectangle(new Point(0, 0), dimension));
+		cardPanel.setBounds(new Rectangle(new Point(0, 0), dimension));
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -263,62 +268,67 @@ public class MenuPrincipal extends JFrame {
 		gl_main.setHorizontalGroup(
 			gl_main.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_main.createSequentialGroup()
-					.addGap(924)
+					.addGap(dimension.width - 100)
 					.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_main.createSequentialGroup()
-					.addComponent(lblSistema, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblProducao, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblExpedicao, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblContingencia, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblSistema, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblProducao, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblExpedicao, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblContingencia, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_main.createSequentialGroup()
-					.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_main.createSequentialGroup()
-					.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_main.createSequentialGroup()
-					.addComponent(lblManAvan, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addGap((int)204.8f)
-					.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblManAvan, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addGap(dimension.width / 4)
+					.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_main.createSequentialGroup()
-					.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE)
-					.addGap(408)
-					.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, (int)204.8f, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE)
+					.addGap(dimension.width / 2)
+					.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, dimension.width / 4, GroupLayout.PREFERRED_SIZE))
 		);
+		
+		int altura = (int)(dimension.height * 0.03);
+		int alturaMenu = (int)((dimension.height - altura) * 0.5);
+		int alturaItem = (int)((dimension.height - alturaMenu) / 4);
+		
 		gl_main.setVerticalGroup(
 			gl_main.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_main.createSequentialGroup()
 					.addGroup(gl_main.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE, altura, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, altura, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_main.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblSistema, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblProducao, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblExpedicao, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblContingencia, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblSistema, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblProducao, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblExpedicao, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblContingencia, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_main.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_main.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_main.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblManAvan, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblManAvan, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_main.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)))
 		);
 		
 		main.setLayout(gl_main);
