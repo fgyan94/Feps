@@ -260,7 +260,7 @@ public class MonitorCarga extends JPanel {
 	}
 
 	private ArrayList<File> recebeFile() {
-		File[] tmp = new File("D:\\svdo").listFiles();
+		File[] tmp = new File("C:\\svdo").listFiles();
 		ArrayList<File> ret = new ArrayList<>();
 
 		for (int i = 0; i < tmp.length; i++) {
@@ -293,7 +293,7 @@ public class MonitorCarga extends JPanel {
 					+ "', '" + nomeArq + "', '" + new SimpleDateFormat("MM/dd/yyyy").format(data) + " "
 					+ new SimpleDateFormat("HH:mm:ss").format(hora) + "', '" + stringDoc + "')";
 
-			copyFile(file, new File("D:\\svdo\\lidos\\" + file.getName()));
+			copyFile(file, new File("D:\\svdo\\lido\\" + file.getName()));
 
 			reader.close();
 			file.delete();

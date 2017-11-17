@@ -37,39 +37,39 @@ public class MenuPrincipal extends JFrame {
 
 	// Aba "SISTEMA"
 	private JLabel lblSistema = new JLabel("SISTEMA");
-	private JLabel lblStatusProd = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\play.png"));
-	private JLabel lblUsuarios = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\user.png"));
+	private JLabel lblStatusProd = new JLabel(new ImageIcon("ico feps\\play.png"));
+	private JLabel lblUsuarios = new JLabel(new ImageIcon("ico feps\\user.png"));
 	private JLabel lblManAvan = new JLabel(
-			new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\avancedMaintenence.png"));
-	private JLabel lblPropriedades = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\tools.png"));
+			new ImageIcon("ico feps\\avancedMaintenence.png"));
+	private JLabel lblPropriedades = new JLabel(new ImageIcon("ico feps\\tools.png"));
 
 	private JSeparator s1 = new JSeparator();
 
 	// Aba "PRODUÇÃO"
 	private JLabel lblProducao = new JLabel("PRODUÇÃO");
 	private JLabel lblImpressaoOrdem = new JLabel(
-			new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\printOrder.png"));
-	private JLabel lblReimpressao = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\reprint.png"));
-	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\eraseOrder.png"));
+			new ImageIcon("ico feps\\printOrder.png"));
+	private JLabel lblReimpressao = new JLabel(new ImageIcon("ico feps\\reprint.png"));
+	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("ico feps\\eraseOrder.png"));
 
 	private JSeparator s2 = new JSeparator();
 
 	// Aba "EXPEDIÇÃO"
 	private JLabel lblExpedicao = new JLabel("EXPEDIÇÃO");
-	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\saida-gtm.png"));
-	private JLabel lblReverseGTM = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\estorno-gtm.png"));
+	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("ico feps\\saida-gtm.png"));
+	private JLabel lblReverseGTM = new JLabel(new ImageIcon("ico feps\\estorno-gtm.png"));
 
 	private JSeparator s3 = new JSeparator();
 
 	// Aba "CONTINGÊNCIA"
 	private JLabel lblContingencia = new JLabel("CONTINGÊNCIA");
 	private JLabel lblMonitorCarga = new JLabel(
-			new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\monitor-carga.png"));
+			new ImageIcon("ico feps\\monitor-carga.png"));
 	private JLabel lblOrdemManual = new JLabel(
-			new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\manualOrder.png"));
+			new ImageIcon("ico feps\\manualOrder.png"));
 	private JLabel lblOrdemBuffer = new JLabel(
-			new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\bufferOrder.png"));
-	private JLabel lblSaidaBuffer = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\sendBuffer.png"));
+			new ImageIcon("ico feps\\bufferOrder.png"));
+	private JLabel lblSaidaBuffer = new JLabel(new ImageIcon("ico feps\\sendBuffer.png"));
 
 	public static void main(String[] args) {
 		try {
@@ -211,7 +211,7 @@ public class MenuPrincipal extends JFrame {
 		
 		lblReverseGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblReverseGTM.setText("Estorno de GTM");
-		lblReverseGTM.setVerticalAlignment(SwingConstants.CENTER);
+		lblReverseGTM.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblReverseGTM.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblReverseGTM.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblReverseGTM.setHorizontalAlignment(SwingConstants.CENTER);
