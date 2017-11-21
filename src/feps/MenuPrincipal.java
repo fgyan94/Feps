@@ -28,6 +28,8 @@ public class MenuPrincipal extends JFrame {
 
 	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	private static JPanel cardPanel = new JPanel(new CardLayout());
+	
+//	private static JPanel cardPanel = new JPanel(new FepsLayout());
 
 	private JPanel main = new JPanel();
 	private CardFeps card = new CardFeps();
@@ -426,9 +428,11 @@ public class MenuPrincipal extends JFrame {
 						;
 
 					// CONTINGÊNCIA
-					else if (label == lblMonitorCarga)
+					else if (label == lblMonitorCarga) {
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MONITOR);
-					else if (label == lblOrdemManual)
+						card.monitorStart();
+							
+					} else if (label == lblOrdemManual)
 						;
 					else if (label == lblOrdemBuffer)
 						;

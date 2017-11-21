@@ -2,7 +2,6 @@ package feps;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -128,5 +127,9 @@ public class MonitorImpressao extends JPanel {
 		add(scrComunicaFepsRast);
 		add(separator);
 		add(monitor);
+	}
+
+	public void monitorStart() {
+		monitor.start();
 	}
 }

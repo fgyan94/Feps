@@ -2,7 +2,6 @@ package feps;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -13,9 +12,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.JSeparator;
 
 public class CardFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -116,5 +115,9 @@ public class CardFeps extends JPanel {
 
 	public Container getCardPanel() {
 		return cardPanel;
+	}
+
+	public void monitorStart() {
+		monitorImpressao.monitorStart();
 	}
 }

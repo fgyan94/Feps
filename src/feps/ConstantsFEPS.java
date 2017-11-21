@@ -14,35 +14,44 @@ public enum ConstantsFEPS {
 	ordemAutomatica(1),
 	ordemManual(2),
 	
-	statusSistema(false),
+	mascArq(PreferenciaFeps.getMascArq()),
+	dirCarga(PreferenciaFeps.getDirCarga()),
+	dirLido(PreferenciaFeps.getDirLido()),
+	refresh(PreferenciaFeps.getTempoRefresh()),
+	fechaGTM(PreferenciaFeps.getQtdFechaGTM()),
+	mascArqVazio(PreferenciaFeps.getMascArqVazio()),
+	tempoMax(PreferenciaFeps.getTemMax()),
+	atrasoOrdem(PreferenciaFeps.getAtraso()),
+	ultimoArq(PreferenciaFeps.getUltimoArquivo()),
+	horaUltimoArq(PreferenciaFeps.getHoraUltimaChamada()),
+	dataSistema(PreferenciaFeps.getDataSistema()),
+	statusSistema(PreferenciaFeps.getStatus());
 	
-	mascArqVazio(PreferenciaFeps.getMascArqVazio());
-	
-	String status;
-	int ordem;
-	boolean varStatusSistema;
+	String a;
+	int b;
+	boolean c;
 	
 	ConstantsFEPS(String status){
-		this.status = status;
+		this.a = status;
 	}
 	
 	ConstantsFEPS(int ordem){
-		this.ordem = ordem;
+		this.b = ordem;
 	}
 	
 	ConstantsFEPS(boolean statusSistema){
-		this.varStatusSistema = statusSistema;
+		this.c = statusSistema;
 	}
 	
 	public String getStringValue(){
-		return status;
+		return a;
 	}
 	
 	public int getIntValue(){
-		return ordem;
+		return b;
 	}
 	
 	public boolean getBooleanValue(){
-		return varStatusSistema;
+		return c;
 	}
 }

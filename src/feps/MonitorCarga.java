@@ -41,11 +41,12 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-public class MonitorCarga extends JPanel{
+public class MonitorCarga extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-//	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	
+	// private static Dimension dimension =
+	// Toolkit.getDefaultToolkit().getScreenSize();
+
 	private JLabel lblMonitorDeCarga;
 	private JTextField txtArquivoEsperado;
 	private JLabel lblArquivoEsperado, lblListArquivo, lblGifLoader, lblTotalArq, lblNumTotalArq, lblPlayPause;
@@ -206,12 +207,12 @@ public class MonitorCarga extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (statusMonitor) {
-					lblPlayPause.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\play_24.png"));
+					lblPlayPause.setIcon(new ImageIcon("ico feps\\play_24.png"));
 					lblGifLoader.setVisible(false);
 					statusMonitor = false;
 					pause();
 				} else {
-					lblPlayPause.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\pause_24.png"));
+					lblPlayPause.setIcon(new ImageIcon("ico feps\\pause_24.png"));
 					lblGifLoader.setVisible(true);
 					statusMonitor = true;
 					start();
@@ -222,7 +223,6 @@ public class MonitorCarga extends JPanel{
 	}
 
 	public void start() {
-		JOptionPane.showMessageDialog(null, "monitor visivel");
 		timer = new Timer();
 		task = new TimerTask() {
 			@Override
@@ -230,7 +230,7 @@ public class MonitorCarga extends JPanel{
 				atualizaDir();
 			}
 		};
-		timer.schedule(task, 1000, 1000);
+		timer.schedule(task, 1000, ConstantsFEPS.refresh.getIntValue());
 	}
 
 	private void pause() {
@@ -240,10 +240,9 @@ public class MonitorCarga extends JPanel{
 	private void atualizaDir() {
 		ArrayList<File> fileDir = recebeFile();
 		itemList = new DefaultListModel<>();
-		
+
 		txtArquivoEsperado.setText(getExpectedNumDoc());
-		
-		
+
 		for (int i = 0; i < fileDir.size(); i++) {
 			itemList.addElement(fileDir.get(i));
 		}
@@ -253,7 +252,7 @@ public class MonitorCarga extends JPanel{
 				txtArquivoEsperado
 						.setText(padding(Integer.parseInt(itemList.get(0).getName().substring(0, 4)) + 1, 4) + ".txt");
 				criaOrdem(itemList.remove(itemList.indexOf(itemList.firstElement())));
-			} else if (itemList.get(0).getName().contains(".EDS")) {
+			} else if (itemList.get(0).getName().contains(ConstantsFEPS.mascArqVazio.getStringValue())) {
 				gravaControleLeitura(itemList.remove(itemList.indexOf(itemList.firstElement())));
 			} else
 				JOptionPane.showMessageDialog(null, "Arquivo diferente do esperado!");
@@ -263,12 +262,14 @@ public class MonitorCarga extends JPanel{
 	}
 
 	private ArrayList<File> recebeFile() {
-		File[] tmp = new File("C:\\svdo").listFiles();
+		File[] tmp = new File(ConstantsFEPS.dirCarga.getStringValue()).listFiles();
 		ArrayList<File> ret = new ArrayList<>();
 
-		for (int i = 0; i < tmp.length; i++) {
-			if (tmp[i].getName().endsWith(".txt") || tmp[i].getName().endsWith(".EDS"))
-				ret.add(tmp[i]);
+		if (tmp != null) {
+			for (int i = 0; i < tmp.length; i++) {
+				if (tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArq.getStringValue()) || tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArqVazio.getStringValue()))
+					ret.add(tmp[i]);
+			}
 		}
 
 		return ret;
@@ -296,7 +297,7 @@ public class MonitorCarga extends JPanel{
 					+ "', '" + nomeArq + "', '" + new SimpleDateFormat("MM/dd/yyyy").format(data) + " "
 					+ new SimpleDateFormat("HH:mm:ss").format(hora) + "', '" + stringDoc + "')";
 
-			copyFile(file, new File("D:\\svdo\\lido\\" + file.getName()));
+			copyFile(file, new File(ConstantsFEPS.dirLido.getStringValue() + "\\" + file.getName()));
 
 			reader.close();
 			file.delete();
