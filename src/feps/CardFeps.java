@@ -2,6 +2,7 @@ package feps;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -18,13 +19,15 @@ import javax.swing.JSeparator;
 
 public class CardFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	final String MONITOR = "monitor";
 	final String PREFERENCES = "preferences";
-	
+
 	private JPanel path = new JPanel();
 	private JPanel cardPanel = new JPanel(new CardLayout());
+	
+	private MonitorImpressao monitorImpressao;
+	private PreferenciaFeps preferenciaFeps;
 
 	/**
 	 * Create the panel.
@@ -32,24 +35,23 @@ public class CardFeps extends JPanel {
 	public CardFeps() {
 		buildPanel();
 	}
-	
+
 	private void buildPanel() {
-		this.setBounds(0, 0, 1440, 900);
+		this.setBounds(0, 0, 1366, 768);
 		this.setLayout(null);
 		this.setBackground(new Color(255, 200, 50));
-		
+
 		path.setLocation(0, 0);
-		path.setSize(1440, 80);
+		path.setSize(1366, 80);
 		path.setLayout(null);
 		path.setBackground(new Color(255, 200, 50));
-		
+
 		cardPanel.setLocation(0, 80);
-		cardPanel.setSize(1440, 820);
+		cardPanel.setSize(1366, 688);
 		cardPanel.setBackground(new Color(255, 200, 50));
-		
-		
+
 		add(path);
-		
+
 		JLabel lblHome = new JLabel();
 		lblHome.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHome.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -61,36 +63,38 @@ public class CardFeps extends JPanel {
 			public void mouseExited(MouseEvent e) {
 				new javax.swing.Timer(30, new ActionListener() {
 					int i = 2;
+
 					@Override
 					public void actionPerformed(ActionEvent a) {
 						lblHome.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\home_" + i + ".png"));
-						i--;				
-						if(i == 0) {
+						i--;
+						if (i == 0) {
 							((Timer) a.getSource()).stop();
 						}
 					}
 				}).start();
-				
+
 				super.mouseEntered(e);
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				new javax.swing.Timer(30, new ActionListener() {
 					int i = 1;
+
 					@Override
-					public void actionPerformed(ActionEvent a) {						
+					public void actionPerformed(ActionEvent a) {
 						lblHome.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\home_" + i + ".png"));
 						i++;
-						if(i == 4) {
+						if (i == 4) {
 							((Timer) a.getSource()).stop();
 						}
 					}
 				}).start();
-				
+
 				super.mouseExited(e);
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				MenuPrincipal.getMain();
@@ -98,17 +102,18 @@ public class CardFeps extends JPanel {
 			}
 		});
 		path.add(lblHome);
-		
+
 		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 70, 1440, 10);
+		separator.setBounds(0, 70, 1366, 10);
 		path.add(separator);
-		
-		MonitorImpressao monitorImpressao = new MonitorImpressao();
+
+		monitorImpressao = new MonitorImpressao();
+		preferenciaFeps = new PreferenciaFeps();
 		cardPanel.add(monitorImpressao, MONITOR);
-		cardPanel.add(new PreferenciaFeps(), PREFERENCES);
+		cardPanel.add(preferenciaFeps, PREFERENCES);
 		add(cardPanel);
 	}
-	
+
 	public Container getCardPanel() {
 		return cardPanel;
 	}

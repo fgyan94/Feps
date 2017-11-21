@@ -1,169 +1,132 @@
 package feps;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.event.WindowEvent;
 
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.JSeparator;
 
 public class MonitorImpressao extends JPanel {
 	private static final long serialVersionUID = 1L;
-
-	private JTextField txtArquivoEsperado;
-	private JLabel lblArquivoEsperado, lblListArquivo, lblGifLoader;
-	private JButton btnOrdemManual;
-	private JScrollPane scrollPane;
-	private JList<File> list;
-	private DefaultListModel<File> itemList;
-	private Timer timer;
-	private TimerTask task;
-	private JLabel lblImpresso;
-	private JTable table;
-	private JLabel lblOrdensParaImpresso;
-	private JScrollPane scrollPane_2;
-	private JLabel lblOrdensParaMontagem;
-	private JTable table_1;
-	private JLabel lblListaModelosProduzidos;
-	private JScrollPane scrollPane_3;
-	private JTable table_2;
-
-//	public static void main(String[] args){
-//		try {
-//			UIManager.setLookAndFeel("com.alee.laf.WebLookAndFeel");
-//			new MonitorImpressao().setVisible(true);
-//			
-//		} catch (Throwable e) {
-//			e.printStackTrace();
-//		}
-//	}
+	
+	private JLabel lblImpressao, lblOrdensParaMontagem, lblOrdensParaImpressao, lblListaModelosProduzidos, lblComunicaoFepsRast;
+	private JTable tblOrdemImpressao, tblOrdemMontagem, tblModeloProd;
+	private JScrollPane scrOrdemImpressao, scrOrdemMontagem, scrModeloProd, scrComunicaFepsRast;
+	private JEditorPane edtComunicaFepsRast;
+	private JSeparator separator;
+	private MonitorCarga monitor;
 	
 	public MonitorImpressao() {
 		buildPanel();
 		inicializaComponentes();
-		InicializaListeners();
 	}
 
 	private void buildPanel() {
 		UIManager.put("List.disabledForeground", new Color(51, 51, 51));
 
 		this.setBackground(new Color(255, 200, 50));
-		this.setBounds(0, 0, 1440, 820);
+		this.setBounds(0, 0, 1366, 688);
 
 		this.setLayout(null);
 	}
 
-	private void inicializaComponentes() {
-		list = new JList<>();
-		list.setCellRenderer(new DefaultListCellRenderer() {
-			private static final long serialVersionUID = 1L;
-
-			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-					boolean cellHasFocus) {
-				JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
-						cellHasFocus);
-				label.setText(((File) value).getName());
-				this.setEnabled(true);
-				return this;
-			}
-		});
+	private void inicializaComponentes() {		
 		
-		lblImpresso = new JLabel("Impress\u00E3o");
-		lblImpresso.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImpresso.setFont(new Font("Broadway", Font.PLAIN, 40));
-		lblImpresso.setBounds(500, 10, 939, 98);
-		add(lblImpresso);
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(660, 160, 660, 210);
-		add(scrollPane_1);
-		
-		table = new JTable();
-		scrollPane_1.setViewportView(table);
-		
-		lblOrdensParaImpresso = new JLabel("Ordens para impress\u00E3o:");
-		lblOrdensParaImpresso.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblOrdensParaImpresso.setHorizontalAlignment(SwingConstants.LEFT);
-		lblOrdensParaImpresso.setForeground(new Color(51, 51, 51));
-		lblOrdensParaImpresso.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblOrdensParaImpresso.setBounds(660, 130, 226, 30);
-		add(lblOrdensParaImpresso);
-		
-		scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(60, 500, 470, 310);
-		add(scrollPane_2);
-		
-		table_1 = new JTable();
-		scrollPane_2.setViewportView(table_1);
-		
+		lblImpressao = new JLabel("Impressão");
+		lblOrdensParaImpressao = new JLabel("Ordens para impressão:");
 		lblOrdensParaMontagem = new JLabel("Ordens para montagem:");
-		lblOrdensParaMontagem.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblOrdensParaMontagem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOrdensParaMontagem.setForeground(new Color(51, 51, 51));
-		lblOrdensParaMontagem.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblOrdensParaMontagem.setBounds(60, 468, 470, 30);
-		add(lblOrdensParaMontagem);
-		
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setBounds(663, 660, 660, 148);
-		add(editorPane);
-		
-		JLabel lblComunicaoFepsrastreabilidade = new JLabel("Comunica\u00E7\u00E3o Feps/Rastreabilidade:");
-		lblComunicaoFepsrastreabilidade.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblComunicaoFepsrastreabilidade.setHorizontalAlignment(SwingConstants.LEFT);
-		lblComunicaoFepsrastreabilidade.setForeground(new Color(51, 51, 51));
-		lblComunicaoFepsrastreabilidade.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblComunicaoFepsrastreabilidade.setBounds(663, 630, 337, 30);
-		add(lblComunicaoFepsrastreabilidade);
-		
 		lblListaModelosProduzidos = new JLabel("Lista modelos produzidos:");
-		lblListaModelosProduzidos.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblListaModelosProduzidos.setHorizontalAlignment(SwingConstants.LEFT);
-		lblListaModelosProduzidos.setForeground(new Color(51, 51, 51));
-		lblListaModelosProduzidos.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblListaModelosProduzidos.setBounds(660, 380, 500, 30);
-		add(lblListaModelosProduzidos);
+		lblComunicaoFepsRast = new JLabel("Comunicação Feps/Rastreabilidade:");
 		
-		scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(660, 407, 660, 210);
-		add(scrollPane_3);
+		edtComunicaFepsRast = new JEditorPane();
+		edtComunicaFepsRast.setEditable(false);
 		
-		table_2 = new JTable();
-		scrollPane_3.setViewportView(table_2);
+		scrOrdemImpressao = new JScrollPane();
+		scrOrdemMontagem = new JScrollPane();
+		scrModeloProd = new JScrollPane();
+		scrComunicaFepsRast = new JScrollPane();
 		
-		MonitorCarga panel = new MonitorCarga();
-		panel.setBounds(0, 0, 500, 410);
-		add(panel);
+		tblOrdemImpressao = new JTable();
+		tblOrdemMontagem = new JTable();
+		tblModeloProd = new JTable();
 		
-		JSeparator separator = new JSeparator();
-		separator.setOrientation(SwingConstants.VERTICAL);
+		separator = new JSeparator();
+		
+		monitor = new MonitorCarga();
+
+		lblImpressao.setBounds(585, 10, 777, 98);
+		lblOrdensParaImpressao.setBounds(660, 119, 226, 30);
+		lblOrdensParaMontagem.setBounds(60, 421, 470, 30);
+		lblListaModelosProduzidos.setBounds(660, 270, 500, 30);
+		lblComunicaoFepsRast.setBounds(660, 520, 337, 30);
+
+		scrOrdemImpressao.setBounds(660, 148, 660, 112);
+		scrOrdemMontagem.setBounds(60, 462, 462, 215);
+		scrModeloProd.setBounds(660, 298, 660, 210);
+		scrComunicaFepsRast.setBounds(660, 548, 660, 129);
+
 		separator.setBounds(580, 10, 18, 800);
-		add(separator);
-	}
-
-	private void InicializaListeners() {
 		
-	}	
+		monitor.setBounds(0, 0, 500, 410);
+		
+		lblImpressao.setFont(new Font("Broadway", Font.PLAIN, 40));
+		lblOrdensParaImpressao.setFont(new Font("Broadway", Font.PLAIN, 17));
+		lblOrdensParaMontagem.setFont(new Font("Broadway", Font.PLAIN, 17));
+		lblComunicaoFepsRast.setFont(new Font("Broadway", Font.PLAIN, 17));
+		lblListaModelosProduzidos.setFont(new Font("Broadway", Font.PLAIN, 17));
+		
+		tblOrdemImpressao.setFont(new Font("Broadway", Font.PLAIN, 17));
+		tblOrdemMontagem.setFont(new Font("Broadway", Font.PLAIN, 17));
+		tblModeloProd.setFont(new Font("Broadway", Font.PLAIN, 17));
+		
+		edtComunicaFepsRast.setFont(new Font("Broadway", Font.PLAIN, 17));
 
-	public void cancelaTask() {
-		task.cancel();
-		timer.purge();
-		timer.cancel();
+		lblOrdensParaImpressao.setForeground(Color.BLACK);
+		lblOrdensParaMontagem.setForeground(Color.BLACK);
+		lblListaModelosProduzidos.setForeground(Color.BLACK);
+		lblComunicaoFepsRast.setForeground(Color.BLACK);
+		
+		tblOrdemImpressao.setForeground(Color.BLACK);
+		tblOrdemMontagem.setForeground(Color.BLACK);
+		tblModeloProd.setForeground(Color.BLACK);
+		
+		edtComunicaFepsRast.setForeground(Color.BLACK);
+		
+		lblImpressao.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOrdensParaImpressao.setHorizontalAlignment(SwingConstants.LEFT);
+		lblOrdensParaMontagem.setHorizontalAlignment(SwingConstants.CENTER);
+		lblComunicaoFepsRast.setHorizontalAlignment(SwingConstants.LEFT);
+		lblListaModelosProduzidos.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		lblOrdensParaImpressao.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblOrdensParaMontagem.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblComunicaoFepsRast.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblListaModelosProduzidos.setHorizontalTextPosition(SwingConstants.CENTER);
+
+		scrOrdemImpressao.setViewportView(tblOrdemImpressao);
+		scrOrdemMontagem.setViewportView(tblOrdemMontagem);
+		scrModeloProd.setViewportView(tblModeloProd);
+		scrComunicaFepsRast.setViewportView(edtComunicaFepsRast);
+
+		separator.setOrientation(SwingConstants.VERTICAL);
+		
+		add(lblImpressao);			
+		add(lblOrdensParaImpressao);		
+		add(lblOrdensParaMontagem);		
+		add(lblComunicaoFepsRast);	
+		add(lblListaModelosProduzidos);
+		add(scrOrdemImpressao);	
+		add(scrOrdemMontagem);	
+		add(scrModeloProd);	
+		add(scrComunicaFepsRast);
+		add(separator);
+		add(monitor);
 	}
 }

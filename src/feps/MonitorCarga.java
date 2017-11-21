@@ -2,8 +2,8 @@ package feps;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -28,6 +28,8 @@ import java.util.TimerTask;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -36,16 +38,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Cursor;
-import java.awt.Dimension;
+import javax.swing.SwingConstants;
 
-public class MonitorCarga extends JPanel {
+public class MonitorCarga extends JPanel{
 	private static final long serialVersionUID = 1L;
 
+//	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	
 	private JLabel lblMonitorDeCarga;
 	private JTextField txtArquivoEsperado;
 	private JLabel lblArquivoEsperado, lblListArquivo, lblGifLoader, lblTotalArq, lblNumTotalArq, lblPlayPause;
@@ -64,7 +64,6 @@ public class MonitorCarga extends JPanel {
 		buildPanel();
 		initializeComponents();
 		initializeListeners();
-		start();
 	}
 
 	private void buildPanel() {
@@ -144,7 +143,7 @@ public class MonitorCarga extends JPanel {
 		txtArquivoEsperado.setEditable(false);
 		list.setEnabled(false);
 
-		txtArquivoEsperado.setText(getExpectedNumDoc());
+		txtArquivoEsperado.setText("");
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout
@@ -222,7 +221,8 @@ public class MonitorCarga extends JPanel {
 		});
 	}
 
-	private void start() {
+	public void start() {
+		JOptionPane.showMessageDialog(null, "monitor visivel");
 		timer = new Timer();
 		task = new TimerTask() {
 			@Override
@@ -240,7 +240,10 @@ public class MonitorCarga extends JPanel {
 	private void atualizaDir() {
 		ArrayList<File> fileDir = recebeFile();
 		itemList = new DefaultListModel<>();
-
+		
+		txtArquivoEsperado.setText(getExpectedNumDoc());
+		
+		
 		for (int i = 0; i < fileDir.size(); i++) {
 			itemList.addElement(fileDir.get(i));
 		}
