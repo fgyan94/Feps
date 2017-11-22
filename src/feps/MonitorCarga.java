@@ -69,7 +69,7 @@ public class MonitorCarga extends JPanel {
 
 	private void buildPanel() {
 		setSize(500, 410);
-		setBackground(new Color(255, 102, 0));
+		setBackground(new Color(255, 255, 200));
 	}
 
 	private void initializeComponents() {

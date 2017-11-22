@@ -39,7 +39,7 @@ public class MenuPrincipal extends JFrame {
 
 	// Aba "SISTEMA"
 	private JLabel lblSistema = new JLabel("SISTEMA");
-	private JLabel lblStatusProd = new JLabel(new ImageIcon("ico feps\\play.png"));
+	private static JLabel lblStatusProd = new JLabel(new ImageIcon("ico feps\\play.png"));
 	private JLabel lblUsuarios = new JLabel(new ImageIcon("ico feps\\user.png"));
 	private JLabel lblManAvan = new JLabel(new ImageIcon("ico feps\\avancedMaintenence.png"));
 	private JLabel lblPropriedades = new JLabel(new ImageIcon("ico feps\\tools.png"));
@@ -97,10 +97,10 @@ public class MenuPrincipal extends JFrame {
 		main.setPreferredSize(dimension);
 		cardPanel.setPreferredSize(dimension);
 
-		this.setBackground(new Color(200, 200, 255));
-		main.setBackground(new Color(200, 200, 255));
-		cardPanel.setBackground(new Color(200, 200, 255));
-
+		this.setBackground(new Color(255, 255, 200));
+		main.setBackground(new Color(255, 255, 200));
+		cardPanel.setBackground(new Color(255, 255, 200));
+		
 		this.setMinimumSize(new Dimension(1366, 768));
 		main.setMinimumSize(new Dimension(1366, 768));
 		cardPanel.setMinimumSize(new Dimension(1366, 768));
@@ -399,14 +399,19 @@ public class MenuPrincipal extends JFrame {
 					System.exit(getDefaultCloseOperation());
 				else if (label == lblMinimizar)
 					setExtendedState(JFrame.ICONIFIED);
+
+				else if (label == lblStatusProd)
+					if(ConnectionFeps.getSystemStatus())
+						new InicializaSistema().setVisible(true);
+					else
+						new EncerraSistema().setVisible(true);
+				
 				else {
 
 					((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 
 					// SISTEMA
-					if (label == lblStatusProd)
-						;
-					else if (label == lblUsuarios)
+					if (label == lblUsuarios)
 						;
 					else if (label == lblManAvan)
 						;
@@ -468,5 +473,12 @@ public class MenuPrincipal extends JFrame {
 
 	public static void getMain() {
 		((CardLayout) cardPanel.getLayout()).show(cardPanel, "main");
+	}
+	
+	public static void setIconSystemStatus(boolean status) {
+		if(status)
+			lblStatusProd.setIcon(new ImageIcon("ico feps\\stop.png"));
+		else 
+			lblStatusProd.setIcon(new ImageIcon("ico feps\\play.png"));
 	}
 }

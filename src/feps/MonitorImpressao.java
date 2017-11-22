@@ -28,9 +28,9 @@ public class MonitorImpressao extends JPanel {
 	}
 
 	private void buildPanel() {
-		UIManager.put("List.disabledForeground", new Color(51, 51, 51));
+		UIManager.put("List.disabledForeground", Color.BLACK);
 
-		this.setBackground(new Color(255, 200, 50));
+		this.setBackground(new Color(255, 255, 200));
 		this.setBounds(0, 0, 1366, 688);
 
 		this.setLayout(null);

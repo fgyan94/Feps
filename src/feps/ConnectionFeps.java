@@ -87,4 +87,27 @@ public class ConnectionFeps {
 			return -1;
 		}
 	}
+	
+	public static boolean getSystemStatus() {
+		String consultaSQL = "Select aberto FROM parametros";
+		Connection c;
+		PreparedStatement p;
+		ResultSet rs;
+
+		try {
+			c = ConnectionFeps.getConnection();
+			p = c.prepareStatement(consultaSQL);
+			rs = p.executeQuery();
+
+			if (rs.next()){
+				return rs.getString("aberto") == "S";
+			}
+
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+		}
+
+		return false;
+	}
 }

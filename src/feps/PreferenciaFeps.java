@@ -58,7 +58,7 @@ public class PreferenciaFeps extends JPanel {
 
 	private void buildPanel() {
 		setBounds(0, 0, 1366, 688);
-		setBackground(new Color(255, 200, 50));
+		setBackground(new Color(255, 255, 200));
 	}
 
 	private void inicializaComponentes() {

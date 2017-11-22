@@ -38,23 +38,23 @@ public class CardFeps extends JPanel {
 	private void buildPanel() {
 		this.setBounds(0, 0, 1366, 768);
 		this.setLayout(null);
-		this.setBackground(new Color(255, 200, 50));
+		this.setBackground(new Color(255, 255, 200));
 
 		path.setLocation(0, 0);
 		path.setSize(1366, 80);
 		path.setLayout(null);
-		path.setBackground(new Color(255, 200, 50));
+		path.setBackground(new Color(255, 255, 200));
 
 		cardPanel.setLocation(0, 80);
 		cardPanel.setSize(1366, 688);
-		cardPanel.setBackground(new Color(255, 200, 50));
+		cardPanel.setBackground(new Color(255, 255, 200));
 
 		add(path);
 
 		JLabel lblHome = new JLabel();
 		lblHome.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHome.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblHome.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\home_1.png"));
+		lblHome.setIcon(new ImageIcon("ico feps\\home_1.png"));
 		lblHome.setBounds(0, 0, 70, 70);
 		lblHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblHome.addMouseListener(new MouseAdapter() {
@@ -65,7 +65,7 @@ public class CardFeps extends JPanel {
 
 					@Override
 					public void actionPerformed(ActionEvent a) {
-						lblHome.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\home_" + i + ".png"));
+						lblHome.setIcon(new ImageIcon("ico feps\\home_" + i + ".png"));
 						i--;
 						if (i == 0) {
 							((Timer) a.getSource()).stop();
@@ -83,7 +83,7 @@ public class CardFeps extends JPanel {
 
 					@Override
 					public void actionPerformed(ActionEvent a) {
-						lblHome.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\home_" + i + ".png"));
+						lblHome.setIcon(new ImageIcon("ico feps\\home_" + i + ".png"));
 						i++;
 						if (i == 4) {
 							((Timer) a.getSource()).stop();
