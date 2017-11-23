@@ -23,7 +23,7 @@ public class ExemploCardLayout implements ItemListener {
     public void adicionarComponentesAoPanel(Container pane) {
         JPanel comboBoxPane = new JPanel();
         String comboBoxItems[] = { BUTTONPANEL, TEXTPANEL, CHECKPANEL };
-        JComboBox cb = new JComboBox(comboBoxItems);
+        JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
         comboBoxPane.add(cb);

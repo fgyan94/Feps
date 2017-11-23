@@ -2,8 +2,8 @@ package feps;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,13 +12,13 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 public class InicializaSistema extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -27,8 +27,8 @@ public class InicializaSistema extends JDialog {
 	private JLabel lblDataAbertura = new JLabel("Data abertura:");
 	private JTextField txtUltimaData = new JTextField();
 	private JComboBox<String> cbDataAbertura = new JComboBox<String>();
-	private JButton btnInicializar = new JButton("Inicializar");
-	private JButton btnCancelar = new JButton("Cancelar");
+	private JLabel btnInicializar = new JLabel("Inicializar");
+	private JLabel btnCancelar = new JLabel("Cancelar");
 
 	public InicializaSistema() {
 		buildPanel();
@@ -50,55 +50,53 @@ public class InicializaSistema extends JDialog {
 	}
 
 	private void initializeComponents() {
-		lblUltimaData.setForeground(Color.BLACK);
 
+		lblUltimaData.setForeground(Color.BLACK);
 		lblUltimaData.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUltimaData.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblUltimaData.setBounds(10, 30, 120, 30);
+		lblUltimaData.setForeground(new Color(255, 255, 200));
 		getContentPane().add(lblUltimaData);
-		lblDataAbertura.setForeground(Color.BLACK);
 
 		lblDataAbertura.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDataAbertura.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblDataAbertura.setBounds(10, 80, 120, 30);
+		lblDataAbertura.setForeground(new Color(255, 255, 200));
 		getContentPane().add(lblDataAbertura);
-
+		
 		cbDataAbertura.setFont(new Font("Broadway", Font.PLAIN, 14));
 		cbDataAbertura.setBounds(140, 80, 120, 30);
+		cbDataAbertura.setBackground(new Color(255, 255, 200));
+		cbDataAbertura.setForeground(new Color(155, 155, 100));
 		getContentPane().add(cbDataAbertura);
-
-		txtUltimaData.setEnabled(false);
+		
+		txtUltimaData.setHorizontalAlignment(SwingConstants.CENTER);
 		txtUltimaData.setEditable(false);
 		txtUltimaData.setFont(new Font("Broadway", Font.PLAIN, 14));
 		txtUltimaData.setBounds(140, 30, 120, 30);
+		txtUltimaData.setForeground(new Color(255, 255, 200));
+		txtUltimaData.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+		txtUltimaData.setBackground(new Color(155, 155, 100));
 		getContentPane().add(txtUltimaData);
-		txtUltimaData.setColumns(10);
-
-		btnCancelar.setFont(new Font("Broadway", Font.PLAIN, 14));
-		btnCancelar.setBounds(170, 150, 90, 30);
-		getContentPane().add(btnCancelar);
 
 		btnInicializar.setFont(new Font("Broadway", Font.PLAIN, 14));
 		btnInicializar.setBounds(30, 150, 130, 30);
+		btnInicializar.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+		btnInicializar.setHorizontalAlignment(SwingConstants.CENTER);
+		btnInicializar.setForeground(new Color(255, 255, 200));
 		getContentPane().add(btnInicializar);
+
+		btnCancelar.setFont(new Font("Broadway", Font.PLAIN, 14));
+		btnCancelar.setBounds(170, 150, 90, 30);
+		btnCancelar.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+		btnCancelar.setHorizontalAlignment(SwingConstants.CENTER);
+		btnCancelar.setForeground(new Color(255, 255, 200));
+		getContentPane().add(btnCancelar);
 	}
 
 	private void initializeListeners() {
-		btnInicializar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MenuPrincipal.setIconSystemStatus(true);
-				run();
-				dispose();
-			}
-		});
-
-		btnCancelar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
+		btnInicializar.addMouseListener(mouseListenerLabel(btnInicializar));
+		btnCancelar.addMouseListener(mouseListenerLabel(btnCancelar));
 	}
 
 	private void loadComponents() {
@@ -131,9 +129,14 @@ public class InicializaSistema extends JDialog {
 
 	private void loadComboBox() {
 		cbDataAbertura.removeAll();
-
-		LocalDate data = LocalDate.now();
-
+		
+		int dayOfMonth = Integer.parseInt(txtUltimaData.getText().substring(0, 2));
+		int month = Integer.parseInt(txtUltimaData.getText().substring(3, 5));
+		int year = Integer.parseInt(txtUltimaData.getText().substring(6));
+		
+		LocalDate data = LocalDate.of(year, month, dayOfMonth);
+		data = data.plusDays(1);
+		
 		for (int i = 0; i < 30; i++) {
 			String stringData = new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(data));
 			cbDataAbertura.addItem(stringData);
@@ -166,5 +169,34 @@ public class InicializaSistema extends JDialog {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 		}
+	}
+
+	private MouseAdapter mouseListenerLabel(JLabel label) {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(label == btnInicializar) {
+					run();
+					dispose();
+					MenuPrincipal.setIconSystemStatus(true);
+				} else
+					dispose();
+				
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				label.setBorder(new MatteBorder(2, 2, 2, 2, new Color(255, 255, 200)));
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+			}
+		};
 	}
 }

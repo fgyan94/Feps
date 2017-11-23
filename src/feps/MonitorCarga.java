@@ -31,7 +31,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -40,6 +39,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 public class MonitorCarga extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -49,8 +49,7 @@ public class MonitorCarga extends JPanel {
 
 	private JLabel lblMonitorDeCarga;
 	private JTextField txtArquivoEsperado;
-	private JLabel lblArquivoEsperado, lblListArquivo, lblGifLoader, lblTotalArq, lblNumTotalArq, lblPlayPause;
-	private JButton btnOrdemManual;
+	private JLabel lblArquivoEsperado, lblListArquivo, lblGifLoader, lblTotalArq, lblNumTotalArq, lblPlayPause, btnOrdemManual;
 	private JScrollPane scrollPane;
 	private JList<File> list;
 	private DefaultListModel<File> itemList;
@@ -81,11 +80,13 @@ public class MonitorCarga extends JPanel {
 		lblTotalArq = new JLabel("Total de arquivos:");
 		lblTempo = new JLabel("Tempo:");
 		lblNumTempo = new JLabel("00:00:00");
-		lblPlayPause = new JLabel(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\pause_24.png"));
+		lblPlayPause = new JLabel(new ImageIcon("icofeps\\pause_24.png"));
 		lblTotalArq.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNumTotalArq = new JLabel("0");
 		txtArquivoEsperado = new JTextField();
-		btnOrdemManual = new JButton("Ordem manual");
+		btnOrdemManual = new JLabel("Ordem manual");
+		btnOrdemManual.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		btnOrdemManual.setHorizontalAlignment(SwingConstants.CENTER);
 		itemList = new DefaultListModel<>();
 		list = new JList<File>(itemList);
 		list.setFont(new Font("Broadway", Font.PLAIN, 17));
@@ -135,7 +136,7 @@ public class MonitorCarga extends JPanel {
 		lblTempo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNumTempo.setHorizontalAlignment(SwingConstants.CENTER);
 
-		lblGifLoader.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\ico feps\\loaderMonitor.gif"));
+		lblGifLoader.setIcon(new ImageIcon("icofeps\\loaderMonitor.gif"));
 
 		lblListArquivo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblListArquivo.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -207,17 +208,37 @@ public class MonitorCarga extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (statusMonitor) {
-					lblPlayPause.setIcon(new ImageIcon("ico feps\\play_24.png"));
+					lblPlayPause.setIcon(new ImageIcon("icofeps\\play_24.png"));
 					lblGifLoader.setVisible(false);
 					statusMonitor = false;
 					pause();
 				} else {
-					lblPlayPause.setIcon(new ImageIcon("ico feps\\pause_24.png"));
+					lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
 					lblGifLoader.setVisible(true);
 					statusMonitor = true;
 					start();
 				}
 				super.mouseClicked(e);
+			}
+		});
+		
+		btnOrdemManual.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				btnOrdemManual.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				btnOrdemManual.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnOrdemManual.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
 			}
 		});
 	}

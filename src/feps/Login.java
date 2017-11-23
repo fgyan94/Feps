@@ -324,6 +324,7 @@ public class Login extends JFrame {
 	private void start() {
 		user = txtUser.getText();
 		senha = txtSenha.getPassword();
+		
 		if (isOk()) {
 			if (trocaSenha()) {
 				slider.slideGetVertical(trocaSenha);

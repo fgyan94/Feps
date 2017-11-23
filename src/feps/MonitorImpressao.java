@@ -7,7 +7,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -19,7 +18,6 @@ public class MonitorImpressao extends JPanel {
 	private JTable tblOrdemImpressao, tblOrdemMontagem, tblModeloProd;
 	private JScrollPane scrOrdemImpressao, scrOrdemMontagem, scrModeloProd, scrComunicaFepsRast;
 	private JEditorPane edtComunicaFepsRast;
-	private JSeparator separator;
 	private MonitorCarga monitor;
 	
 	public MonitorImpressao() {
@@ -56,8 +54,6 @@ public class MonitorImpressao extends JPanel {
 		tblOrdemMontagem = new JTable();
 		tblModeloProd = new JTable();
 		
-		separator = new JSeparator();
-		
 		monitor = new MonitorCarga();
 
 		lblImpressao.setBounds(585, 10, 777, 98);
@@ -70,8 +66,6 @@ public class MonitorImpressao extends JPanel {
 		scrOrdemMontagem.setBounds(60, 462, 462, 215);
 		scrModeloProd.setBounds(660, 298, 660, 210);
 		scrComunicaFepsRast.setBounds(660, 548, 660, 129);
-
-		separator.setBounds(580, 10, 18, 800);
 		
 		monitor.setBounds(0, 0, 500, 410);
 		
@@ -113,8 +107,6 @@ public class MonitorImpressao extends JPanel {
 		scrOrdemMontagem.setViewportView(tblOrdemMontagem);
 		scrModeloProd.setViewportView(tblModeloProd);
 		scrComunicaFepsRast.setViewportView(edtComunicaFepsRast);
-
-		separator.setOrientation(SwingConstants.VERTICAL);
 		
 		add(lblImpressao);			
 		add(lblOrdensParaImpressao);		
@@ -125,7 +117,6 @@ public class MonitorImpressao extends JPanel {
 		add(scrOrdemMontagem);	
 		add(scrModeloProd);	
 		add(scrComunicaFepsRast);
-		add(separator);
 		add(monitor);
 	}
 

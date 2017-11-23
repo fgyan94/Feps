@@ -1,5 +1,5 @@
 package feps;
 
 public class OrdemMontagem {
-	private String partNumber;
+//	private String partNumber;
 }

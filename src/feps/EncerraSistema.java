@@ -2,25 +2,25 @@ package feps;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 public class EncerraSistema extends JDialog {
 	private static final long serialVersionUID = 1L;
 
-	private JLabel lblEncerrarODia = new JLabel("Encerrar o dia?");
-	private JButton btnSim = new JButton("SIM");
-	private JButton btnNao = new JButton("NÃO");
+	private JLabel lblEncerraDia = new JLabel("Encerrar o dia?");
+	private JLabel btnSim = new JLabel("SIM");
+	private JLabel btnNao = new JLabel("NÃO");
 
 	public EncerraSistema() {
 		buildPanel();
@@ -29,7 +29,7 @@ public class EncerraSistema extends JDialog {
 	}
 
 	private void buildPanel() {
-		this.setBounds(0, 0, 220, 120);
+		this.setBounds(0, 0, 300, 140);
 		this.setModal(true);
 		this.setUndecorated(true);
 		this.setOpacity(0.95f);
@@ -40,36 +40,31 @@ public class EncerraSistema extends JDialog {
 	}
 
 	private void initializeComponents() {
-		lblEncerrarODia.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEncerrarODia.setFont(new Font("Broadway", Font.PLAIN, 14));
-		lblEncerrarODia.setBounds(11, 11, 198, 50);
-		getContentPane().add(lblEncerrarODia);
-
-		btnSim.setBounds(10, 90, 90, 20);
+		
+		lblEncerraDia.setForeground(new Color(255, 255, 200));
+		lblEncerraDia.setHorizontalAlignment(SwingConstants.LEFT);
+		lblEncerraDia.setFont(new Font("Broadway", Font.PLAIN, 20));
+		lblEncerraDia.setBounds(10, 10, 280, 90);
+		getContentPane().add(lblEncerraDia);
+		
+		btnSim.setHorizontalAlignment(SwingConstants.CENTER);
+		btnSim.setFont(new Font("Broadway", Font.PLAIN, 14));
+		btnSim.setBounds(105, 100, 90, 30);
+		btnSim.setForeground(new Color(255, 255, 200));
+		btnSim.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
 		getContentPane().add(btnSim);
-
-		btnNao.setBounds(120, 90, 90, 20);
+		
+		btnNao.setHorizontalAlignment(SwingConstants.CENTER);
+		btnNao.setFont(new Font("Broadway", Font.PLAIN, 14));
+		btnNao.setBounds(200, 100, 90, 30);
+		btnNao.setForeground(new Color(255, 255, 200));
+		btnNao.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
 		getContentPane().add(btnNao);
 	}
 
 	private void initializeListeners() {
-		btnSim.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				end();
-				clearValues();
-				dispose();
-			}
-		});
-
-		btnNao.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
+		btnSim.addMouseListener(mouseListenerLabel(btnSim));
+		btnNao.addMouseListener(mouseListenerLabel(btnNao));
 	}
 
 	private void end() {
@@ -116,5 +111,34 @@ public class EncerraSistema extends JDialog {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 		}
+	}
+	
+	private MouseAdapter mouseListenerLabel(JLabel label) {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(label == btnSim) {
+					end();
+					clearValues();
+					dispose();
+					MenuPrincipal.setIconSystemStatus(false);
+				} else
+					dispose();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				label.setBorder(new MatteBorder(2, 2, 2, 2, new Color(255, 255, 200)));
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+			}
+		};
 	}
 }

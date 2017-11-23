@@ -18,18 +18,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
 public class MenuPrincipal extends JFrame {
+	
+//////////////////////////////////////////////////////
+	public static void main(String[] args) {
+		try {
+
+			new MenuPrincipal().setVisible(true);
+
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}	
+//////////////////////////////////////////////////////
+	
 	private static final long serialVersionUID = 1L;
 
 	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	private static JPanel cardPanel = new JPanel(new CardLayout());
-	
-//	private static JPanel cardPanel = new JPanel(new FepsLayout());
+
+	// private static JPanel cardPanel = new JPanel(new FepsLayout());
 
 	private JPanel main = new JPanel();
 	private CardFeps card = new CardFeps();
@@ -39,45 +50,28 @@ public class MenuPrincipal extends JFrame {
 
 	// Aba "SISTEMA"
 	private JLabel lblSistema = new JLabel("SISTEMA");
-	private static JLabel lblStatusProd = new JLabel(new ImageIcon("ico feps\\play.png"));
-	private JLabel lblUsuarios = new JLabel(new ImageIcon("ico feps\\user.png"));
-	private JLabel lblManAvan = new JLabel(new ImageIcon("ico feps\\avancedMaintenence.png"));
-	private JLabel lblPropriedades = new JLabel(new ImageIcon("ico feps\\tools.png"));
-
-	private JSeparator s1 = new JSeparator();
+	private static JLabel lblStatusProd = new JLabel(getIconSystemStatus());
+	private JLabel lblUsuarios = new JLabel(new ImageIcon("icofeps\\menu\\user.png"));
+	private JLabel lblManAvan = new JLabel(new ImageIcon("icofeps\\menu\\avancedMaintenence.png"));
+	private JLabel lblPropriedades = new JLabel(new ImageIcon("icofeps\\menu\\tools.png"));
 
 	// Aba "PRODUÇÃO"
 	private JLabel lblProducao = new JLabel("PRODUÇÃO");
-	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("ico feps\\printOrder.png"));
-	private JLabel lblReimpressao = new JLabel(new ImageIcon("ico feps\\reprint.png"));
-	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("ico feps\\eraseOrder.png"));
-
-	private JSeparator s2 = new JSeparator();
+	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
+	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu\\reprint.png"));
+	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
 
 	// Aba "EXPEDIÇÃO"
 	private JLabel lblExpedicao = new JLabel("EXPEDIÇÃO");
-	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("ico feps\\saida-gtm.png"));
-	private JLabel lblReverseGTM = new JLabel(new ImageIcon("ico feps\\estorno-gtm.png"));
-
-	private JSeparator s3 = new JSeparator();
+	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("icofeps\\menu\\saida-gtm.png"));
+	private JLabel lblReverseGTM = new JLabel(new ImageIcon("icofeps\\menu\\estorno-gtm.png"));
 
 	// Aba "CONTINGÊNCIA"
 	private JLabel lblContingencia = new JLabel("CONTINGÊNCIA");
-	private JLabel lblMonitorCarga = new JLabel(new ImageIcon("ico feps\\monitor-carga.png"));
-	private JLabel lblOrdemManual = new JLabel(new ImageIcon("ico feps\\manualOrder.png"));
-	private JLabel lblOrdemBuffer = new JLabel(new ImageIcon("ico feps\\bufferOrder.png"));
-	private JLabel lblSaidaBuffer = new JLabel(new ImageIcon("ico feps\\sendBuffer.png"));
-
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("com.alee.laf.WebLookAndFeel");
-
-			new MenuPrincipal().setVisible(true);
-
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
+	private JLabel lblMonitorCarga = new JLabel(new ImageIcon("icofeps\\menu\\monitor-carga.png"));
+	private JLabel lblOrdemManual = new JLabel(new ImageIcon("icofeps\\menu\\manualOrder.png"));
+	private JLabel lblOrdemBuffer = new JLabel(new ImageIcon("icofeps\\menu\\bufferOrder.png"));
+	private JLabel lblSaidaBuffer = new JLabel(new ImageIcon("icofeps\\menu\\sendBuffer.png"));
 
 	public MenuPrincipal() {
 		setTitle("FEPS");
@@ -100,7 +94,7 @@ public class MenuPrincipal extends JFrame {
 		this.setBackground(new Color(255, 255, 200));
 		main.setBackground(new Color(255, 255, 200));
 		cardPanel.setBackground(new Color(255, 255, 200));
-		
+
 		this.setMinimumSize(new Dimension(1366, 768));
 		main.setMinimumSize(new Dimension(1366, 768));
 		cardPanel.setMinimumSize(new Dimension(1366, 768));
@@ -120,25 +114,11 @@ public class MenuPrincipal extends JFrame {
 
 	private void initializeComponents() {
 
-		s1.setBounds(360, 12, 9, 876);
-		s2.setBounds(720, 12, 9, 876);
-		s3.setBounds(1080, 12, 9, 876);
-
-		s1.setForeground(Color.WHITE);
-		s2.setForeground(Color.WHITE);
-		s3.setForeground(Color.WHITE);
-
-		s1.setBackground(Color.BLACK);
-		s2.setBackground(Color.BLACK);
-		s3.setBackground(Color.BLACK);
-
-		s1.setOrientation(SwingConstants.VERTICAL);
-		s2.setOrientation(SwingConstants.VERTICAL);
-		s3.setOrientation(SwingConstants.VERTICAL);
-
+		lblFechar.setForeground(Color.BLACK);
 		lblFechar.setFont(new Font("Broadway", Font.PLAIN, 20));
 		lblFechar.setHorizontalAlignment(SwingConstants.CENTER);
 
+		lblMinimizar.setForeground(Color.BLACK);
 		lblMinimizar.setFont(new Font("Broadway", Font.PLAIN, 40));
 		lblMinimizar.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -157,7 +137,8 @@ public class MenuPrincipal extends JFrame {
 		lblContingencia.setForeground(Color.BLACK);
 		lblContingencia.setFont(new Font("Broadway", Font.PLAIN, 40));
 		lblContingencia.setHorizontalAlignment(SwingConstants.CENTER);
-
+		
+		lblStatusProd.setForeground(Color.BLACK);
 		lblStatusProd.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblStatusProd.setText("Iniciar/Encerrar sistema");
 		lblStatusProd.setVerticalAlignment(SwingConstants.CENTER);
@@ -166,6 +147,7 @@ public class MenuPrincipal extends JFrame {
 		lblStatusProd.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatusProd.setToolTipText("Iniciar/Encerrar Sistema");
 
+		lblImpressaoOrdem.setForeground(Color.BLACK);
 		lblImpressaoOrdem.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblImpressaoOrdem.setText("Impressão");
 		lblImpressaoOrdem.setVerticalAlignment(SwingConstants.CENTER);
@@ -174,6 +156,7 @@ public class MenuPrincipal extends JFrame {
 		lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
 		lblImpressaoOrdem.setToolTipText("Impressão");
 
+		lblSaidaGTM.setForeground(Color.BLACK);
 		lblSaidaGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblSaidaGTM.setText("Saída e emissão de GTM");
 		lblSaidaGTM.setVerticalAlignment(SwingConstants.CENTER);
@@ -182,6 +165,7 @@ public class MenuPrincipal extends JFrame {
 		lblSaidaGTM.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSaidaGTM.setToolTipText("Saída e emissão de GTM");
 
+		lblMonitorCarga.setForeground(Color.BLACK);
 		lblMonitorCarga.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblMonitorCarga.setText("Monitor de carga/Impressão");
 		lblMonitorCarga.setVerticalAlignment(SwingConstants.CENTER);
@@ -190,6 +174,7 @@ public class MenuPrincipal extends JFrame {
 		lblMonitorCarga.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMonitorCarga.setToolTipText("Monitor carga");
 
+		lblUsuarios.setForeground(Color.BLACK);
 		lblUsuarios.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblUsuarios.setText("Cadastro de Usuários");
 		lblUsuarios.setVerticalAlignment(SwingConstants.CENTER);
@@ -198,6 +183,7 @@ public class MenuPrincipal extends JFrame {
 		lblUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsuarios.setToolTipText("Usuarios");
 
+		lblReimpressao.setForeground(Color.BLACK);
 		lblReimpressao.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblReimpressao.setText("Reimpressão");
 		lblReimpressao.setVerticalAlignment(SwingConstants.CENTER);
@@ -206,6 +192,7 @@ public class MenuPrincipal extends JFrame {
 		lblReimpressao.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReimpressao.setToolTipText("Reimpressão de ordem");
 
+		lblReverseGTM.setForeground(Color.BLACK);
 		lblReverseGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblReverseGTM.setText("Estorno de GTM");
 		lblReverseGTM.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -214,6 +201,7 @@ public class MenuPrincipal extends JFrame {
 		lblReverseGTM.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReverseGTM.setToolTipText("Estorno GTM");
 
+		lblOrdemManual.setForeground(Color.BLACK);
 		lblOrdemManual.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblOrdemManual.setText("Ordem Manual");
 		lblOrdemManual.setVerticalAlignment(SwingConstants.CENTER);
@@ -221,6 +209,7 @@ public class MenuPrincipal extends JFrame {
 		lblOrdemManual.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblOrdemManual.setToolTipText("Ordem Manual");
 
+		lblManAvan.setForeground(Color.BLACK);
 		lblManAvan.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblManAvan.setText("Manutenção avançada");
 		lblManAvan.setVerticalAlignment(SwingConstants.CENTER);
@@ -229,6 +218,7 @@ public class MenuPrincipal extends JFrame {
 		lblManAvan.setHorizontalAlignment(SwingConstants.CENTER);
 		lblManAvan.setToolTipText("Manutenção avançada");
 
+		lblApagarOrdem.setForeground(Color.BLACK);
 		lblApagarOrdem.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblApagarOrdem.setText("Apagar Ordem");
 		lblApagarOrdem.setVerticalAlignment(SwingConstants.CENTER);
@@ -237,6 +227,7 @@ public class MenuPrincipal extends JFrame {
 		lblApagarOrdem.setHorizontalAlignment(SwingConstants.CENTER);
 		lblApagarOrdem.setToolTipText("Apagar Ordem");
 
+		lblOrdemBuffer.setForeground(Color.BLACK);
 		lblOrdemBuffer.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblOrdemBuffer.setText("Ordem Buffer");
 		lblOrdemBuffer.setVerticalAlignment(SwingConstants.CENTER);
@@ -245,6 +236,7 @@ public class MenuPrincipal extends JFrame {
 		lblOrdemBuffer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblOrdemBuffer.setToolTipText("Ordem Buffer");
 
+		lblPropriedades.setForeground(Color.BLACK);
 		lblPropriedades.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblPropriedades.setText("Propriedades");
 		lblPropriedades.setVerticalAlignment(SwingConstants.CENTER);
@@ -253,6 +245,7 @@ public class MenuPrincipal extends JFrame {
 		lblPropriedades.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPropriedades.setToolTipText("Propriedades");
 
+		lblSaidaBuffer.setForeground(Color.BLACK);
 		lblSaidaBuffer.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblSaidaBuffer.setText("Saída Buffer");
 		lblSaidaBuffer.setVerticalAlignment(SwingConstants.CENTER);
@@ -399,13 +392,12 @@ public class MenuPrincipal extends JFrame {
 					System.exit(getDefaultCloseOperation());
 				else if (label == lblMinimizar)
 					setExtendedState(JFrame.ICONIFIED);
-
 				else if (label == lblStatusProd)
-					if(ConnectionFeps.getSystemStatus())
-						new InicializaSistema().setVisible(true);
-					else
+					if (ConnectionFeps.getSystemStatus())
 						new EncerraSistema().setVisible(true);
-				
+					else
+						new InicializaSistema().setVisible(true);
+
 				else {
 
 					((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
@@ -436,7 +428,7 @@ public class MenuPrincipal extends JFrame {
 					else if (label == lblMonitorCarga) {
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MONITOR);
 						card.monitorStart();
-							
+
 					} else if (label == lblOrdemManual)
 						;
 					else if (label == lblOrdemBuffer)
@@ -474,11 +466,18 @@ public class MenuPrincipal extends JFrame {
 	public static void getMain() {
 		((CardLayout) cardPanel.getLayout()).show(cardPanel, "main");
 	}
-	
+
 	public static void setIconSystemStatus(boolean status) {
-		if(status)
-			lblStatusProd.setIcon(new ImageIcon("ico feps\\stop.png"));
-		else 
-			lblStatusProd.setIcon(new ImageIcon("ico feps\\play.png"));
+		if (status)
+			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
+		else
+			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\play.png"));
+	}
+
+	private static ImageIcon getIconSystemStatus() {
+		if (ConnectionFeps.getSystemStatus())
+			return new ImageIcon("icofeps\\menu\\stop.png");
+		else
+			return new ImageIcon("icofeps\\menu\\play.png");
 	}
 }
