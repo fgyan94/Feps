@@ -39,8 +39,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 public class MonitorCarga extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -50,7 +50,8 @@ public class MonitorCarga extends JPanel {
 
 	private JLabel lblMonitorDeCarga;
 	private JTextField txtArquivoEsperado;
-	private JLabel lblArquivoEsperado, lblListArquivo, lblGifLoader, lblTotalArq, lblNumTotalArq, lblPlayPause, btnOrdemManual;
+	private JLabel lblArquivoEsperado, lblListArquivo, lblGifLoader, lblTotalArq, lblNumTotalArq, lblPlayPause,
+			btnOrdemManual;
 	private JScrollPane scrollPane;
 	private JList<File> list;
 	private DefaultListModel<File> itemList;
@@ -58,8 +59,8 @@ public class MonitorCarga extends JPanel {
 	private JLabel lblNumTempo;
 	private boolean statusMonitor = true;
 
-	private static Timer timer;
-	private static TimerTask task;
+	private static Timer timer, timerCountTempo;
+	private static TimerTask task, taskCountTempo;
 
 	public MonitorCarga() {
 		buildPanel();
@@ -146,9 +147,8 @@ public class MonitorCarga extends JPanel {
 
 		txtArquivoEsperado.setFocusable(false);
 		txtArquivoEsperado.setEditable(false);
-		
+
 		list.setEnabled(false);
-		
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout
@@ -215,20 +215,23 @@ public class MonitorCarga extends JPanel {
 					lblGifLoader.setVisible(false);
 					statusMonitor = false;
 					pause();
+					stopTaskCountTempo();
 				} else {
 					lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
 					lblGifLoader.setVisible(true);
 					statusMonitor = true;
 					start();
+					startTaskCountTempo();
 				}
 				super.mouseClicked(e);
 			}
 		});
-		
+
 		btnOrdemManual.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				btnOrdemManual.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
@@ -247,6 +250,15 @@ public class MonitorCarga extends JPanel {
 	}
 
 	public void start() {
+		cancelTask();
+		startTaskCountTempo();
+		lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
+		lblGifLoader.setVisible(true);
+		
+		statusMonitor = true;
+		
+		lblNumTotalArq.setText(getTotalArqDia());
+		
 		timer = new Timer();
 		task = new TimerTask() {
 			@Override
@@ -258,7 +270,49 @@ public class MonitorCarga extends JPanel {
 	}
 
 	private void pause() {
-		closeTask();
+		cancelTask();
+	}
+
+	public void cancelTask() {
+		if (timer != null && task != null) {
+			lblPlayPause.setIcon(new ImageIcon("icofeps\\play_24.png"));
+			lblGifLoader.setVisible(false);
+			timer.cancel();
+			task.cancel();
+			
+			timer = null;
+			task = null;
+		}
+	}
+	
+	public void startTaskCountTempo() {
+		stopTaskCountTempo();
+		
+		timerCountTempo = new Timer();
+		taskCountTempo = new TimerTask() {
+			@Override
+			public void run() {
+				
+				lblNumTempo.setText(LocalTime.parse(lblNumTempo.getText()).plusSeconds(1).toString());
+				
+				if(LocalTime.parse(lblNumTempo.getText()).getMinute() > 2) {
+					stopTaskCountTempo();
+					JOptionPane.showMessageDialog(null, "TEMPO EXCEDIDO!");
+				}
+			}
+		};
+		timerCountTempo.schedule(taskCountTempo, 1000, 1000);
+	}
+	
+	public void stopTaskCountTempo() {
+		if(timerCountTempo != null && taskCountTempo != null) {
+			
+			timerCountTempo.cancel();
+			taskCountTempo.cancel();
+			
+			timerCountTempo = null;
+			taskCountTempo = null;
+		}
 	}
 
 	private void atualizaDir() {
@@ -272,6 +326,7 @@ public class MonitorCarga extends JPanel {
 		}
 
 		if (itemList.size() > 0) {
+			lblNumTempo.setText("00:00:00");
 			if (itemList.get(0).getName().equals(txtArquivoEsperado.getText())) {
 				txtArquivoEsperado
 						.setText(padding(Integer.parseInt(itemList.get(0).getName().substring(0, 4)) + 1, 4) + ".txt");
@@ -291,7 +346,8 @@ public class MonitorCarga extends JPanel {
 
 		if (tmp != null) {
 			for (int i = 0; i < tmp.length; i++) {
-				if (tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArq.getStringValue()) || tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArqVazio.getStringValue()))
+				if (tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArq.getStringValue())
+						|| tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArqVazio.getStringValue()))
 					ret.add(tmp[i]);
 			}
 		}
@@ -322,7 +378,7 @@ public class MonitorCarga extends JPanel {
 					+ new SimpleDateFormat("HH:mm:ss").format(hora) + "', '" + stringDoc + "')";
 
 			copyFile(file, new File(ConstantsFEPS.dirLido.getStringValue() + "\\" + file.getName()));
-
+			
 			reader.close();
 			file.delete();
 
@@ -453,9 +509,32 @@ public class MonitorCarga extends JPanel {
 			output.close();
 		}
 	}
-
-	public static void closeTask() {
-		timer.cancel();
-		task.cancel();
+	
+	private String getTotalArqDia() {
+		String consultaSQL;
+		Connection c;
+		PreparedStatement p;
+		ResultSet rs;
+		
+		try {
+			consultaSQL = "SELECT COUNT(*) FROM controle_leitura WHERE data >= '" + 
+					 LocalDate.now() + " " + "00:00:00"  
+					 + "' AND data <= '" + LocalDate.now() + " " + "23:59:59"  + "'";
+			c = ConnectionFeps.getConnection();
+			p = c.prepareStatement(consultaSQL);
+			rs = p.executeQuery();
+			
+			if(rs.next()) 
+				return rs.getString(1);
+			
+			rs.close();
+			p.close();
+			c.close();
+		} catch(SQLException sqle) {
+			sqle.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+		}
+		
+		return null;		
 	}
 }

@@ -85,6 +85,10 @@ public class CardFeps extends JPanel {
 	public void monitorStart() {
 		monitorImpressao.monitorStart();
 	}
+	
+	public void monitorStop() {
+		monitorImpressao.monitorStop();
+	}
 
 	private void initializeComponents() {
 		lblHome.setHorizontalAlignment(SwingConstants.CENTER);
@@ -249,6 +253,8 @@ public class CardFeps extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if(label == lblHome)
 					MenuPrincipal.getMain();
+				else if(label == lblPropriedade)
+					((CardLayout) cardPanel.getLayout()).show(cardPanel, PREFERENCES);
 				super.mouseClicked(e);
 			}
 		};

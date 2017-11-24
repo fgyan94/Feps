@@ -82,7 +82,7 @@ public class MenuPrincipal extends JFrame {
 
 	private void buildFrame() {
 		this.setUndecorated(true);
-		this.setOpacity(0.95f);
+		this.setOpacity(0.9f);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(MAXIMIZED_BOTH);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -106,7 +106,7 @@ public class MenuPrincipal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				MonitorCarga.closeTask();
+				card.monitorStop();
 				super.windowClosing(e);
 			}
 		});
@@ -399,7 +399,6 @@ public class MenuPrincipal extends JFrame {
 						new InicializaSistema().setVisible(true);
 
 				else {
-
 					((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 
 					// SISTEMA

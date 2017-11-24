@@ -130,4 +130,8 @@ public class MonitorImpressao extends JPanel {
 	public void monitorStart() {
 		monitor.start();
 	}
+
+	public void monitorStop() {
+		monitor.cancelTask();
+	}
 }
