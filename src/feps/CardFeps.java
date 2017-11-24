@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.Icon;
 
 public class CardFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -30,17 +29,17 @@ public class CardFeps extends JPanel {
 
 	private JLabel lblHome = new JLabel(new ImageIcon("icofeps\\menu_barra\\home\\home1.png"));
 	private JLabel lblUsuario = new JLabel(new ImageIcon("icofeps\\menu_barra\\user\\user1.png"));
-	private JLabel lblManAvan = new JLabel((Icon) null);
-	private JLabel lblPropriedade = new JLabel((Icon) null);
-	private JLabel lblImpressaoOrdem = new JLabel((Icon) null);
-	private JLabel lblReimpressao = new JLabel((Icon) null);
-	private JLabel lblApagarOrdem = new JLabel((Icon) null);
-	private JLabel lblSaidaGTM = new JLabel((Icon) null);
-	private JLabel lblReverseGTM = new JLabel((Icon) null);
-	private JLabel lblMonitorCarga = new JLabel((Icon) null);
-	private JLabel lblOrdemManual = new JLabel((Icon) null);
-	private JLabel lblOrdemBuffer = new JLabel((Icon) null);
-	private JLabel lblSaidaBuffer = new JLabel((Icon) null);
+	private JLabel lblManAvan = new JLabel(new ImageIcon("icofeps\\menu_barra\\manut\\manut1.png"));
+	private JLabel lblPropriedade = new JLabel(new ImageIcon("icofeps\\menu_barra\\tools\\tools1.png"));
+	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu_barra\\imp\\imp1.png"));
+	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu_barra\\reimp\\reimp1.png"));
+	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu_barra\\erase\\erase1.png"));
+	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("icofeps\\menu_barra\\gtm\\gtm1.png"));
+	private JLabel lblReverseGTM = new JLabel(new ImageIcon("icofeps\\menu_barra\\reverse\\reverse1.png"));
+	private JLabel lblMonitorCarga = new JLabel(new ImageIcon("icofeps\\menu_barra\\monitor\\monitor1.png"));
+	private JLabel lblOrdemManual = new JLabel(new ImageIcon("icofeps\\menu_barra\\manual\\manual1.png"));
+	private JLabel lblOrdemBuffer = new JLabel(new ImageIcon("icofeps\\menu_barra\\inbuffer\\inbuffer1.png"));
+	private JLabel lblSaidaBuffer = new JLabel(new ImageIcon("icofeps\\menu_barra\\outbuffer\\outbuffer1.png"));
 	
 	private final String S_HOME = "home";
 	private final String S_USER = "user";
@@ -65,16 +64,16 @@ public class CardFeps extends JPanel {
 	private void buildPanel() {
 		this.setBounds(0, 0, 1366, 768);
 		this.setLayout(null);
-		this.setBackground(new Color(255, 255, 200));
+		this.setBackground(Color.WHITE);
 
 		path.setLocation(0, 0);
 		path.setSize(1366, 80);
 		path.setLayout(null);
-		path.setBackground(new Color(255, 255, 200));
+		path.setBackground(Color.WHITE);
 
 		cardPanel.setLocation(0, 80);
 		cardPanel.setSize(1366, 688);
-		cardPanel.setBackground(new Color(255, 255, 200));
+		cardPanel.setBackground(Color.WHITE);
 
 		add(path);
 	}
@@ -90,73 +89,73 @@ public class CardFeps extends JPanel {
 	private void initializeComponents() {
 		lblHome.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHome.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblHome.setBounds(50, 0, 70, 70);
+		lblHome.setBounds(228, 0, 70, 70);
 		lblHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		lblUsuario.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsuario.setBounds(130, 0, 70, 70);
+		lblUsuario.setBounds(298, 0, 70, 70);
 		lblUsuario.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblManAvan.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblManAvan.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManAvan.setBounds(210, 0, 70, 70);
+		lblManAvan.setBounds(368, 0, 70, 70);
 		lblManAvan.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblPropriedade.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPropriedade.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPropriedade.setBounds(290, 0, 70, 70);
+		lblPropriedade.setBounds(438, 0, 70, 70);
 		lblPropriedade.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblImpressaoOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImpressaoOrdem.setBounds(370, 0, 70, 70);
+		lblImpressaoOrdem.setBounds(508, 0, 70, 70);
 		lblImpressaoOrdem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblReimpressao.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblReimpressao.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReimpressao.setBounds(450, 0, 70, 70);
+		lblReimpressao.setBounds(578, 0, 70, 70);
 		lblReimpressao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblApagarOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblApagarOrdem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblApagarOrdem.setBounds(530, 0, 70, 70);
+		lblApagarOrdem.setBounds(648, 0, 70, 70);
 		lblApagarOrdem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblSaidaGTM.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblSaidaGTM.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSaidaGTM.setBounds(610, 0, 70, 70);
+		lblSaidaGTM.setBounds(718, 0, 70, 70);
 		lblSaidaGTM.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblReverseGTM.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblReverseGTM.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReverseGTM.setBounds(690, 0, 70, 70);
+		lblReverseGTM.setBounds(788, 0, 70, 70);
 		lblReverseGTM.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblMonitorCarga.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblMonitorCarga.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMonitorCarga.setBounds(770, 0, 70, 70);
+		lblMonitorCarga.setBounds(858, 0, 70, 70);
 		lblMonitorCarga.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblOrdemManual.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblOrdemManual.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOrdemManual.setBounds(850, 0, 70, 70);
+		lblOrdemManual.setBounds(928, 0, 70, 70);
 		lblOrdemManual.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblOrdemBuffer.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblOrdemBuffer.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOrdemBuffer.setBounds(930, 0, 70, 70);
+		lblOrdemBuffer.setBounds(998, 0, 70, 70);
 		lblOrdemBuffer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblSaidaBuffer.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblSaidaBuffer.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSaidaBuffer.setBounds(1010, 0, 70, 70);
+		lblSaidaBuffer.setBounds(1068, 0, 70, 70);
 		lblSaidaBuffer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-//		monitorImpressao = new MonitorImpressao();
-//		preferenciaFeps = new PreferenciaFeps();
-//		cardPanel.add(monitorImpressao, MONITOR);
-//		cardPanel.add(preferenciaFeps, PREFERENCES);
+		monitorImpressao = new MonitorImpressao();
+		preferenciaFeps = new PreferenciaFeps();
+		cardPanel.add(monitorImpressao, MONITOR);
+		cardPanel.add(preferenciaFeps, PREFERENCES);
 
 		path.add(lblHome);
 		path.add(lblUsuario);
@@ -191,7 +190,7 @@ public class CardFeps extends JPanel {
 	}
 
 	private MouseAdapter mouseListenerLabel(JLabel label, String nome) {
-		return new MouseAdapter() {
+		return new MouseAdapter() {			
 			@Override
 			public void mouseExited(MouseEvent e) {
 				new javax.swing.Timer(30, new ActionListener() {
@@ -201,8 +200,21 @@ public class CardFeps extends JPanel {
 					public void actionPerformed(ActionEvent a) {
 						label.setIcon(new ImageIcon("icofeps\\menu_barra\\" + nome + "\\" + nome  + i + ".png"));
 						i--;
-						if (i == 0) {
+						if (i == 0)
 							((Timer) a.getSource()).stop();
+
+						else if(label.getMousePosition() == null) {
+							new javax.swing.Timer(30, new ActionListener() {
+								int i = 2;
+
+								@Override
+								public void actionPerformed(ActionEvent a) {
+									label.setIcon(new ImageIcon("icofeps\\menu_barra\\" + nome + "\\" + nome  + i + ".png"));
+									i--;
+									if (i == 0)
+										((Timer) a.getSource()).stop();
+								}
+							}).start();
 						}
 					}
 				}).start();
@@ -220,6 +232,11 @@ public class CardFeps extends JPanel {
 						label.setIcon(new ImageIcon("icofeps\\menu_barra\\" + nome + "\\" + nome  + i + ".png"));
 						i++;
 						if (i == 4) {
+							((Timer) a.getSource()).stop();
+						}
+						
+						else if(label.getMousePosition() == null) {
+							label.setIcon(new ImageIcon("icofeps\\menu_barra\\" + nome + "\\" + nome  + 1 + ".png"));
 							((Timer) a.getSource()).stop();
 						}
 					}

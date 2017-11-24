@@ -34,31 +34,31 @@ public class EncerraSistema extends JDialog {
 		this.setUndecorated(true);
 		this.setOpacity(0.95f);
 		this.setLocationRelativeTo(null);
-		this.setBackground(new Color(155, 155, 100));
-		this.getContentPane().setBackground(new Color(155, 155, 100));
+		this.setBackground(Color.BLACK);
+		this.getContentPane().setBackground(Color.BLACK);
 		getContentPane().setLayout(null);
 	}
 
 	private void initializeComponents() {
-		
-		lblEncerraDia.setForeground(new Color(255, 255, 200));
+
 		lblEncerraDia.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEncerraDia.setFont(new Font("Broadway", Font.PLAIN, 20));
+		lblEncerraDia.setForeground(Color.LIGHT_GRAY);
 		lblEncerraDia.setBounds(10, 10, 280, 90);
 		getContentPane().add(lblEncerraDia);
 		
 		btnSim.setHorizontalAlignment(SwingConstants.CENTER);
 		btnSim.setFont(new Font("Broadway", Font.PLAIN, 14));
 		btnSim.setBounds(105, 100, 90, 30);
-		btnSim.setForeground(new Color(255, 255, 200));
-		btnSim.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+		btnSim.setForeground(Color.LIGHT_GRAY);
+		btnSim.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 		getContentPane().add(btnSim);
 		
 		btnNao.setHorizontalAlignment(SwingConstants.CENTER);
 		btnNao.setFont(new Font("Broadway", Font.PLAIN, 14));
 		btnNao.setBounds(200, 100, 90, 30);
-		btnNao.setForeground(new Color(255, 255, 200));
-		btnNao.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+		btnNao.setForeground(Color.LIGHT_GRAY);
+		btnNao.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 		getContentPane().add(btnNao);
 	}
 
@@ -127,17 +127,17 @@ public class EncerraSistema extends JDialog {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				label.setBorder(new MatteBorder(2, 2, 2, 2, new Color(255, 255, 200)));
+				label.setBorder(new MatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY));
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+				label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+				label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			}
 		};
 	}

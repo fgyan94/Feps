@@ -91,9 +91,9 @@ public class MenuPrincipal extends JFrame {
 		main.setPreferredSize(dimension);
 		cardPanel.setPreferredSize(dimension);
 
-		this.setBackground(new Color(255, 255, 200));
-		main.setBackground(new Color(255, 255, 200));
-		cardPanel.setBackground(new Color(255, 255, 200));
+		this.setBackground(Color.WHITE);
+		main.setBackground(Color.WHITE);
+		cardPanel.setBackground(Color.WHITE);
 
 		this.setMinimumSize(new Dimension(1366, 768));
 		main.setMinimumSize(new Dimension(1366, 768));

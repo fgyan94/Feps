@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
+import javax.swing.border.LineBorder;
 
 public class MonitorCarga extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -68,7 +69,7 @@ public class MonitorCarga extends JPanel {
 
 	private void buildPanel() {
 		setSize(500, 410);
-		setBackground(new Color(255, 255, 200));
+		setBackground(Color.WHITE);
 	}
 
 	private void initializeComponents() {
@@ -84,11 +85,13 @@ public class MonitorCarga extends JPanel {
 		lblTotalArq.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNumTotalArq = new JLabel("0");
 		txtArquivoEsperado = new JTextField();
+		txtArquivoEsperado.setBorder(new LineBorder(Color.BLACK));
 		btnOrdemManual = new JLabel("Ordem manual");
-		btnOrdemManual.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		btnOrdemManual.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
 		btnOrdemManual.setHorizontalAlignment(SwingConstants.CENTER);
 		itemList = new DefaultListModel<>();
 		list = new JList<File>(itemList);
+		list.setBorder(new LineBorder(Color.BLACK));
 		list.setFont(new Font("Broadway", Font.PLAIN, 17));
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(list);
@@ -143,9 +146,9 @@ public class MonitorCarga extends JPanel {
 
 		txtArquivoEsperado.setFocusable(false);
 		txtArquivoEsperado.setEditable(false);
+		
 		list.setEnabled(false);
-
-		txtArquivoEsperado.setText("");
+		
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout

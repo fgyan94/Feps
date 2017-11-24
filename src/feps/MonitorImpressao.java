@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 public class MonitorImpressao extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +29,7 @@ public class MonitorImpressao extends JPanel {
 	private void buildPanel() {
 		UIManager.put("List.disabledForeground", Color.BLACK);
 
-		this.setBackground(new Color(255, 255, 200));
+		this.setBackground(Color.WHITE);
 		this.setBounds(0, 0, 1366, 688);
 
 		this.setLayout(null);
@@ -37,6 +38,7 @@ public class MonitorImpressao extends JPanel {
 	private void inicializaComponentes() {		
 		
 		lblImpressao = new JLabel("Impressão");
+		lblImpressao.setForeground(Color.BLACK);
 		lblOrdensParaImpressao = new JLabel("Ordens para impressão:");
 		lblOrdensParaMontagem = new JLabel("Ordens para montagem:");
 		lblListaModelosProduzidos = new JLabel("Lista modelos produzidos:");
@@ -107,6 +109,11 @@ public class MonitorImpressao extends JPanel {
 		scrOrdemMontagem.setViewportView(tblOrdemMontagem);
 		scrModeloProd.setViewportView(tblModeloProd);
 		scrComunicaFepsRast.setViewportView(edtComunicaFepsRast);
+		
+		scrOrdemImpressao.setBorder(new LineBorder(Color.BLACK));
+		scrOrdemMontagem.setBorder(new LineBorder(Color.BLACK));
+		scrModeloProd.setBorder(new LineBorder(Color.BLACK));
+		scrComunicaFepsRast.setBorder(new LineBorder(Color.BLACK));
 		
 		add(lblImpressao);			
 		add(lblOrdensParaImpressao);		

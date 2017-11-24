@@ -1,6 +1,7 @@
 package feps;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,11 +13,14 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
@@ -43,54 +47,52 @@ public class InicializaSistema extends JDialog {
 		this.setUndecorated(true);
 		this.setOpacity(0.95f);
 		this.setLocationRelativeTo(null);
-		this.setBackground(new Color(155, 155, 100));
+		this.setBackground(Color.BLACK);
 
 		this.getContentPane().setLayout(null);
-		this.getContentPane().setBackground(new Color(155, 155, 100));
+		this.getContentPane().setBackground(Color.BLACK);
 	}
 
 	private void initializeComponents() {
 
-		lblUltimaData.setForeground(Color.BLACK);
-		lblUltimaData.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUltimaData.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblUltimaData.setBounds(10, 30, 120, 30);
-		lblUltimaData.setForeground(new Color(255, 255, 200));
+		lblUltimaData.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUltimaData.setForeground(Color.LIGHT_GRAY);
 		getContentPane().add(lblUltimaData);
 
-		lblDataAbertura.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDataAbertura.setFont(new Font("Broadway", Font.PLAIN, 14));
 		lblDataAbertura.setBounds(10, 80, 120, 30);
-		lblDataAbertura.setForeground(new Color(255, 255, 200));
+		lblDataAbertura.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDataAbertura.setForeground(Color.LIGHT_GRAY);
 		getContentPane().add(lblDataAbertura);
 		
 		cbDataAbertura.setFont(new Font("Broadway", Font.PLAIN, 14));
 		cbDataAbertura.setBounds(140, 80, 120, 30);
-		cbDataAbertura.setBackground(new Color(255, 255, 200));
-		cbDataAbertura.setForeground(new Color(155, 155, 100));
+		cbDataAbertura.setBackground(Color.LIGHT_GRAY);
 		getContentPane().add(cbDataAbertura);
 		
-		txtUltimaData.setHorizontalAlignment(SwingConstants.CENTER);
-		txtUltimaData.setEditable(false);
 		txtUltimaData.setFont(new Font("Broadway", Font.PLAIN, 14));
 		txtUltimaData.setBounds(140, 30, 120, 30);
-		txtUltimaData.setForeground(new Color(255, 255, 200));
 		txtUltimaData.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
-		txtUltimaData.setBackground(new Color(155, 155, 100));
+		txtUltimaData.setHorizontalAlignment(SwingConstants.CENTER);
+		txtUltimaData.setForeground(Color.LIGHT_GRAY);
+		txtUltimaData.setBackground(Color.DARK_GRAY);
+		txtUltimaData.setEditable(false);
 		getContentPane().add(txtUltimaData);
 
 		btnInicializar.setFont(new Font("Broadway", Font.PLAIN, 14));
 		btnInicializar.setBounds(30, 150, 130, 30);
-		btnInicializar.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+		btnInicializar.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY)); 
 		btnInicializar.setHorizontalAlignment(SwingConstants.CENTER);
-		btnInicializar.setForeground(new Color(255, 255, 200));
+		btnInicializar.setForeground(Color.LIGHT_GRAY);
 		getContentPane().add(btnInicializar);
 
 		btnCancelar.setFont(new Font("Broadway", Font.PLAIN, 14));
 		btnCancelar.setBounds(170, 150, 90, 30);
-		btnCancelar.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+		btnCancelar.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 		btnCancelar.setHorizontalAlignment(SwingConstants.CENTER);
-		btnCancelar.setForeground(new Color(255, 255, 200));
+		btnCancelar.setForeground(Color.LIGHT_GRAY);
 		getContentPane().add(btnCancelar);
 	}
 
@@ -102,6 +104,7 @@ public class InicializaSistema extends JDialog {
 	private void loadComponents() {
 		loadUltimaData();
 		loadComboBox();
+		setCellRenderComboBox();
 	}
 
 	private void loadUltimaData() {
@@ -143,6 +146,32 @@ public class InicializaSistema extends JDialog {
 			data = data.plusDays(1);
 		}
 	}
+	
+	private void setCellRenderComboBox() {
+		cbDataAbertura.setRenderer(new ListCellRenderer<String>() {
+
+			@Override
+			public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				
+				JLabel renderer = (JLabel) new DefaultListCellRenderer().getListCellRendererComponent(list, value, index,
+				        isSelected, cellHasFocus);
+				
+				if(isSelected) {
+					renderer.setForeground(Color.BLACK);
+					renderer.setBackground(Color.LIGHT_GRAY);
+				}
+				
+				if(list.isSelectedIndex(index)) {
+					list.setSelectionForeground(Color.BLACK);
+					list.setSelectionBackground(Color.LIGHT_GRAY);
+				}
+				
+				return renderer;
+			}
+		});
+		
+	}
 
 	private void run() {
 		String consultaSQL;
@@ -156,8 +185,7 @@ public class InicializaSistema extends JDialog {
 			int month = Integer.parseInt(data.substring(3, 5));
 			int year = Integer.parseInt(data.substring(6));
 
-			consultaSQL = "UPDATE parametros SET aberto = 'S', data_sistema = '" + LocalDate.of(year, month, dayOfMonth)
-					+ "'";
+			consultaSQL = "UPDATE parametros SET aberto = 'S', data_sistema = '" + LocalDate.of(year, month, dayOfMonth) + "'";
 
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
@@ -185,17 +213,17 @@ public class InicializaSistema extends JDialog {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				label.setBorder(new MatteBorder(2, 2, 2, 2, new Color(255, 255, 200)));
+				label.setBorder(new MatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY));
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+				label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				label.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+				label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			}
 		};
 	}
