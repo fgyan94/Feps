@@ -250,14 +250,15 @@ public class MonitorCarga extends JPanel {
 	}
 
 	public void start() {
+		PreferenciaFeps.loadPreferences();
 		cancelTask();
 		startTaskCountTempo();
 		lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
 		lblGifLoader.setVisible(true);
-		
+
 		statusMonitor = true;
 		
-		lblNumTotalArq.setText(getTotalArqDia());
+		txtArquivoEsperado.setText(getExpectedNumDoc());
 		
 		timer = new Timer();
 		task = new TimerTask() {
@@ -279,37 +280,37 @@ public class MonitorCarga extends JPanel {
 			lblGifLoader.setVisible(false);
 			timer.cancel();
 			task.cancel();
-			
+
 			timer = null;
 			task = null;
 		}
 	}
-	
+
 	public void startTaskCountTempo() {
 		stopTaskCountTempo();
-		
+
 		timerCountTempo = new Timer();
 		taskCountTempo = new TimerTask() {
 			@Override
 			public void run() {
-				
+
 				lblNumTempo.setText(LocalTime.parse(lblNumTempo.getText()).plusSeconds(1).toString());
-				
-				if(LocalTime.parse(lblNumTempo.getText()).getMinute() > 2) {
-					stopTaskCountTempo();
+
+				if (LocalTime.parse(lblNumTempo.getText()).getMinute() > 2) {
 					JOptionPane.showMessageDialog(null, "TEMPO EXCEDIDO!");
+					startTaskCountTempo();
 				}
 			}
 		};
 		timerCountTempo.schedule(taskCountTempo, 1000, 1000);
 	}
-	
+
 	public void stopTaskCountTempo() {
-		if(timerCountTempo != null && taskCountTempo != null) {
-			
+		if (timerCountTempo != null && taskCountTempo != null) {
+
 			timerCountTempo.cancel();
 			taskCountTempo.cancel();
-			
+
 			timerCountTempo = null;
 			taskCountTempo = null;
 		}
@@ -318,8 +319,6 @@ public class MonitorCarga extends JPanel {
 	private void atualizaDir() {
 		ArrayList<File> fileDir = recebeFile();
 		itemList = new DefaultListModel<>();
-
-		txtArquivoEsperado.setText(getExpectedNumDoc());
 
 		for (int i = 0; i < fileDir.size(); i++) {
 			itemList.addElement(fileDir.get(i));
@@ -331,10 +330,15 @@ public class MonitorCarga extends JPanel {
 				txtArquivoEsperado
 						.setText(padding(Integer.parseInt(itemList.get(0).getName().substring(0, 4)) + 1, 4) + ".txt");
 				criaOrdem(itemList.remove(itemList.indexOf(itemList.firstElement())));
+				updateParametros();
+				lblNumTotalArq.setText(getTotalArqDia());
+				txtArquivoEsperado.setText(getExpectedNumDoc());
 			} else if (itemList.get(0).getName().contains(ConstantsFEPS.mascArqVazio.getStringValue())) {
 				gravaControleLeitura(itemList.remove(itemList.indexOf(itemList.firstElement())));
-			} else
+			} else {
+				gravaErro();
 				JOptionPane.showMessageDialog(null, "Arquivo diferente do esperado!");
+			}
 		}
 
 		list.setModel(itemList);
@@ -378,7 +382,7 @@ public class MonitorCarga extends JPanel {
 					+ new SimpleDateFormat("HH:mm:ss").format(hora) + "', '" + stringDoc + "')";
 
 			copyFile(file, new File(ConstantsFEPS.dirLido.getStringValue() + "\\" + file.getName()));
-			
+
 			reader.close();
 			file.delete();
 
@@ -402,7 +406,7 @@ public class MonitorCarga extends JPanel {
 	}
 
 	private void criaOrdem(File file) {
-		String doc, numDoc, dataHora, pvi, check, vin, partNumberGM, ordem_serie_vdo;
+		String doc, numDoc, dataHora, pvi, check, vin, partNumberGM, ordem_serie_conti;
 
 		doc = gravaControleLeitura(file);
 
@@ -412,31 +416,68 @@ public class MonitorCarga extends JPanel {
 		check = doc.substring(28, 29);
 		vin = doc.substring(29, 46);
 		partNumberGM = doc.substring(46);
-		ordem_serie_vdo = "";
+		ordem_serie_conti = getApelido(partNumberGM);
 
-		gravaOrdem(numDoc, dataHora, ConstantsFEPS.prodIniciada.getStringValue(), ordem_serie_vdo, pvi, check, vin,
+		gravaOrdem(numDoc, dataHora, ConstantsFEPS.prodIniciada.getStringValue(), ordem_serie_conti, pvi, check, vin,
 				partNumberGM, ConstantsFEPS.ordemAutomatica.getIntValue(), ConnectionFeps.getValorSeq("ORDEM_GM"));
-		inclusaoGTM();
 	}
 
-	private void gravaOrdem(String numDoc, String dataHora, String codProducao, String ordem_serie_vdo, String pvi,
-			String check, String vin, String partNumberGM, int ordem, int numSeq) {
+	private String getApelido(String partNumberGM) {
+		String consultaSQL;
+		Connection c;
+		PreparedStatement p;
+		ResultSet rs;
+
+		try {
+			consultaSQL = "SELECT * FROM gm_conti WHERE codigo_gm = '" + partNumberGM + "'";
+			c = ConnectionFeps.getConnection();
+			p = c.prepareStatement(consultaSQL);
+			rs = p.executeQuery();
+
+			if (rs.next())
+				return rs.getString("apelido_serie");
+			else
+				JOptionPane.showMessageDialog(null, "Esse part number não está cadastrado!");
+
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+		}
+
+		return "";
+	}
+
+	private void gravaOrdem(String numDoc, String dataHora, String codProducao, String ordem_serie_conti, String pvi,
+			String check, String vin, String partNumberGM, int ordem_auto, int numSeq) {
 		Connection c;
 		PreparedStatement p;
 		Date data = Date.valueOf(LocalDate.now());
 		Time hora = Time.valueOf(LocalTime.now());
+		String sData = ConstantsFEPS.dataSistema.getStringValue();
+		int totalSerieConti = ConnectionFeps.getValorSeq("Serie_" + ordem_serie_conti);
+		ordem_serie_conti = ordem_serie_conti.trim() + sData.substring(2, 4) + sData.substring(5, 7)
+				+ sData.substring(8) + padding(totalSerieConti, 4);
 
-		String consultaSQL = "INSERT INTO ORDEM_GM (ORDEM_GM_DOC, DATA_HORA, STATUS_CPROD_CODIGO, "
-				+ "USUARIO_CODIGO, ORDEM_VDO_SERIE, PVI_CHECK, VIN, PART_NUMBER_GM, "
-				+ "ORDEM_GM_ORIGEM, DATA_GM, DATA_INCLUSAO, ORDEM_ENTRADA) VALUES (" + "'" + numDoc + "', " + "'"
-				+ dataHora + "', " + "'" + codProducao + "', " + "'" + padding(Login.getUsuario(), 6) + "', '"
-				+ ordem_serie_vdo + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'" + partNumberGM + "', "
-				+ "'" + ordem + "', " + "'" + data + " " + hora + "', " + "'" + data + " " + hora + "', " + "'" + numSeq
-				+ "')";
 		try {
+			String consultaSQL = "INSERT INTO ORDEM_GM (ORDEM_GM_DOC, DATA_HORA, STATUS_CPROD_CODIGO, "
+					+ "USUARIO_CODIGO, ORDEM_CONTI_SERIE, PVI_CHECK, VIN, PART_NUMBER_GM, "
+					+ "ORDEM_GM_ORIGEM, DATA_GM, DATA_INCLUSAO, ORDEM_ENTRADA) VALUES (" + "'" + numDoc + "', " + "'"
+					+ dataHora + "', " + "'" + codProducao + "', " + "'" + padding(Login.getUsuario(), 6) + "', '"
+					+ ordem_serie_conti + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'" + partNumberGM
+					+ "', " + "'" + ordem_auto + "', " + "'" + data + " " + hora + "', " + "'" + data + " " + hora
+					+ "', " + "'" + numSeq + "')";
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
 			p.executeUpdate();
+
+			inclusaoGTM(ordem_serie_conti, ConstantsFEPS.cockpitIniciado.getStringValue(), "0",
+					padding(Login.getUsuario(), 6),
+					new SimpleDateFormat("MM/dd/yyyy").format(data) + " "
+							+ new SimpleDateFormat("HH:mm:ss").format(hora),
+					partNumberGM, ConstantsFEPS.ordemAutomatica.getIntValue(),
+					ConnectionFeps.getValorSeq("ORDEM_CONTI"), ConnectionFeps.getValorSeq("SEQ_DIA"));
+
+			updateParametros(padding(Integer.parseInt(numDoc), 4));
 
 			p.close();
 			c.close();
@@ -446,11 +487,7 @@ public class MonitorCarga extends JPanel {
 		}
 	}
 
-	private void inclusaoGTM() {
-
-	}
-
-	private String padding(int num, int length) {
+	private static String padding(int num, int length) {
 		String numPad = Integer.toString(num);
 		while (numPad.length() < length) {
 			numPad = "0" + numPad;
@@ -459,7 +496,7 @@ public class MonitorCarga extends JPanel {
 		return numPad;
 	}
 
-	private String getExpectedNumDoc() {
+	private static String getExpectedNumDoc() {
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
@@ -470,12 +507,18 @@ public class MonitorCarga extends JPanel {
 			rs = p.executeQuery();
 
 			if (rs.next()) {
-				String numDoc = padding(rs.getInt("Ordem_GM_Doc") + 1, 4);
+				String sNumDoc = "";
+				int numDoc = Integer.parseInt(padding(rs.getInt("Ordem_GM_Doc") + 1, 4));
+
+				if (numDoc == 10000)
+					sNumDoc = "0000";
+				else
+					sNumDoc = padding(numDoc, 4);
 
 				rs.close();
 				p.close();
 				c.close();
-				return numDoc + ".txt";
+				return sNumDoc + ".txt";
 			}
 			rs.close();
 			p.close();
@@ -509,32 +552,115 @@ public class MonitorCarga extends JPanel {
 			output.close();
 		}
 	}
-	
+
 	private String getTotalArqDia() {
 		String consultaSQL;
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
-		
+
 		try {
-			consultaSQL = "SELECT COUNT(*) FROM controle_leitura WHERE data >= '" + 
-					 LocalDate.now() + " " + "00:00:00"  
-					 + "' AND data <= '" + LocalDate.now() + " " + "23:59:59"  + "'";
+			consultaSQL = "SELECT COUNT(*) FROM controle_leitura WHERE data >= '" + LocalDate.now() + " " + "00:00:00"
+					+ "' AND data <= '" + LocalDate.now() + " " + "23:59:59" + "'";
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
 			rs = p.executeQuery();
-			
-			if(rs.next()) 
+
+			if (rs.next())
 				return rs.getString(1);
-			
+
 			rs.close();
 			p.close();
 			c.close();
-		} catch(SQLException sqle) {
+		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 		}
-		
-		return null;		
+
+		return null;
+	}
+
+	private void gravaErro() {
+		String consultaSQL;
+		Connection c;
+		PreparedStatement p;
+
+		try {
+			consultaSQL = "UPDATE parametros SET erro_sequencia = 'S'";
+			c = ConnectionFeps.getConnection();
+			p = c.prepareStatement(consultaSQL);
+			p.executeUpdate();
+
+			p.close();
+			c.close();
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+		}
+	}
+
+	private void updateParametros(String doc) {
+		String consultaSQL;
+		Connection c;
+		PreparedStatement p;
+
+		try {
+			consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
+					+ "' " + ", ultima_chamada = '" + doc + "'";
+			c = ConnectionFeps.getConnection();
+			p = c.prepareStatement(consultaSQL);
+			p.executeUpdate();
+
+			p.close();
+			c.close();
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+		}
+	}
+
+	private void updateParametros() {
+		String consultaSQL;
+		Connection c;
+		PreparedStatement p;
+
+		try {
+			consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
+					+ "' " + ", erro_sequencia = 'N'";
+			c = ConnectionFeps.getConnection();
+			p = c.prepareStatement(consultaSQL);
+			p.executeUpdate();
+
+			p.close();
+			c.close();
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+		}
+	}
+
+	private void inclusaoGTM(String ordem_conti_serie, String status_cockpit, String num_gtm, String usuario_cod,
+			String ordem_conti_data, String part_number_gm, int ordem_conti_origem, int ordem_entrada,
+			int sequencia_dia) {
+		String consultaSQL;
+		Connection c;
+		PreparedStatement p;
+
+		try {
+			consultaSQL = "INSERT INTO ordem_conti (ordem_conti_serie, status_cockpit, num_gtm, usuario_cod, ordem_conti_data, part_number_gm,"
+					+ "ordem_conti_origem, ordem_entrada, sequencia_dia) VALUES ('" + ordem_conti_serie + "', '"
+					+ status_cockpit + "', '" + num_gtm + "', '" + usuario_cod + "', '" + ordem_conti_data + "', '"
+					+ part_number_gm + "', '" + ordem_conti_origem + "', '" + ordem_entrada + "', '" + sequencia_dia
+					+ "')";
+			c = ConnectionFeps.getConnection();
+			p = c.prepareStatement(consultaSQL);
+			p.executeUpdate();
+
+			p.close();
+			c.close();
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+		}
 	}
 }

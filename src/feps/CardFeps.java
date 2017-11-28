@@ -29,7 +29,7 @@ public class CardFeps extends JPanel {
 
 	private JLabel lblHome = new JLabel(new ImageIcon("icofeps\\menu_barra\\home\\home1.png"));
 	private JLabel lblUsuario = new JLabel(new ImageIcon("icofeps\\menu_barra\\user\\user1.png"));
-	private JLabel lblManAvan = new JLabel(new ImageIcon("icofeps\\menu_barra\\manut\\manut1.png"));
+	private JLabel lblManTable = new JLabel(new ImageIcon("icofeps\\menu_barra\\manut\\manut1.png"));
 	private JLabel lblPropriedade = new JLabel(new ImageIcon("icofeps\\menu_barra\\tools\\tools1.png"));
 	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu_barra\\imp\\imp1.png"));
 	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu_barra\\reimp\\reimp1.png"));
@@ -101,10 +101,10 @@ public class CardFeps extends JPanel {
 		lblUsuario.setBounds(298, 0, 70, 70);
 		lblUsuario.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		lblManAvan.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblManAvan.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManAvan.setBounds(368, 0, 70, 70);
-		lblManAvan.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblManTable.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblManTable.setHorizontalAlignment(SwingConstants.CENTER);
+		lblManTable.setBounds(368, 0, 70, 70);
+		lblManTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblPropriedade.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPropriedade.setHorizontalAlignment(SwingConstants.CENTER);
@@ -163,7 +163,7 @@ public class CardFeps extends JPanel {
 
 		path.add(lblHome);
 		path.add(lblUsuario);
-		path.add(lblManAvan);
+		path.add(lblManTable);
 		path.add(lblPropriedade);
 		path.add(lblImpressaoOrdem);
 		path.add(lblReimpressao);
@@ -180,7 +180,7 @@ public class CardFeps extends JPanel {
 	private void initializeListeners() {
 		lblHome.addMouseListener(mouseListenerLabel(lblHome, S_HOME));
 		lblUsuario.addMouseListener(mouseListenerLabel(lblUsuario, S_USER));
-		lblManAvan.addMouseListener(mouseListenerLabel(lblManAvan, S_MANUT));
+		lblManTable.addMouseListener(mouseListenerLabel(lblManTable, S_MANUT));
 		lblPropriedade.addMouseListener(mouseListenerLabel(lblPropriedade, S_TOOLS));
 		lblImpressaoOrdem.addMouseListener(mouseListenerLabel(lblImpressaoOrdem, S_IMP));
 		lblReimpressao.addMouseListener(mouseListenerLabel(lblReimpressao, S_REIMP));

@@ -45,39 +45,43 @@ public class MenuPrincipal extends JFrame {
 	private JPanel main = new JPanel();
 	private CardFeps card = new CardFeps();
 
-	private JLabel lblMinimizar = new JLabel("-");
-	private JLabel lblFechar = new JLabel("X");
+	private static JLabel lblMinimizar = new JLabel("-");
+	private static JLabel lblFechar = new JLabel("X");
 
 	// Aba "SISTEMA"
-	private JLabel lblSistema = new JLabel("SISTEMA");
+	private static JLabel lblSistema = new JLabel("SISTEMA");
 	private static JLabel lblStatusProd = new JLabel(getIconSystemStatus());
-	private JLabel lblUsuarios = new JLabel(new ImageIcon("icofeps\\menu\\user.png"));
-	private JLabel lblManAvan = new JLabel(new ImageIcon("icofeps\\menu\\avancedMaintenence.png"));
-	private JLabel lblPropriedades = new JLabel(new ImageIcon("icofeps\\menu\\tools.png"));
+	private static JLabel lblUsuarios = new JLabel(new ImageIcon("icofeps\\menu\\user.png"));
+	private static JLabel lblManTable = new JLabel(new ImageIcon("icofeps\\menu\\avancedMaintenence.png"));
+	private static JLabel lblPropriedades = new JLabel(new ImageIcon("icofeps\\menu\\tools.png"));
 
 	// Aba "PRODUÇÃO"
-	private JLabel lblProducao = new JLabel("PRODUÇÃO");
-	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
-	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu\\reprint.png"));
-	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
+	private static JLabel lblProducao = new JLabel("PRODUÇÃO");
+	private static JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
+	private static JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu\\reprint.png"));
+	private static JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
 
 	// Aba "EXPEDIÇÃO"
-	private JLabel lblExpedicao = new JLabel("EXPEDIÇÃO");
-	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("icofeps\\menu\\saida-gtm.png"));
-	private JLabel lblReverseGTM = new JLabel(new ImageIcon("icofeps\\menu\\estorno-gtm.png"));
+	private static JLabel lblExpedicao = new JLabel("EXPEDIÇÃO");
+	private static JLabel lblSaidaGTM = new JLabel(new ImageIcon("icofeps\\menu\\saida-gtm.png"));
+	private static JLabel lblReverseGTM = new JLabel(new ImageIcon("icofeps\\menu\\estorno-gtm.png"));
 
 	// Aba "CONTINGÊNCIA"
-	private JLabel lblContingencia = new JLabel("CONTINGÊNCIA");
-	private JLabel lblMonitorCarga = new JLabel(new ImageIcon("icofeps\\menu\\monitor-carga.png"));
-	private JLabel lblOrdemManual = new JLabel(new ImageIcon("icofeps\\menu\\manualOrder.png"));
-	private JLabel lblOrdemBuffer = new JLabel(new ImageIcon("icofeps\\menu\\bufferOrder.png"));
-	private JLabel lblSaidaBuffer = new JLabel(new ImageIcon("icofeps\\menu\\sendBuffer.png"));
+	private static JLabel lblContingencia = new JLabel("CONTINGÊNCIA");
+	private static JLabel lblMonitorCarga = new JLabel(new ImageIcon("icofeps\\menu\\monitor-carga.png"));
+	private static JLabel lblOrdemManual = new JLabel(new ImageIcon("icofeps\\menu\\manualOrder.png"));
+	private static JLabel lblOrdemBuffer = new JLabel(new ImageIcon("icofeps\\menu\\bufferOrder.png"));
+	private static JLabel lblSaidaBuffer = new JLabel(new ImageIcon("icofeps\\menu\\sendBuffer.png"));
 
 	public MenuPrincipal() {
 		setTitle("FEPS");
 		buildFrame();
 		initializeComponents();
 		initializeListeners();
+		if(ConnectionFeps.getSystemStatus())
+			sistemaAberto(true);
+		else
+			sistemaAberto(false);
 	}
 
 	private void buildFrame() {
@@ -209,14 +213,14 @@ public class MenuPrincipal extends JFrame {
 		lblOrdemManual.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblOrdemManual.setToolTipText("Ordem Manual");
 
-		lblManAvan.setForeground(Color.BLACK);
-		lblManAvan.setFont(new Font("Broadway", Font.PLAIN, 14));
-		lblManAvan.setText("Manutenção avançada");
-		lblManAvan.setVerticalAlignment(SwingConstants.CENTER);
-		lblManAvan.setVerticalTextPosition(SwingConstants.BOTTOM);
-		lblManAvan.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblManAvan.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManAvan.setToolTipText("Manutenção avançada");
+		lblManTable.setForeground(Color.BLACK);
+		lblManTable.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblManTable.setText("Manutenção de Tabelas");
+		lblManTable.setVerticalAlignment(SwingConstants.CENTER);
+		lblManTable.setVerticalTextPosition(SwingConstants.BOTTOM);
+		lblManTable.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblManTable.setHorizontalAlignment(SwingConstants.CENTER);
+		lblManTable.setToolTipText("Manutenção de Tabelas");
 
 		lblApagarOrdem.setForeground(Color.BLACK);
 		lblApagarOrdem.setFont(new Font("Broadway", Font.PLAIN, 14));
@@ -287,7 +291,7 @@ public class MenuPrincipal extends JFrame {
 						.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_main.createSequentialGroup()
-						.addComponent(lblManAvan, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
+						.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
@@ -335,7 +339,7 @@ public class MenuPrincipal extends JFrame {
 								.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_main.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblManAvan, GroupLayout.PREFERRED_SIZE,
+								.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
@@ -363,7 +367,7 @@ public class MenuPrincipal extends JFrame {
 		// SISTEMA
 		lblStatusProd.addMouseListener(mouseListenerLabel(lblStatusProd));
 		lblUsuarios.addMouseListener(mouseListenerLabel(lblUsuarios));
-		lblManAvan.addMouseListener(mouseListenerLabel(lblManAvan));
+		lblManTable.addMouseListener(mouseListenerLabel(lblManTable));
 		lblPropriedades.addMouseListener(mouseListenerLabel(lblPropriedades));
 
 		// PRODUÇÃO
@@ -404,7 +408,7 @@ public class MenuPrincipal extends JFrame {
 					// SISTEMA
 					if (label == lblUsuarios)
 						;
-					else if (label == lblManAvan)
+					else if (label == lblManTable)
 						;
 					else if (label == lblPropriedades)
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
@@ -467,10 +471,27 @@ public class MenuPrincipal extends JFrame {
 	}
 
 	public static void setIconSystemStatus(boolean status) {
-		if (status)
+		if (status) {
 			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
-		else
+			sistemaAberto(true);
+		}
+		else {
 			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\play.png"));
+			sistemaAberto(false);
+		}
+	}
+
+	private static void sistemaAberto(boolean aberto) {
+		lblManTable.setVisible(aberto);
+		lblImpressaoOrdem.setVisible(aberto);
+		lblReimpressao.setVisible(aberto);
+		lblApagarOrdem.setVisible(aberto);
+		lblSaidaGTM.setVisible(aberto);
+		lblReverseGTM.setVisible(aberto);
+		lblMonitorCarga.setVisible(aberto);
+		lblOrdemManual.setVisible(aberto);
+		lblOrdemBuffer.setVisible(aberto);
+		lblSaidaBuffer.setVisible(aberto);
 	}
 
 	private static ImageIcon getIconSystemStatus() {

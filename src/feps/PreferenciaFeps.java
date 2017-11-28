@@ -383,7 +383,7 @@ public class PreferenciaFeps extends JPanel {
 		
 	}
 
-	private static void loadPreferences() {
+	public static void loadPreferences() {
 		String consultaSQL = "SELECT * FROM parametros";
 		Connection c;
 		PreparedStatement p;
