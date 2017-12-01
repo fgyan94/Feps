@@ -80,6 +80,9 @@ public class EncerraSistema extends JDialog {
 
 			p.close();
 			c.close();
+			
+			p = null;
+			c = null;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -106,6 +109,22 @@ public class EncerraSistema extends JDialog {
 					rs.next();
 				}
 			}
+			
+			consultaSQL = "UPDATE controle_geral SET valor = '0' WHERE nome = 'SEQ_ORDEM_VDO_DIA'";
+			p = c.prepareStatement(consultaSQL);
+			p.executeUpdate();
+			
+			consultaSQL = "UPDATE controle_geral SET valor = '0' WHERE nome = 'SEQ_ORDEM'";
+			p = c.prepareStatement(consultaSQL);
+			p.executeUpdate();
+			
+			rs.close();
+			p.close();
+			c.close();
+			
+			rs = null;
+			p = null;
+			c = null;
 
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();

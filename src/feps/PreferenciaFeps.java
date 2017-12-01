@@ -395,23 +395,28 @@ public class PreferenciaFeps extends JPanel {
 			rs = p.executeQuery();
 
 			if (rs.next()) {
-				txtMascArq.setText(rs.getString("masc_arq_gm"));
-				txtDirCarga.setText(rs.getString("diretorio_carga"));
-				txtDirLido.setText(rs.getString("diretorio_lido"));
-				txtRefresh.setText(rs.getString("tempo_refresh"));
-				txtQtdeGTM.setText(rs.getString("qtde_fecha_gtm"));
-				txtMascArqVazio.setText(rs.getString("mascara_vazio"));
-				txtTemMax.setText(rs.getString("tempo_max_chamada"));
-				txtAtraso.setText(rs.getString("atraso_linha"));
-				txtUltimoArq.setText(rs.getString("ultima_chamada"));
-				txtHora.setText(rs.getString("ultima_chamada_hora"));
-				txtDataSistema.setText(rs.getString("data_sistema"));
-				txtStatus.setText(rs.getString("aberto"));
+				txtMascArq.setText(rs.getString("masc_arq_gm").trim());
+				txtDirCarga.setText(rs.getString("diretorio_carga").trim());
+				txtDirLido.setText(rs.getString("diretorio_lido").trim());
+				txtRefresh.setText(rs.getString("tempo_refresh").trim());
+				txtQtdeGTM.setText(rs.getString("qtde_fecha_gtm").trim());
+				txtMascArqVazio.setText(rs.getString("mascara_vazio").trim());
+				txtTemMax.setText(rs.getString("tempo_max_chamada").trim());
+				txtAtraso.setText(rs.getString("atraso_linha").trim());
+				txtUltimoArq.setText(rs.getString("ultima_chamada").trim());
+				txtHora.setText(rs.getString("ultima_chamada_hora").trim());
+				txtDataSistema.setText(rs.getString("data_sistema").trim());
+				txtStatus.setText(rs.getString("aberto").trim());
 			}
 
 			rs.close();
 			p.close();
 			c.close();
+			
+			rs = null;
+			p = null;
+			c = null;
+			
 		} catch (SQLException sql) {
 			sql.printStackTrace();
 		}
@@ -420,6 +425,7 @@ public class PreferenciaFeps extends JPanel {
 
 	private static Object getParameter(String tmp) {
 		String consultaSQL = "SELECT * FROM parametros";
+		String parametro = null;
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
@@ -429,17 +435,21 @@ public class PreferenciaFeps extends JPanel {
 			rs = p.executeQuery();
 
 			if (rs.next())
-				return rs.getString(tmp).trim();
+				parametro = rs.getString(tmp).trim();
 
 			rs.close();
 			p.close();
 			c.close();
+			
+			rs = null;
+			p = null;
+			c = null;
 
-			return null;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
-			return null;
 		}
+		
+		return parametro;
 	}
 
 	public static String getMascArq() {

@@ -124,6 +124,14 @@ public class InicializaSistema extends JDialog {
 				sDate = new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(sDate));
 				txtUltimaData.setText(sDate);
 			}
+			
+			rs.close();
+			p.close();
+			c.close();
+			
+			rs = null;
+			p = null;
+			c = null;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -193,6 +201,9 @@ public class InicializaSistema extends JDialog {
 
 			p.close();
 			c.close();
+
+			p = null;
+			c = null;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");

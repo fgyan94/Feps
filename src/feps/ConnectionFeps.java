@@ -73,6 +73,11 @@ public class ConnectionFeps {
 				rs.close();
 				p.close();
 				c.close();
+				
+				rs = null;
+				p = null;
+				c = null;
+				
 				return valor;
 			} else {
 				PreparedStatement p2 = c.prepareStatement(
@@ -107,7 +112,10 @@ public class ConnectionFeps {
 			rs.close();
 			p.close();
 			c.close();
-
+			
+			rs = null;
+			p = null;
+			c = null;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");

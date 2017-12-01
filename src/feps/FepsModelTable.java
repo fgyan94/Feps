@@ -1,5 +1,6 @@
 package feps;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -21,6 +22,11 @@ public class FepsModelTable extends AbstractTableModel {
 	public FepsModelTable(List<Ordem> lista, List<String> coluna) {
 		this.linhas = lista;
 		this.colunas = coluna;
+	}
+
+	public FepsModelTable(ArrayList<String> coluna) {
+		this.colunas = coluna;
+		this.linhas = new ArrayList<Ordem>();
 	}
 
 	@Override
@@ -119,7 +125,16 @@ public class FepsModelTable extends AbstractTableModel {
 		linhas.addAll(newList);
 		fireTableRowsInserted(getRowCount(), getRowCount() + newList.size());
 	}
-
+	
+	public void update(List<Ordem> newList) {
+		if(!newList.isEmpty()) {
+			Ordem ordem = newList.remove(0);
+			if(!linhas.contains(ordem))
+				addOrdem(ordem);
+			update(newList);
+		}
+	}
+	
 	public void clear() {
 		linhas.clear();
 		fireTableDataChanged();

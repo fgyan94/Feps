@@ -258,8 +258,6 @@ public class MonitorCarga extends JPanel {
 
 		statusMonitor = true;
 		
-		txtArquivoEsperado.setText(getExpectedNumDoc());
-		
 		timer = new Timer();
 		task = new TimerTask() {
 			@Override
@@ -319,6 +317,9 @@ public class MonitorCarga extends JPanel {
 	private void atualizaDir() {
 		ArrayList<File> fileDir = recebeFile();
 		itemList = new DefaultListModel<>();
+		
+		txtArquivoEsperado.setText(getExpectedNumDoc());
+		lblNumTotalArq.setText(getTotalArqDia());
 
 		for (int i = 0; i < fileDir.size(); i++) {
 			itemList.addElement(fileDir.get(i));
@@ -331,8 +332,6 @@ public class MonitorCarga extends JPanel {
 						.setText(padding(Integer.parseInt(itemList.get(0).getName().substring(0, 4)) + 1, 4) + ".txt");
 				criaOrdem(itemList.remove(itemList.indexOf(itemList.firstElement())));
 				updateParametros();
-				lblNumTotalArq.setText(getTotalArqDia());
-				txtArquivoEsperado.setText(getExpectedNumDoc());
 			} else if (itemList.get(0).getName().contains(ConstantsFEPS.mascArqVazio.getStringValue())) {
 				gravaControleLeitura(itemList.remove(itemList.indexOf(itemList.firstElement())));
 			} else {
@@ -393,6 +392,9 @@ public class MonitorCarga extends JPanel {
 
 				p.close();
 				c.close();
+				
+				p = null;
+				c = null;
 			} catch (SQLException sqlE) {
 				JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 				sqlE.printStackTrace();
@@ -423,28 +425,40 @@ public class MonitorCarga extends JPanel {
 	}
 
 	private String getApelido(String partNumberGM) {
-		String consultaSQL;
+		String apelido, consultaSQL;
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
-
+		
+		apelido = null;
+		
 		try {
+			
 			consultaSQL = "SELECT * FROM gm_conti WHERE codigo_gm = '" + partNumberGM + "'";
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
 			rs = p.executeQuery();
 
-			if (rs.next())
-				return rs.getString("apelido_serie");
-			else
+			if (rs.next()) {
+				apelido = rs.getString("apelido_serie");
+				
+			} else 
 				JOptionPane.showMessageDialog(null, "Esse part number não está cadastrado!");
-
+			
+			rs.close();
+			p.close();
+			c.close();
+			
+			rs = null;
+			p = null;
+			c = null;
+			
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 		}
 
-		return "";
+		return apelido;
 	}
 
 	private void gravaOrdem(String numDoc, String dataHora, String codProducao, String ordem_serie_conti, String pvi,
@@ -481,6 +495,10 @@ public class MonitorCarga extends JPanel {
 
 			p.close();
 			c.close();
+
+			p = null;
+			c = null;
+			
 		} catch (SQLException sqlE) {
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 			sqlE.printStackTrace();
@@ -518,6 +536,11 @@ public class MonitorCarga extends JPanel {
 				rs.close();
 				p.close();
 				c.close();
+				
+				rs = null;
+				p = null;
+				c = null;
+				
 				return sNumDoc + ".txt";
 			}
 			rs.close();
@@ -554,11 +577,13 @@ public class MonitorCarga extends JPanel {
 	}
 
 	private String getTotalArqDia() {
-		String consultaSQL;
+		String totalArq, consultaSQL;
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
-
+		
+		totalArq = null;
+		
 		try {
 			consultaSQL = "SELECT COUNT(*) FROM controle_leitura WHERE data >= '" + LocalDate.now() + " " + "00:00:00"
 					+ "' AND data <= '" + LocalDate.now() + " " + "23:59:59" + "'";
@@ -567,17 +592,22 @@ public class MonitorCarga extends JPanel {
 			rs = p.executeQuery();
 
 			if (rs.next())
-				return rs.getString(1);
+				totalArq = rs.getString(1);
 
 			rs.close();
 			p.close();
 			c.close();
+			
+			rs = null;
+			p = null;
+			c = null;
+			
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 		}
 
-		return null;
+		return totalArq;
 	}
 
 	private void gravaErro() {
@@ -593,6 +623,9 @@ public class MonitorCarga extends JPanel {
 
 			p.close();
 			c.close();
+			
+			p = null;
+			c = null;
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -613,6 +646,10 @@ public class MonitorCarga extends JPanel {
 
 			p.close();
 			c.close();
+			
+			p = null;
+			c = null;
+			
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -633,6 +670,9 @@ public class MonitorCarga extends JPanel {
 
 			p.close();
 			c.close();
+			
+			p = null;
+			c = null;
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -658,6 +698,9 @@ public class MonitorCarga extends JPanel {
 
 			p.close();
 			c.close();
+			
+			p = null;
+			c = null;
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");

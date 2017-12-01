@@ -392,12 +392,17 @@ public class Login extends JFrame {
 
 	private void closeConnection() {
 		try {
-			if (rs != null)
+			if (rs != null) {
 				rs.close();
-			if (p != null)
+				rs = null;
+			}
+			if (p != null) {
 				p.close();
-			if (c != null)
+				p = null;
+			} if (c != null) {
 				c.close();
+				c = null;
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

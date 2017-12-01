@@ -3,16 +3,13 @@ package feps;
 public class Ordem {
 	private String partNumber, apelido, ordem_serie, ordem_data, seq_dia, ordem_entrada, qtde;
 	
-	public Ordem(String partNumber, String apelido, String ordem_serie, String ordem_data, String seq_dia,
-			String ordem_entrada, String qtde) {
+	public Ordem(String partNumber, String apelido, String ordem_serie, int seq_dia, String ordem_entrada) {
 		super();
 		this.partNumber = partNumber;
 		this.apelido = apelido;
 		this.ordem_serie = ordem_serie;
-		this.ordem_data = ordem_data;
-		this.seq_dia = seq_dia;
+		this.seq_dia = Integer.toString(seq_dia);
 		this.ordem_entrada = ordem_entrada;
-		this.qtde = qtde;
 	}
 	
 	public Ordem(String partNumber, String apelido, String ordem_serie, String ordem_data,String ordem_entrada) {
@@ -22,6 +19,12 @@ public class Ordem {
 		this.ordem_serie = ordem_serie;
 		this.ordem_data = ordem_data;
 		this.ordem_entrada = ordem_entrada;
+	}
+
+	public Ordem(String partNumber, String apelido, int quantidade) {
+		this.partNumber = partNumber;
+		this.apelido = apelido;
+		this.qtde = Integer.toString(quantidade);
 	}
 
 	public String getPartNumber() {

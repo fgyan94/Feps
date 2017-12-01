@@ -218,8 +218,10 @@ public class TrocaSenha extends JPanel {
 		try {
 			p.close();
 			c.close();
+			
+			p = null;
+			c = null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
