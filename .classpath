@@ -14,5 +14,9 @@
 	<classpathentry kind="lib" path="D:/Yan/eclipse/Jar&apos;s/mssql-jdbc-6.2.1.jre7.jar"/>
 	<classpathentry kind="lib" path="D:/Yan/git/Feps/comm-2.0.jar"/>
 	<classpathentry kind="lib" path="D:/Yan/git/Feps/RXTXcomm.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/jasperreports-6.4.3.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/jasperreports-fonts-6.4.3.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/jasperreports-javaflow-6.4.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/uid38129/Downloads/jasperreports-6.4.3"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
