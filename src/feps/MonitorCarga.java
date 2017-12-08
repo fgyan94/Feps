@@ -22,6 +22,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -291,11 +292,12 @@ public class MonitorCarga extends JPanel {
 		taskCountTempo = new TimerTask() {
 			@Override
 			public void run() {
+				
+				lblNumTempo.setText(LocalTime.parse(lblNumTempo.getText()).plusSeconds(1).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
-				lblNumTempo.setText(LocalTime.parse(lblNumTempo.getText()).plusSeconds(1).toString());
-
-				if (LocalTime.parse(lblNumTempo.getText()).getMinute() > 2) {
+				if (LocalTime.parse(lblNumTempo.getText()).getMinute() == 2) {
 					JOptionPane.showMessageDialog(null, "TEMPO EXCEDIDO!");
+					lblNumTempo.setText("00:00:00");
 					startTaskCountTempo();
 				}
 			}
@@ -326,20 +328,23 @@ public class MonitorCarga extends JPanel {
 		}
 
 		if (itemList.size() > 0) {
+			cancelTask();
 			lblNumTempo.setText("00:00:00");
 			if (itemList.get(0).getName().equals(txtArquivoEsperado.getText())) {
 				txtArquivoEsperado
-						.setText(padding(Integer.parseInt(itemList.get(0).getName().substring(0, 4)) + 1, 4) + ".txt");
+						.setText(MenuPrincipal.padding(Integer.parseInt(itemList.get(0).getName().substring(0, 4)) + 1, 4) + ".txt");
 				criaOrdem(itemList.remove(itemList.indexOf(itemList.firstElement())));
 				updateParametros();
+				start();
 			} else if (itemList.get(0).getName().contains(ConstantsFEPS.mascArqVazio.getStringValue())) {
 				gravaControleLeitura(itemList.remove(itemList.indexOf(itemList.firstElement())));
+				start();
 			} else {
 				gravaErro();
 				JOptionPane.showMessageDialog(null, "Arquivo diferente do esperado!");
+				start();
 			}
 		}
-
 		list.setModel(itemList);
 	}
 
@@ -470,13 +475,13 @@ public class MonitorCarga extends JPanel {
 		String sData = ConstantsFEPS.dataSistema.getStringValue();
 		int totalSerieConti = ConnectionFeps.getValorSeq("Serie_" + ordem_serie_conti);
 		ordem_serie_conti = ordem_serie_conti.trim() + sData.substring(2, 4) + sData.substring(5, 7)
-				+ sData.substring(8) + padding(totalSerieConti, 4);
+				+ sData.substring(8) + MenuPrincipal.padding(totalSerieConti, 4);
 
 		try {
 			String consultaSQL = "INSERT INTO ORDEM_GM (ORDEM_GM_DOC, DATA_HORA, STATUS_CPROD_CODIGO, "
 					+ "USUARIO_CODIGO, ORDEM_CONTI_SERIE, PVI_CHECK, VIN, PART_NUMBER_GM, "
 					+ "ORDEM_GM_ORIGEM, DATA_GM, DATA_INCLUSAO, ORDEM_ENTRADA) VALUES (" + "'" + numDoc + "', " + "'"
-					+ dataHora + "', " + "'" + codProducao + "', " + "'" + padding(Login.getUsuario(), 6) + "', '"
+					+ dataHora + "', " + "'" + codProducao + "', " + "'" + MenuPrincipal.padding(Login.getUsuario(), 6) + "', '"
 					+ ordem_serie_conti + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'" + partNumberGM
 					+ "', " + "'" + ordem_auto + "', " + "'" + data + " " + hora + "', " + "'" + data + " " + hora
 					+ "', " + "'" + numSeq + "')";
@@ -485,13 +490,13 @@ public class MonitorCarga extends JPanel {
 			p.executeUpdate();
 
 			inclusaoGTM(ordem_serie_conti, ConstantsFEPS.cockpitIniciado.getStringValue(), "0",
-					padding(Login.getUsuario(), 6),
+					MenuPrincipal.padding(Login.getUsuario(), 6),
 					new SimpleDateFormat("MM/dd/yyyy").format(data) + " "
 							+ new SimpleDateFormat("HH:mm:ss").format(hora),
 					partNumberGM, ConstantsFEPS.ordemAutomatica.getIntValue(),
 					ConnectionFeps.getValorSeq("ORDEM_CONTI"), ConnectionFeps.getValorSeq("SEQ_DIA"));
 
-			updateParametros(padding(Integer.parseInt(numDoc), 4));
+			updateParametros(MenuPrincipal.padding(Integer.parseInt(numDoc), 4));
 
 			p.close();
 			c.close();
@@ -503,15 +508,6 @@ public class MonitorCarga extends JPanel {
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 			sqlE.printStackTrace();
 		}
-	}
-
-	private static String padding(int num, int length) {
-		String numPad = Integer.toString(num);
-		while (numPad.length() < length) {
-			numPad = "0" + numPad;
-		}
-
-		return numPad;
 	}
 
 	private static String getExpectedNumDoc() {
@@ -526,12 +522,12 @@ public class MonitorCarga extends JPanel {
 
 			if (rs.next()) {
 				String sNumDoc = "";
-				int numDoc = Integer.parseInt(padding(rs.getInt("Ordem_GM_Doc") + 1, 4));
+				int numDoc = Integer.parseInt(MenuPrincipal.padding(rs.getInt("Ordem_GM_Doc") + 1, 4));
 
 				if (numDoc == 10000)
 					sNumDoc = "0000";
 				else
-					sNumDoc = padding(numDoc, 4);
+					sNumDoc = MenuPrincipal.padding(numDoc, 4);
 
 				rs.close();
 				p.close();

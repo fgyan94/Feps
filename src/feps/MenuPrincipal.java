@@ -21,12 +21,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
+import com.alee.laf.WebLookAndFeel;
+
 public class MenuPrincipal extends JFrame {
 	
 //////////////////////////////////////////////////////
 	public static void main(String[] args) {
 		try {
-
+			WebLookAndFeel.install();
 			new MenuPrincipal().setVisible(true);
 
 		} catch (Throwable e) {
@@ -403,16 +405,16 @@ public class MenuPrincipal extends JFrame {
 						new InicializaSistema().setVisible(true);
 
 				else {
-					((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 
 					// SISTEMA
 					if (label == lblUsuarios)
 						;
 					else if (label == lblManTable)
 						;
-					else if (label == lblPropriedades)
+					else if (label == lblPropriedades) {
+						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
-
+					}
 					// PRODUÇÃO
 					else if (label == lblImpressaoOrdem)
 						;
@@ -429,6 +431,7 @@ public class MenuPrincipal extends JFrame {
 
 					// CONTINGÊNCIA
 					else if (label == lblMonitorCarga) {
+						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MONITOR);
 						card.monitorStart();
 
@@ -499,5 +502,14 @@ public class MenuPrincipal extends JFrame {
 			return new ImageIcon("icofeps\\menu\\stop.png");
 		else
 			return new ImageIcon("icofeps\\menu\\play.png");
+	}
+	
+	public static String padding(int num, int length) {
+		String numPad = Integer.toString(num);
+		while (numPad.length() < length) {
+			numPad = "0" + numPad;
+		}
+
+		return numPad;
 	}
 }

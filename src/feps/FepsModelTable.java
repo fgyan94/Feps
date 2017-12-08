@@ -76,7 +76,7 @@ public class FepsModelTable extends AbstractTableModel {
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		Ordem ordem = linhas.get(rowIndex);
-		
+
 		switch (getColumnName(columnIndex)) {
 		case (PART_NUMBER_GM):
 			ordem.setPartNumber((String) aValue);
@@ -111,9 +111,9 @@ public class FepsModelTable extends AbstractTableModel {
 	}
 
 	public void addOrdem(Ordem ordem) {
-		linhas.add(ordem);
-		int ultimoIndice = getRowCount() - 1;
-		fireTableRowsInserted(ultimoIndice, ultimoIndice);
+			linhas.add(ordem);
+			int ultimoIndice = getRowCount() - 1;
+			fireTableRowsInserted(ultimoIndice, ultimoIndice);
 	}
 
 	public void removeOrdem(int rowIndex) {
@@ -125,18 +125,18 @@ public class FepsModelTable extends AbstractTableModel {
 		linhas.addAll(newList);
 		fireTableRowsInserted(getRowCount(), getRowCount() + newList.size());
 	}
-	
+
 	public void update(List<Ordem> newList) {
-		if(!newList.isEmpty()) {
+		if (!newList.isEmpty()) {
 			Ordem ordem = newList.remove(0);
-			if(!linhas.contains(ordem))
+			if (!linhas.contains(ordem))
 				addOrdem(ordem);
 			update(newList);
 		}
 	}
-	
+
 	public void clear() {
 		linhas.clear();
 		fireTableDataChanged();
-	}	
+	}
 }

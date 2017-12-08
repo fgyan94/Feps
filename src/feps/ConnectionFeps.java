@@ -23,35 +23,6 @@ public class ConnectionFeps {
 		}
 	}
 
-	// public static boolean queryIUD(String consultaSQL) {
-	// try {
-	// Connection c = getConnection();
-	// PreparedStatement p = c.prepareStatement(consultaSQL);
-	// p.executeUpdate();
-	// p.close();
-	// c.close();
-	// return true;
-	// } catch (SQLException e) {
-	// JOptionPane.showMessageDialog(null, "Erro ao consultar");
-	// e.printStackTrace();
-	// return false;
-	// }
-	// }
-
-	// public static ResultSet queryRS(String consultaSQL) {
-	// try {
-	// Connection c = getConnection();
-	// PreparedStatement p = c.prepareStatement(consultaSQL);
-	// ResultSet rs = c.prepareStatement(consultaSQL).executeQuery();
-	// p.close();
-	// c.close();
-	// return rs;
-	// } catch (SQLException e) {
-	// JOptionPane.showMessageDialog(null, "Erro ao consultar");
-	// return null;
-	// }
-	// }
-
 	public static int getValorSeq(String nome) {
 		try {
 			Connection c;

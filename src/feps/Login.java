@@ -36,7 +36,7 @@ public class Login extends JFrame {
 	private static JPasswordField txtSenha;
 	private static String user;
 	private static char[] senha;
-	private JLabel lblUsuario, lblSenha, lblFepsX;
+	private JLabel lblUsuario, lblSenha;
 	private JButton btnOk1, btnCancel1;
 	private JCheckBox chckbxTrocarSenha;
 	private PanelSlider42<JFrame> slider;
@@ -75,7 +75,6 @@ public class Login extends JFrame {
 		txtSenha = new JPasswordField();
 		lblUsuario = new JLabel("Usuário:");
 		lblSenha = new JLabel("Senha:");
-		lblFepsX = new JLabel("Feps X");
 		btnOk1 = new JButton("");
 		btnCancel1 = new JButton("Cancelar");
 		chckbxTrocarSenha = new JCheckBox("Trocar senha");
@@ -93,7 +92,6 @@ public class Login extends JFrame {
 		txtSenha.setBounds(109, 97, 86, 25);
 		lblUsuario.setBounds(66, 25, 86, 20);
 		lblSenha.setBounds(66, 77, 86, 20);
-		lblFepsX.setBounds(5, 5, 53, 15);
 		btnOk1.setBounds(187, 97, 34, 25);
 		btnCancel1.setBounds(107, 149, 85, 25);
 		chckbxTrocarSenha.setBounds(109, 122, 105, 16);
@@ -101,17 +99,15 @@ public class Login extends JFrame {
 		login.setBounds(0, 0, 300, 196);
 		trocaSenha.setBounds(0, 0, 300, 196);
 
-		txtUser.setFont(new Font("Palatino", Font.PLAIN, 13));
-		txtSenha.setFont(new Font("Palatino", Font.PLAIN, 13));
-		lblUsuario.setFont(new Font("Palatino", Font.PLAIN, 15));
-		lblSenha.setFont(new Font("Palatino", Font.PLAIN, 15));
-		lblFepsX.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 12));
-		btnCancel1.setFont(new Font("Palatino", Font.PLAIN, 15));
-		chckbxTrocarSenha.setFont(new Font("Palatino", Font.PLAIN, 13));
+		txtUser.setFont(new Font("Broadway", Font.PLAIN, 12));
+		txtSenha.setFont(new Font("Broadway", Font.PLAIN, 12));
+		lblUsuario.setFont(new Font("Broadway", Font.PLAIN, 12));
+		lblSenha.setFont(new Font("Broadway", Font.PLAIN, 12));
+		btnCancel1.setFont(new Font("Broadway", Font.PLAIN, 12));
+		chckbxTrocarSenha.setFont(new Font("Broadway", Font.PLAIN, 12));
 
 		lblUsuario.setForeground(new Color(51, 51, 51));
 		lblSenha.setForeground(new Color(51, 51, 51));
-		lblFepsX.setForeground(new Color(51, 51, 51));
 		txtUser.setForeground(new Color(51, 51, 51));
 		txtSenha.setForeground(new Color(51, 51, 51));
 		chckbxTrocarSenha.setForeground(new Color(51, 51, 51));
@@ -132,7 +128,6 @@ public class Login extends JFrame {
 		login.add(txtSenha);
 		login.add(lblUsuario);
 		login.add(lblSenha);
-		login.add(lblFepsX);
 		login.add(btnOk1);
 		login.add(btnCancel1);
 		login.add(chckbxTrocarSenha);
