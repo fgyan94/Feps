@@ -195,6 +195,6 @@ public class Imprime {
 
 	private static void imprimeOrdem(String codConti, String serieConti, String partNumber, String apelidoConti,
 			String seqDia, String ordemOrigem) {
-
+		
 	}
 }
