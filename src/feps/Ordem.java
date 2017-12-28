@@ -1,7 +1,7 @@
 package feps;
 
 public class Ordem {
-	private String partNumber, apelido, ordem_serie, ordem_data, seq_dia, ordem_entrada, qtde;
+	private String partNumber, apelido, ordem_serie, ordem_data, seq_dia, ordem_entrada, qtde, seq_gm;
 	
 	public Ordem(String partNumber, String apelido, String ordem_serie, int seq_dia, String ordem_entrada) {
 		super();
@@ -12,7 +12,7 @@ public class Ordem {
 		this.ordem_entrada = ordem_entrada;
 	}
 	
-	public Ordem(String partNumber, String apelido, String ordem_serie, String ordem_data,String ordem_entrada) {
+	public Ordem(String partNumber, String apelido, String ordem_serie, String ordem_data, String ordem_entrada) {
 		super();
 		this.partNumber = partNumber;
 		this.apelido = apelido;
@@ -20,6 +20,15 @@ public class Ordem {
 		this.ordem_data = ordem_data;
 		this.ordem_entrada = ordem_entrada;
 	}
+	
+	public Ordem(String partNumber, String apelido, String ordem_serie, String ordem_data, int seq_gm) {
+		super();
+		this.partNumber = partNumber;
+		this.apelido = apelido;
+		this.ordem_serie = ordem_serie;
+		this.ordem_data = ordem_data;
+		this.seq_gm = MenuPrincipal.padding(seq_gm, 4);
+	}	
 
 	public Ordem(String partNumber, String apelido, int quantidade) {
 		this.partNumber = partNumber;
@@ -83,5 +92,11 @@ public class Ordem {
 		this.qtde = qtde;
 	}
 	
+	public void setSeqGM(String seqGM) {
+		this.seq_gm = seqGM;
+	}
 	
+	public String getSeqGM() {
+		return this.seq_gm;
+	}	
 }

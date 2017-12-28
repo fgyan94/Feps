@@ -22,7 +22,6 @@ public enum ConstantsFEPS {
 	mascArqVazio(PreferenciaFeps.getMascArqVazio()),
 	tempoMax(PreferenciaFeps.getTemMax()),
 	atrasoOrdem(PreferenciaFeps.getAtraso()),
-	ultimoArq(PreferenciaFeps.getUltimoArquivo()),
 	horaUltimoArq(PreferenciaFeps.getHoraUltimaChamada()),
 	dataSistema(PreferenciaFeps.getDataSistema()),
 	statusSistema(PreferenciaFeps.getStatus());

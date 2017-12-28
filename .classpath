@@ -16,7 +16,25 @@
 	<classpathentry kind="lib" path="D:/Yan/git/Feps/RXTXcomm.jar"/>
 	<classpathentry kind="lib" path="D:/Yan/git/Feps/jasperreports-6.4.3.jar"/>
 	<classpathentry kind="lib" path="D:/Yan/git/Feps/jasperreports-fonts-6.4.3.jar"/>
-	<classpathentry kind="lib" path="D:/Yan/git/Feps/jasperreports-javaflow-6.4.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/uid38129/Downloads/jasperreports-6.4.3"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-barcodes-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-font-asian-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-forms-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-hyph-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-io-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-kernel-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-layout-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-pdfa-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-pdftest-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/itext7-sign-7.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/groovy-all-3.0.0-alpha-1.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/commons-beanutils-1.9.3.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/ecj-4.3.1.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/jasper-compiler-jdt.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/barbecue-1.5-beta1.jar"/>
+	<classpathentry kind="lib" path="D:/Yan/git/Feps/jdom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

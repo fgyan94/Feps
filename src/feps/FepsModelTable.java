@@ -15,6 +15,7 @@ public class FepsModelTable extends AbstractTableModel {
 	public static final String ORDEM_ENTRADA = "Ordem Entrada";
 	public static final String ORDEM_CONTI_DATA = "Data Ordem";
 	public static final String QUANTIDADE = "Quantidade";
+	public static final String SEQ_GM = "Sequência GM";
 
 	private List<Ordem> linhas;
 	private List<String> colunas;
@@ -68,6 +69,8 @@ public class FepsModelTable extends AbstractTableModel {
 			return ordem.getOrdem_data();
 		case (QUANTIDADE):
 			return ordem.getQtde();
+		case (SEQ_GM):
+			return ordem.getSeqGM();
 		default:
 			throw new IndexOutOfBoundsException("columnIndex out of bounds");
 		}
@@ -99,6 +102,8 @@ public class FepsModelTable extends AbstractTableModel {
 		case (QUANTIDADE):
 			ordem.setQtde((String) aValue);
 			break;
+		case (SEQ_GM):
+			ordem.setSeqGM((String) aValue);
 		default:
 			throw new IndexOutOfBoundsException("columnIndex out of bounds");
 		}

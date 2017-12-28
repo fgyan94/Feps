@@ -31,7 +31,9 @@ import javax.swing.SwingConstants;
 
 public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
-
+	
+	static MenuPrincipal menu;
+	
 	private static JTextField txtUser;
 	private static JPasswordField txtSenha;
 	private static String user;
@@ -78,6 +80,7 @@ public class Login extends JFrame {
 		btnOk1 = new JButton("");
 		btnCancel1 = new JButton("Cancelar");
 		chckbxTrocarSenha = new JCheckBox("Trocar senha");
+		chckbxTrocarSenha.setHorizontalAlignment(SwingConstants.LEFT);
 		slider = new PanelSlider42<JFrame>(this);
 		panelSlider = slider.getBasePanel();
 		lblSenhaNova1 = new JLabel("Senha nova:");
@@ -90,21 +93,21 @@ public class Login extends JFrame {
 
 		txtUser.setBounds(109, 46, 86, 25);
 		txtSenha.setBounds(109, 97, 86, 25);
-		lblUsuario.setBounds(66, 25, 86, 20);
-		lblSenha.setBounds(66, 77, 86, 20);
+		lblUsuario.setBounds(66, 25, 129, 20);
+		lblSenha.setBounds(66, 77, 129, 20);
 		btnOk1.setBounds(187, 97, 34, 25);
-		btnCancel1.setBounds(107, 149, 85, 25);
-		chckbxTrocarSenha.setBounds(109, 122, 105, 16);
+		btnCancel1.setBounds(107, 149, 100, 25);
+		chckbxTrocarSenha.setBounds(109, 122, 155, 16);
 		panelSlider.setBounds(0, 0, 300, 196);
 		login.setBounds(0, 0, 300, 196);
 		trocaSenha.setBounds(0, 0, 300, 196);
 
-		txtUser.setFont(new Font("Broadway", Font.PLAIN, 12));
-		txtSenha.setFont(new Font("Broadway", Font.PLAIN, 12));
-		lblUsuario.setFont(new Font("Broadway", Font.PLAIN, 12));
-		lblSenha.setFont(new Font("Broadway", Font.PLAIN, 12));
-		btnCancel1.setFont(new Font("Broadway", Font.PLAIN, 12));
-		chckbxTrocarSenha.setFont(new Font("Broadway", Font.PLAIN, 12));
+		txtUser.setFont(new Font("Stencil", Font.PLAIN, 14));
+		txtSenha.setFont(new Font("Stencil", Font.PLAIN, 14));
+		lblUsuario.setFont(new Font("Stencil", Font.PLAIN, 14));
+		lblSenha.setFont(new Font("Stencil", Font.PLAIN, 14));
+		btnCancel1.setFont(new Font("Stencil", Font.PLAIN, 14));
+		chckbxTrocarSenha.setFont(new Font("Stencil", Font.PLAIN, 14));
 
 		lblUsuario.setForeground(new Color(51, 51, 51));
 		lblSenha.setForeground(new Color(51, 51, 51));
@@ -145,20 +148,20 @@ public class Login extends JFrame {
 		txtSenhaNova2 = new JPasswordField();
 		btnOk2 = new JButton(new ImageIcon("C:\\Users\\uid38129\\Desktop\\forward_12.png"));
 		btnCancel2 = new JButton("Cancelar");
-		lblSenhaNova1.setBounds(66, 25, 86, 20);
-		lblSenhaNova2.setBounds(23, 77, 129, 20);
-		lblSenhaConfere.setBounds(79, 125, 142, 15);
+		lblSenhaNova1.setBounds(66, 25, 130, 20);
+		lblSenhaNova2.setBounds(23, 77, 150, 20);
+		lblSenhaConfere.setBounds(79, 125, 160, 15);
 		txtSenhaNova1.setBounds(109, 46, 86, 25);
 		txtSenhaNova2.setBounds(109, 97, 86, 25);
 		btnOk2.setBounds(187, 97, 34, 25);
-		btnCancel2.setBounds(107, 149, 85, 25);
+		btnCancel2.setBounds(107, 149, 100, 25);
 
-		lblSenhaNova1.setFont(new Font("Palatino", Font.PLAIN, 15));
-		lblSenhaNova2.setFont(new Font("Palatino", Font.PLAIN, 15));
-		lblSenhaConfere.setFont(new Font("Palatino", Font.PLAIN, 15));
-		txtSenhaNova1.setFont(new Font("Palatino", Font.PLAIN, 15));
-		txtSenhaNova2.setFont(new Font("Palatino", Font.PLAIN, 15));
-		btnCancel2.setFont(new Font("Palatino", Font.PLAIN, 15));
+		lblSenhaNova1.setFont(new Font("Stencil", Font.PLAIN, 14));
+		lblSenhaNova2.setFont(new Font("Stencil", Font.PLAIN, 14));
+		lblSenhaConfere.setFont(new Font("Stencil", Font.PLAIN, 14));
+		txtSenhaNova1.setFont(new Font("Stencil", Font.PLAIN, 14));
+		txtSenhaNova2.setFont(new Font("Stencil", Font.PLAIN, 14));
+		btnCancel2.setFont(new Font("Stencil", Font.PLAIN, 14));
 
 		lblSenhaNova1.setForeground(new Color(51, 51, 51));
 		lblSenhaNova2.setForeground(new Color(51, 51, 51));
@@ -319,7 +322,7 @@ public class Login extends JFrame {
 	private void start() {
 		user = txtUser.getText();
 		senha = txtSenha.getPassword();
-		
+
 		if (isOk()) {
 			if (trocaSenha()) {
 				slider.slideGetVertical(trocaSenha);
@@ -394,7 +397,8 @@ public class Login extends JFrame {
 			if (p != null) {
 				p.close();
 				p = null;
-			} if (c != null) {
+			}
+			if (c != null) {
 				c.close();
 				c = null;
 			}
@@ -428,6 +432,7 @@ public class Login extends JFrame {
 					abreMonitor();
 				} else {
 					limpaCampos();
+					txtSenhaNova1.requestFocusInWindow();
 					JOptionPane.showMessageDialog(null, "As senhas não conferem!");
 				}
 			} else {
@@ -457,7 +462,8 @@ public class Login extends JFrame {
 
 	private void abreMonitor() {
 		dispose();
-		new MenuPrincipal().setVisible(true);
+		menu = new MenuPrincipal();
+		menu.setVisible(true);
 	}
 
 	private void limpaCamposTrocaSenha() {

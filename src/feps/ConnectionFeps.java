@@ -65,33 +65,4 @@ public class ConnectionFeps {
 			return -1;
 		}
 	}
-
-	public static boolean getSystemStatus() {
-		String consultaSQL = "Select * FROM parametros";
-		Connection c;
-		PreparedStatement p;
-		ResultSet rs;
-
-		try {
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
-
-			if (rs.next())
-				return rs.getString("aberto").equals("S");
-
-			rs.close();
-			p.close();
-			c.close();
-			
-			rs = null;
-			p = null;
-			c = null;
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
-		}
-
-		return false;
-	}
 }

@@ -17,35 +17,20 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
-import com.alee.laf.WebLookAndFeel;
-
 public class MenuPrincipal extends JFrame {
-	
-//////////////////////////////////////////////////////
-	public static void main(String[] args) {
-		try {
-			WebLookAndFeel.install();
-			new MenuPrincipal().setVisible(true);
 
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}	
-//////////////////////////////////////////////////////
-	
 	private static final long serialVersionUID = 1L;
 
 	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	private static JPanel cardPanel = new JPanel(new CardLayout());
 
-	// private static JPanel cardPanel = new JPanel(new FepsLayout());
-
 	private JPanel main = new JPanel();
-	private CardFeps card = new CardFeps();
+	private static CardFeps card = new CardFeps();
 
 	private static JLabel lblMinimizar = new JLabel("-");
 	private static JLabel lblFechar = new JLabel("X");
@@ -80,10 +65,7 @@ public class MenuPrincipal extends JFrame {
 		buildFrame();
 		initializeComponents();
 		initializeListeners();
-		if(ConnectionFeps.getSystemStatus())
-			sistemaAberto(true);
-		else
-			sistemaAberto(false);
+		verificaSistema();
 	}
 
 	private void buildFrame() {
@@ -91,7 +73,7 @@ public class MenuPrincipal extends JFrame {
 		this.setOpacity(0.9f);
 		this.setLocationRelativeTo(null);
 		this.setExtendedState(MAXIMIZED_BOTH);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		this.setPreferredSize(dimension);
 		main.setPreferredSize(dimension);
@@ -111,9 +93,23 @@ public class MenuPrincipal extends JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent e) {
-				card.monitorStop();
-				super.windowClosing(e);
+			public void windowOpened(WindowEvent e) {
+				if (!PreferenciaFeps.loadPreferences()) {
+					((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+					((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
+					card.sistemaAberto(false);
+					Object[] options = { "Novo", "Padrão" };
+					int resposta = JOptionPane.showOptionDialog(null,
+							"Parâmetros ainda não definidos, gostaria de carregar preferências padrão ou criar um novo?",
+							null, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+					if (resposta == 0)
+						PreferenciaFeps.novo();
+					else
+						PreferenciaFeps.carregaPadrao();
+
+				}
+				super.windowOpened(e);
 			}
 		});
 	}
@@ -121,31 +117,31 @@ public class MenuPrincipal extends JFrame {
 	private void initializeComponents() {
 
 		lblFechar.setForeground(Color.BLACK);
-		lblFechar.setFont(new Font("Broadway", Font.PLAIN, 20));
+		lblFechar.setFont(new Font("Stencil", Font.PLAIN, 20));
 		lblFechar.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblMinimizar.setForeground(Color.BLACK);
-		lblMinimizar.setFont(new Font("Broadway", Font.PLAIN, 40));
+		lblMinimizar.setFont(new Font("Stencil", Font.PLAIN, 40));
 		lblMinimizar.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblSistema.setForeground(Color.BLACK);
-		lblSistema.setFont(new Font("Broadway", Font.PLAIN, 40));
+		lblSistema.setFont(new Font("Stencil", Font.PLAIN, 40));
 		lblSistema.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblProducao.setForeground(Color.BLACK);
-		lblProducao.setFont(new Font("Broadway", Font.PLAIN, 40));
+		lblProducao.setFont(new Font("Stencil", Font.PLAIN, 40));
 		lblProducao.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblExpedicao.setForeground(Color.BLACK);
-		lblExpedicao.setFont(new Font("Broadway", Font.PLAIN, 40));
+		lblExpedicao.setFont(new Font("Stencil", Font.PLAIN, 40));
 		lblExpedicao.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblContingencia.setForeground(Color.BLACK);
-		lblContingencia.setFont(new Font("Broadway", Font.PLAIN, 40));
+		lblContingencia.setFont(new Font("Stencil", Font.PLAIN, 40));
 		lblContingencia.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		lblStatusProd.setForeground(Color.BLACK);
-		lblStatusProd.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblStatusProd.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblStatusProd.setText("Iniciar/Encerrar sistema");
 		lblStatusProd.setVerticalAlignment(SwingConstants.CENTER);
 		lblStatusProd.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -154,7 +150,7 @@ public class MenuPrincipal extends JFrame {
 		lblStatusProd.setToolTipText("Iniciar/Encerrar Sistema");
 
 		lblImpressaoOrdem.setForeground(Color.BLACK);
-		lblImpressaoOrdem.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblImpressaoOrdem.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblImpressaoOrdem.setText("Impressão");
 		lblImpressaoOrdem.setVerticalAlignment(SwingConstants.CENTER);
 		lblImpressaoOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -163,7 +159,7 @@ public class MenuPrincipal extends JFrame {
 		lblImpressaoOrdem.setToolTipText("Impressão");
 
 		lblSaidaGTM.setForeground(Color.BLACK);
-		lblSaidaGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblSaidaGTM.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblSaidaGTM.setText("Saída e emissão de GTM");
 		lblSaidaGTM.setVerticalAlignment(SwingConstants.CENTER);
 		lblSaidaGTM.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -172,7 +168,7 @@ public class MenuPrincipal extends JFrame {
 		lblSaidaGTM.setToolTipText("Saída e emissão de GTM");
 
 		lblMonitorCarga.setForeground(Color.BLACK);
-		lblMonitorCarga.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblMonitorCarga.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblMonitorCarga.setText("Monitor de carga/Impressão");
 		lblMonitorCarga.setVerticalAlignment(SwingConstants.CENTER);
 		lblMonitorCarga.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -181,7 +177,7 @@ public class MenuPrincipal extends JFrame {
 		lblMonitorCarga.setToolTipText("Monitor carga");
 
 		lblUsuarios.setForeground(Color.BLACK);
-		lblUsuarios.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblUsuarios.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblUsuarios.setText("Cadastro de Usuários");
 		lblUsuarios.setVerticalAlignment(SwingConstants.CENTER);
 		lblUsuarios.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -190,7 +186,7 @@ public class MenuPrincipal extends JFrame {
 		lblUsuarios.setToolTipText("Usuarios");
 
 		lblReimpressao.setForeground(Color.BLACK);
-		lblReimpressao.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblReimpressao.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblReimpressao.setText("Reimpressão");
 		lblReimpressao.setVerticalAlignment(SwingConstants.CENTER);
 		lblReimpressao.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -199,7 +195,7 @@ public class MenuPrincipal extends JFrame {
 		lblReimpressao.setToolTipText("Reimpressão de ordem");
 
 		lblReverseGTM.setForeground(Color.BLACK);
-		lblReverseGTM.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblReverseGTM.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblReverseGTM.setText("Estorno de GTM");
 		lblReverseGTM.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblReverseGTM.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -208,7 +204,7 @@ public class MenuPrincipal extends JFrame {
 		lblReverseGTM.setToolTipText("Estorno GTM");
 
 		lblOrdemManual.setForeground(Color.BLACK);
-		lblOrdemManual.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblOrdemManual.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblOrdemManual.setText("Ordem Manual");
 		lblOrdemManual.setVerticalAlignment(SwingConstants.CENTER);
 		lblOrdemManual.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -216,7 +212,7 @@ public class MenuPrincipal extends JFrame {
 		lblOrdemManual.setToolTipText("Ordem Manual");
 
 		lblManTable.setForeground(Color.BLACK);
-		lblManTable.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblManTable.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblManTable.setText("Manutenção de Tabelas");
 		lblManTable.setVerticalAlignment(SwingConstants.CENTER);
 		lblManTable.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -225,7 +221,7 @@ public class MenuPrincipal extends JFrame {
 		lblManTable.setToolTipText("Manutenção de Tabelas");
 
 		lblApagarOrdem.setForeground(Color.BLACK);
-		lblApagarOrdem.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblApagarOrdem.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblApagarOrdem.setText("Apagar Ordem");
 		lblApagarOrdem.setVerticalAlignment(SwingConstants.CENTER);
 		lblApagarOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -234,7 +230,7 @@ public class MenuPrincipal extends JFrame {
 		lblApagarOrdem.setToolTipText("Apagar Ordem");
 
 		lblOrdemBuffer.setForeground(Color.BLACK);
-		lblOrdemBuffer.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblOrdemBuffer.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblOrdemBuffer.setText("Ordem Buffer");
 		lblOrdemBuffer.setVerticalAlignment(SwingConstants.CENTER);
 		lblOrdemBuffer.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -243,7 +239,7 @@ public class MenuPrincipal extends JFrame {
 		lblOrdemBuffer.setToolTipText("Ordem Buffer");
 
 		lblPropriedades.setForeground(Color.BLACK);
-		lblPropriedades.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblPropriedades.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblPropriedades.setText("Propriedades");
 		lblPropriedades.setVerticalAlignment(SwingConstants.CENTER);
 		lblPropriedades.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -252,7 +248,7 @@ public class MenuPrincipal extends JFrame {
 		lblPropriedades.setToolTipText("Propriedades");
 
 		lblSaidaBuffer.setForeground(Color.BLACK);
-		lblSaidaBuffer.setFont(new Font("Broadway", Font.PLAIN, 14));
+		lblSaidaBuffer.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblSaidaBuffer.setText("Saída Buffer");
 		lblSaidaBuffer.setVerticalAlignment(SwingConstants.CENTER);
 		lblSaidaBuffer.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -395,11 +391,11 @@ public class MenuPrincipal extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				if (label == lblFechar)
-					System.exit(getDefaultCloseOperation());
+					fechar();
 				else if (label == lblMinimizar)
-					setExtendedState(JFrame.ICONIFIED);
+					minimizar();
 				else if (label == lblStatusProd)
-					if (ConnectionFeps.getSystemStatus())
+					if (PreferenciaFeps.getStatus())
 						new EncerraSistema().setVisible(true);
 					else
 						new InicializaSistema().setVisible(true);
@@ -414,6 +410,7 @@ public class MenuPrincipal extends JFrame {
 					else if (label == lblPropriedades) {
 						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
+						PreferenciaFeps.loadPreferences();
 					}
 					// PRODUÇÃO
 					else if (label == lblImpressaoOrdem)
@@ -424,8 +421,12 @@ public class MenuPrincipal extends JFrame {
 						;
 
 					// EXPEDIÇÃO
-					else if (label == lblSaidaGTM)
-						;
+					else if (label == lblSaidaGTM) {
+						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.EMISSAOGTM);
+						card.startEmissaoGTM();
+					}
+					
 					else if (label == lblReverseGTM)
 						;
 
@@ -433,7 +434,8 @@ public class MenuPrincipal extends JFrame {
 					else if (label == lblMonitorCarga) {
 						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MONITOR);
-						card.monitorStart();
+						if (PreferenciaFeps.loadPreferences())
+							card.monitorStart();
 
 					} else if (label == lblOrdemManual)
 						;
@@ -446,7 +448,51 @@ public class MenuPrincipal extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				label.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
+				if (label == lblFechar)
+					label.setFont(new Font("Stencil", Font.PLAIN, 18));
+				else if (label == lblMinimizar)
+					label.setFont(new Font("Stencil", Font.PLAIN, 30));
+				else {
+					if (label == lblUsuarios)
+						lblUsuarios.setIcon(new ImageIcon("icofeps\\menu\\userClicked.png"));
+					else if (label == lblStatusProd) {
+						if (PreferenciaFeps.getStatus())
+							lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stopClicked.png"));
+						else
+							lblStatusProd.setIcon(new ImageIcon("icoFeps\\menu\\playClicked.png"));
+
+					} else if (label == lblManTable)
+						lblManTable.setIcon(new ImageIcon("icofeps\\menu\\avancedMaintenenceClicked.png"));
+					else if (label == lblPropriedades)
+						lblPropriedades.setIcon(new ImageIcon("icofeps\\menu\\toolsClicked.png"));
+
+					// PRODUÇÃO
+					else if (label == lblImpressaoOrdem)
+						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrderClicked.png"));
+					else if (label == lblReimpressao)
+						lblReimpressao.setIcon(new ImageIcon("icofeps\\menu\\reprintClicked.png"));
+					else if (label == lblApagarOrdem)
+						lblApagarOrdem.setIcon(new ImageIcon("icofeps\\menu\\eraseOrderClicked.png"));
+
+					// EXPEDIÇÃO
+					else if (label == lblSaidaGTM)
+						lblSaidaGTM.setIcon(new ImageIcon("icofeps\\menu\\saida-gtmClicked.png"));
+					else if (label == lblReverseGTM)
+						lblReverseGTM.setIcon(new ImageIcon("icofeps\\menu\\estorno-gtmClicked.png"));
+
+					// CONTINGÊNCIA
+					else if (label == lblMonitorCarga)
+						lblMonitorCarga.setIcon(new ImageIcon("icofeps\\menu\\monitor-cargaClicked.png"));
+					else if (label == lblOrdemManual)
+						lblOrdemManual.setIcon(new ImageIcon("icofeps\\menu\\manualOrderClicked.png"));
+					else if (label == lblOrdemBuffer)
+						lblOrdemBuffer.setIcon(new ImageIcon("icofeps\\menu\\bufferOrderClicked.png"));
+					else if (label == lblSaidaBuffer)
+						lblSaidaBuffer.setIcon(new ImageIcon("icofeps\\menu\\sendBufferClicked.png"));
+
+					label.setFont(new Font("Stencil", Font.PLAIN, 13));
+					label.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
+				}
 			}
 
 			@Override
@@ -455,6 +501,51 @@ public class MenuPrincipal extends JFrame {
 					label.setBorder(null);
 				} else
 					label.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+
+				if (label == lblFechar)
+					label.setFont(new Font("Stencil", Font.PLAIN, 20));
+				else if (label == lblMinimizar)
+					label.setFont(new Font("Stencil", Font.PLAIN, 40));
+				else {
+					if (label == lblUsuarios)
+						lblUsuarios.setIcon(new ImageIcon("icofeps\\menu\\user.png"));
+					else if (label == lblStatusProd) {
+						if (PreferenciaFeps.getStatus())
+							lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
+						else
+							lblStatusProd.setIcon(new ImageIcon("icoFeps\\menu\\play.png"));
+
+					} else if (label == lblManTable)
+						lblManTable.setIcon(new ImageIcon("icofeps\\menu\\avancedMaintenence.png"));
+					else if (label == lblPropriedades)
+						lblPropriedades.setIcon(new ImageIcon("icofeps\\menu\\tools.png"));
+
+					// PRODUÇÃO
+					else if (label == lblImpressaoOrdem)
+						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrder.png"));
+					else if (label == lblReimpressao)
+						lblReimpressao.setIcon(new ImageIcon("icofeps\\menu\\reprint.png"));
+					else if (label == lblApagarOrdem)
+						lblApagarOrdem.setIcon(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
+
+					// EXPEDIÇÃO
+					else if (label == lblSaidaGTM)
+						lblSaidaGTM.setIcon(new ImageIcon("icofeps\\menu\\saida-gtm.png"));
+					else if (label == lblReverseGTM)
+						lblReverseGTM.setIcon(new ImageIcon("icofeps\\menu\\estorno-gtm.png"));
+
+					// CONTINGÊNCIA
+					else if (label == lblMonitorCarga)
+						lblMonitorCarga.setIcon(new ImageIcon("icofeps\\menu\\monitor-carga.png"));
+					else if (label == lblOrdemManual)
+						lblOrdemManual.setIcon(new ImageIcon("icofeps\\menu\\manualOrder.png"));
+					else if (label == lblOrdemBuffer)
+						lblOrdemBuffer.setIcon(new ImageIcon("icofeps\\menu\\bufferOrder.png"));
+					else if (label == lblSaidaBuffer)
+						lblSaidaBuffer.setIcon(new ImageIcon("icofeps\\menu\\sendBuffer.png"));
+
+					label.setFont(new Font("Stencil", Font.PLAIN, 14));
+				}
 			}
 
 			@Override
@@ -469,19 +560,20 @@ public class MenuPrincipal extends JFrame {
 		};
 	}
 
-	public static void getMain() {
-		((CardLayout) cardPanel.getLayout()).show(cardPanel, "main");
+	public static void verificaSistema() {
+		if (PreferenciaFeps.getStatus()) {
+			sistemaAberto(true);
+			card.sistemaAberto(true);
+			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
+		} else {
+			sistemaAberto(false);
+			card.sistemaAberto(false);
+			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\play.png"));
+		}
 	}
 
-	public static void setIconSystemStatus(boolean status) {
-		if (status) {
-			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
-			sistemaAberto(true);
-		}
-		else {
-			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\play.png"));
-			sistemaAberto(false);
-		}
+	public static void getMain() {
+		((CardLayout) cardPanel.getLayout()).show(cardPanel, "main");
 	}
 
 	private static void sistemaAberto(boolean aberto) {
@@ -498,12 +590,12 @@ public class MenuPrincipal extends JFrame {
 	}
 
 	private static ImageIcon getIconSystemStatus() {
-		if (ConnectionFeps.getSystemStatus())
+		if (PreferenciaFeps.getStatus())
 			return new ImageIcon("icofeps\\menu\\stop.png");
 		else
 			return new ImageIcon("icofeps\\menu\\play.png");
 	}
-	
+
 	public static String padding(int num, int length) {
 		String numPad = Integer.toString(num);
 		while (numPad.length() < length) {
@@ -511,5 +603,15 @@ public class MenuPrincipal extends JFrame {
 		}
 
 		return numPad;
+	}
+
+	public void minimizar() {
+		setExtendedState(JFrame.ICONIFIED);
+	}
+
+	public void fechar() {
+		card.monitorStop();
+		dispose();
+		System.exit(0);
 	}
 }

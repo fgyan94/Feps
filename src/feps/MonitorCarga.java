@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -94,19 +95,26 @@ public class MonitorCarga extends JPanel {
 		itemList = new DefaultListModel<>();
 		list = new JList<File>(itemList);
 		list.setBorder(new LineBorder(Color.BLACK));
-		list.setFont(new Font("Broadway", Font.PLAIN, 17));
+		list.setFont(new Font("Stencil", Font.PLAIN, 17));
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(list);
 
-		lblMonitorDeCarga.setFont(new Font("Broadway", Font.PLAIN, 40));
-		lblArquivoEsperado.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblListArquivo.setFont(new Font("Broadway", Font.PLAIN, 17));
-		txtArquivoEsperado.setFont(new Font("Broadway", Font.PLAIN, 17));
-		btnOrdemManual.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblTotalArq.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblNumTotalArq.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblTempo.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblNumTempo.setFont(new Font("Broadway", Font.PLAIN, 17));
+		txtArquivoEsperado.setBorder(new LineBorder(Color.BLACK));
+		txtArquivoEsperado.setForeground(Color.BLACK);
+		txtArquivoEsperado.setMargin(new Insets(0, 10, 0, 0));
+		txtArquivoEsperado.setEditable(false);
+		txtArquivoEsperado.setFont(new Font("Stencil", Font.PLAIN, 14));
+		txtArquivoEsperado.setHorizontalAlignment(SwingConstants.LEFT);
+
+		lblMonitorDeCarga.setFont(new Font("Stencil", Font.PLAIN, 40));
+		lblArquivoEsperado.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblListArquivo.setFont(new Font("Stencil", Font.PLAIN, 17));
+		txtArquivoEsperado.setFont(new Font("Stencil", Font.PLAIN, 17));
+		btnOrdemManual.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblTotalArq.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblNumTotalArq.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblTempo.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblNumTempo.setFont(new Font("Stencil", Font.PLAIN, 17));
 
 		list.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1L;
@@ -163,21 +171,24 @@ public class MonitorCarga extends JPanel {
 												GroupLayout.PREFERRED_SIZE)
 										.addComponent(lblGifLoader, GroupLayout.PREFERRED_SIZE, 30,
 												GroupLayout.PREFERRED_SIZE)))
-						.addGroup(groupLayout.createSequentialGroup().addGap(80)
-								.addComponent(lblArquivoEsperado, GroupLayout.PREFERRED_SIZE, 181,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(11).addComponent(txtArquivoEsperado, GroupLayout.PREFERRED_SIZE, 163,
-										GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup().addGap(272).addComponent(btnOrdemManual,
-								GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup().addGap(78)
 								.addComponent(lblTotalArq, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
 								.addGap(13).addComponent(lblNumTotalArq, GroupLayout.PREFERRED_SIZE, 163,
 										GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup().addGap(80)
 								.addComponent(lblTempo, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
-								.addGap(11).addComponent(lblNumTempo, GroupLayout.PREFERRED_SIZE, 163,
-										GroupLayout.PREFERRED_SIZE)));
+								.addGap(11)
+								.addComponent(lblNumTempo, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(80)
+								.addComponent(
+										lblArquivoEsperado, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnOrdemManual, GroupLayout.PREFERRED_SIZE, 156,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(txtArquivoEsperado, GroupLayout.PREFERRED_SIZE, 157,
+												GroupLayout.PREFERRED_SIZE))
+								.addGap(64)));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
 				.createSequentialGroup().addGap(10)
 				.addComponent(lblMonitorDeCarga, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE).addGap(23)
@@ -190,12 +201,12 @@ public class MonitorCarga extends JPanel {
 								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(lblPlayPause, GroupLayout.PREFERRED_SIZE, 30,
 										GroupLayout.PREFERRED_SIZE)))
-				.addGap(14)
+				.addGap(8)
 				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblArquivoEsperado, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtArquivoEsperado, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-				.addGap(6).addComponent(btnOrdemManual, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-				.addGap(4)
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addComponent(btnOrdemManual, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE).addGap(4)
 				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblTotalArq, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNumTotalArq, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
@@ -236,11 +247,13 @@ public class MonitorCarga extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				btnOrdemManual.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
+				btnOrdemManual.setFont(new Font("Stencil", Font.PLAIN, 16));
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				btnOrdemManual.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+				btnOrdemManual.setFont(new Font("Stencil", Font.PLAIN, 17));
 			}
 
 			@Override
@@ -251,22 +264,23 @@ public class MonitorCarga extends JPanel {
 	}
 
 	public void start() {
-		PreferenciaFeps.loadPreferences();
-		cancelTask();
-		startTaskCountTempo();
-		lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
-		lblGifLoader.setVisible(true);
+		if (PreferenciaFeps.loadPreferences()) {
+			cancelTask();
+			startTaskCountTempo();
+			lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
+			lblGifLoader.setVisible(true);
 
-		statusMonitor = true;
-		
-		timer = new Timer();
-		task = new TimerTask() {
-			@Override
-			public void run() {
-				atualizaDir();
-			}
-		};
-		timer.schedule(task, 1000, ConstantsFEPS.refresh.getIntValue());
+			statusMonitor = true;
+
+			timer = new Timer();
+			task = new TimerTask() {
+				@Override
+				public void run() {
+					atualizaDir();
+				}
+			};
+			timer.schedule(task, 1000, ConstantsFEPS.refresh.getIntValue());
+		}
 	}
 
 	private void pause() {
@@ -282,6 +296,8 @@ public class MonitorCarga extends JPanel {
 
 			timer = null;
 			task = null;
+			
+			stopTaskCountTempo();
 		}
 	}
 
@@ -292,8 +308,8 @@ public class MonitorCarga extends JPanel {
 		taskCountTempo = new TimerTask() {
 			@Override
 			public void run() {
-				
-				lblNumTempo.setText(LocalTime.parse(lblNumTempo.getText()).plusSeconds(1).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+				lblNumTempo.setText(LocalTime.parse(lblNumTempo.getText()).plusSeconds(1)
+						.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
 				if (LocalTime.parse(lblNumTempo.getText()).getMinute() == 2) {
 					JOptionPane.showMessageDialog(null, "TEMPO EXCEDIDO!");
@@ -307,7 +323,6 @@ public class MonitorCarga extends JPanel {
 
 	public void stopTaskCountTempo() {
 		if (timerCountTempo != null && taskCountTempo != null) {
-
 			timerCountTempo.cancel();
 			taskCountTempo.cancel();
 
@@ -319,7 +334,7 @@ public class MonitorCarga extends JPanel {
 	private void atualizaDir() {
 		ArrayList<File> fileDir = recebeFile();
 		itemList = new DefaultListModel<>();
-		
+
 		txtArquivoEsperado.setText(getExpectedNumDoc());
 		lblNumTotalArq.setText(getTotalArqDia());
 
@@ -331,19 +346,16 @@ public class MonitorCarga extends JPanel {
 			cancelTask();
 			lblNumTempo.setText("00:00:00");
 			if (itemList.get(0).getName().equals(txtArquivoEsperado.getText())) {
-				txtArquivoEsperado
-						.setText(MenuPrincipal.padding(Integer.parseInt(itemList.get(0).getName().substring(0, 4)) + 1, 4) + ".txt");
 				criaOrdem(itemList.remove(itemList.indexOf(itemList.firstElement())));
 				updateParametros();
-				start();
+				txtArquivoEsperado.setText(getExpectedNumDoc());
 			} else if (itemList.get(0).getName().contains(ConstantsFEPS.mascArqVazio.getStringValue())) {
 				gravaControleLeitura(itemList.remove(itemList.indexOf(itemList.firstElement())));
-				start();
 			} else {
 				gravaErro();
 				JOptionPane.showMessageDialog(null, "Arquivo diferente do esperado!");
-				start();
 			}
+			start();
 		}
 		list.setModel(itemList);
 	}
@@ -397,7 +409,7 @@ public class MonitorCarga extends JPanel {
 
 				p.close();
 				c.close();
-				
+ 
 				p = null;
 				c = null;
 			} catch (SQLException sqlE) {
@@ -434,11 +446,11 @@ public class MonitorCarga extends JPanel {
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
-		
+
 		apelido = null;
-		
+
 		try {
-			
+
 			consultaSQL = "SELECT * FROM gm_conti WHERE codigo_gm = '" + partNumberGM + "'";
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
@@ -446,18 +458,18 @@ public class MonitorCarga extends JPanel {
 
 			if (rs.next()) {
 				apelido = rs.getString("apelido_serie");
-				
-			} else 
+
+			} else
 				JOptionPane.showMessageDialog(null, "Esse part number não está cadastrado!");
-			
+
 			rs.close();
 			p.close();
 			c.close();
-			
+
 			rs = null;
 			p = null;
 			c = null;
-			
+
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -481,10 +493,10 @@ public class MonitorCarga extends JPanel {
 			String consultaSQL = "INSERT INTO ORDEM_GM (ORDEM_GM_DOC, DATA_HORA, STATUS_CPROD_CODIGO, "
 					+ "USUARIO_CODIGO, ORDEM_CONTI_SERIE, PVI_CHECK, VIN, PART_NUMBER_GM, "
 					+ "ORDEM_GM_ORIGEM, DATA_GM, DATA_INCLUSAO, ORDEM_ENTRADA) VALUES (" + "'" + numDoc + "', " + "'"
-					+ dataHora + "', " + "'" + codProducao + "', " + "'" + MenuPrincipal.padding(Login.getUsuario(), 6) + "', '"
-					+ ordem_serie_conti + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'" + partNumberGM
-					+ "', " + "'" + ordem_auto + "', " + "'" + data + " " + hora + "', " + "'" + data + " " + hora
-					+ "', " + "'" + numSeq + "')";
+					+ dataHora + "', " + "'" + codProducao + "', " + "'" + MenuPrincipal.padding(Login.getUsuario(), 6)
+					+ "', '" + ordem_serie_conti + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'"
+					+ partNumberGM + "', " + "'" + ordem_auto + "', " + "'" + data + " " + hora + "', " + "'" + data
+					+ " " + hora + "', " + "'" + numSeq + "')";
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
 			p.executeUpdate();
@@ -503,7 +515,7 @@ public class MonitorCarga extends JPanel {
 
 			p = null;
 			c = null;
-			
+
 		} catch (SQLException sqlE) {
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 			sqlE.printStackTrace();
@@ -511,43 +523,33 @@ public class MonitorCarga extends JPanel {
 	}
 
 	private static String getExpectedNumDoc() {
+		String sNumDoc = "0000";
+		int numDoc;
+		String consultaSQL;
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
 
 		try {
+			consultaSQL = "SELECT * FROM parametros";
 			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement("SELECT MAX(Ordem_GM_Doc) AS Ordem_GM_Doc FROM Ordem_GM");
+			p = c.prepareStatement(consultaSQL);
 			rs = p.executeQuery();
-
 			if (rs.next()) {
-				String sNumDoc = "";
-				int numDoc = Integer.parseInt(MenuPrincipal.padding(rs.getInt("Ordem_GM_Doc") + 1, 4));
+				numDoc = Integer.parseInt(MenuPrincipal.padding(rs.getInt("ultima_chamada") + 1, 4));
 
 				if (numDoc == 10000)
 					sNumDoc = "0000";
 				else
 					sNumDoc = MenuPrincipal.padding(numDoc, 4);
-
-				rs.close();
-				p.close();
-				c.close();
-				
-				rs = null;
-				p = null;
-				c = null;
-				
-				return sNumDoc + ".txt";
 			}
-			rs.close();
-			p.close();
-			c.close();
 
-			return "0000.txt";
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			return sNumDoc + ConstantsFEPS.mascArq.getStringValue().toLowerCase();
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 		}
+		return null;
 	}
 
 	private void copyFile(File source, File destination) throws IOException {
@@ -577,9 +579,9 @@ public class MonitorCarga extends JPanel {
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
-		
+
 		totalArq = null;
-		
+
 		try {
 			consultaSQL = "SELECT COUNT(*) FROM controle_leitura WHERE data >= '" + LocalDate.now() + " " + "00:00:00"
 					+ "' AND data <= '" + LocalDate.now() + " " + "23:59:59" + "'";
@@ -593,11 +595,11 @@ public class MonitorCarga extends JPanel {
 			rs.close();
 			p.close();
 			c.close();
-			
+
 			rs = null;
 			p = null;
 			c = null;
-			
+
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -619,7 +621,7 @@ public class MonitorCarga extends JPanel {
 
 			p.close();
 			c.close();
-			
+
 			p = null;
 			c = null;
 		} catch (SQLException sqlE) {
@@ -635,17 +637,18 @@ public class MonitorCarga extends JPanel {
 
 		try {
 			consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
-					+ "' " + ", ultima_chamada = '" + doc + "'";
+					+ "' " + ", ultima_chamada = '" + doc + "', " + "ultima_chamada_valida = '" + LocalDate.now() + " "
+					+ LocalTime.now() + "'";
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
 			p.executeUpdate();
 
 			p.close();
 			c.close();
-			
+
 			p = null;
 			c = null;
-			
+
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -660,13 +663,14 @@ public class MonitorCarga extends JPanel {
 		try {
 			consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
 					+ "' " + ", erro_sequencia = 'N'";
+
 			c = ConnectionFeps.getConnection();
 			p = c.prepareStatement(consultaSQL);
 			p.executeUpdate();
 
 			p.close();
 			c.close();
-			
+
 			p = null;
 			c = null;
 		} catch (SQLException sqlE) {
@@ -694,7 +698,7 @@ public class MonitorCarga extends JPanel {
 
 			p.close();
 			c.close();
-			
+
 			p = null;
 			c = null;
 		} catch (SQLException sqlE) {

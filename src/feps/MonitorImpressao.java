@@ -2,6 +2,8 @@ package feps;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -11,6 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -39,6 +45,7 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
+import javax.swing.JButton;
 
 public class MonitorImpressao extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -83,31 +90,7 @@ public class MonitorImpressao extends JPanel {
 			}
 		}
 
-		private String getPortNameByOS() {
-
-			String osname = System.getProperty("os.name", "").toLowerCase();
-			if (osname.startsWith("windows")) {
-				return "COM1"; // Se estiver no Windows
-			} else if (osname.startsWith("linux")) {
-				return "/dev/ttyS0"; // Se estiver no Linux
-			} else if (osname.startsWith("mac")) {
-				return "???"; // No mac eu não sei
-			} else {
-				System.out.println("Seu S.O. não é tem suporte ainda!"); // Se não for nenhum deles.
-				System.exit(1);
-				return null;
-			}
-
-		}
-
 		private CommPortIdentifier getPortIdentifier(String portName) {
-
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
 			// Pega os identificadores de porta
 			Enumeration<?> portList = CommPortIdentifier.getPortIdentifiers();
 			// Varre as possíveis portas
@@ -135,7 +118,7 @@ public class MonitorImpressao extends JPanel {
 
 		public void execute() {
 			// Pega a porta pelo S.O.
-			String portName = getPortNameByOS();
+			String portName = "COM1";
 			// Retorna o identificador da porta
 			CommPortIdentifier portId = getPortIdentifier(portName);
 			// Se o PortId for nulo, não há porta disponível
@@ -143,7 +126,7 @@ public class MonitorImpressao extends JPanel {
 
 				try {
 					// Abre a porta serial solicitada
-					serialPort = (SerialPort) portId.open(this.getClass().getName(), 2000);
+					serialPort = (SerialPort) portId.open(this.getClass().getName(), 0);
 
 					// Pega o InputStream da Porta Serial
 					inputStream = serialPort.getInputStream();
@@ -191,7 +174,7 @@ public class MonitorImpressao extends JPanel {
 	private class ImpManual extends JDialog {
 		private static final long serialVersionUID = 1L;
 
-		private JLabel lblEncerraDia = new JLabel("Imprimir ordem manual?");
+		private JLabel lblEncerraDia = new JLabel("Imprimir ordem automática?");
 		private JLabel btnSim = new JLabel("SIM");
 		private JLabel btnNao = new JLabel("NÃO");
 
@@ -202,7 +185,7 @@ public class MonitorImpressao extends JPanel {
 		}
 
 		private void buildPanel() {
-			this.setBounds(0, 0, 320, 140);
+			this.setBounds(0, 0, 350, 140);
 			this.setModal(true);
 			this.setUndecorated(true);
 			this.setOpacity(0.95f);
@@ -215,21 +198,21 @@ public class MonitorImpressao extends JPanel {
 		private void initializeComponents() {
 
 			lblEncerraDia.setHorizontalAlignment(SwingConstants.LEFT);
-			lblEncerraDia.setFont(new Font("Broadway", Font.PLAIN, 20));
+			lblEncerraDia.setFont(new Font("Stencil", Font.PLAIN, 20));
 			lblEncerraDia.setForeground(Color.LIGHT_GRAY);
-			lblEncerraDia.setBounds(10, 10, 300, 90);
+			lblEncerraDia.setBounds(10, 10, 330, 90);
 			getContentPane().add(lblEncerraDia);
 
 			btnSim.setHorizontalAlignment(SwingConstants.CENTER);
-			btnSim.setFont(new Font("Broadway", Font.PLAIN, 14));
-			btnSim.setBounds(105, 100, 90, 30);
+			btnSim.setFont(new Font("Stencil", Font.PLAIN, 14));
+			btnSim.setBounds(135, 100, 90, 30);
 			btnSim.setForeground(Color.LIGHT_GRAY);
 			btnSim.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			getContentPane().add(btnSim);
 
 			btnNao.setHorizontalAlignment(SwingConstants.CENTER);
-			btnNao.setFont(new Font("Broadway", Font.PLAIN, 14));
-			btnNao.setBounds(200, 100, 90, 30);
+			btnNao.setFont(new Font("Stencil", Font.PLAIN, 14));
+			btnNao.setBounds(230, 100, 90, 30);
 			btnNao.setForeground(Color.LIGHT_GRAY);
 			btnNao.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			getContentPane().add(btnNao);
@@ -272,9 +255,9 @@ public class MonitorImpressao extends JPanel {
 	static final String S = "S";
 	static final String I = "I";
 
-	private SerialComm serialPort = new SerialComm();
+	private SerialComm serialPort;
 
-	private JLabel lblImpressao, lblOrdensParaMontagem, lblListaModelosProduzidos, lblComunicaoFepsRast, lblDesc, lblSeqDia, btnManualPrint;
+	private JLabel lblImpressao, lblOrdensParaMontagem, lblListaModelosProduzidos, lblComunicaoFepsRast, lblDesc, lblSeqDia, lblNumMont, btnManualPrint;
 	private JTable tblOrdemMontagem, tblModeloProd;
 	private FepsModelTable fmtMontagem, fmtProduzido;
 	private JScrollPane scrOrdemMontagem, scrModeloProd, scrComunicaFepsRast;
@@ -285,10 +268,8 @@ public class MonitorImpressao extends JPanel {
 	private static Timer timer;
 	private static TimerTask task;
 
-	private String idCKP, seqDia, seqGM, modelo, descr, serieAtual, apelidoGM;
+	private String idCKP, seqDia, seqGM, modelo, descr, serieAtual, apelidoGM, numBolha;
 	private boolean ckpEnviado, imprimeBolha;
-
-	String numBolha;
 
 	public MonitorImpressao() {
 		buildPanel();
@@ -296,19 +277,17 @@ public class MonitorImpressao extends JPanel {
 		initializeListener();
 		configureSerialPort();
 		initializeTables();
-		fillTables();
 		start();
 	}
 
-	private void start() {
+	protected void start() {
 		cancelTask();
 		timer = new Timer();
 		task = new TimerTask() {
 
 			@Override
 			public void run() {
-				fillTableMontagem();
-				fillTableProduzido();
+				fillTables();
 			}
 		};
 		timer.schedule(task, 1000, 10000);
@@ -334,15 +313,16 @@ public class MonitorImpressao extends JPanel {
 	}
 
 	private void initializeComponents() {
-
+		serialPort = new SerialComm();
 		lblImpressao = new JLabel("Impressão");
 		lblOrdensParaMontagem = new JLabel("Ordens para montagem:");
-		lblListaModelosProduzidos = new JLabel("Lista modelos produzidos:");
+		lblListaModelosProduzidos = new JLabel("Lista de modelos para montagem:");
 		lblComunicaoFepsRast = new JLabel("<html>Comunicação</br> Serial:</html>");
 		lblDesc = new JLabel();
 		lblSeqDia = new JLabel();
 		btnManualPrint = new JLabel(new ImageIcon("icofeps\\monitorImp\\print_24.png"));
 		cbBolha = new JCheckBox("Enviar bolhas para a linha");
+		lblNumMont = new JLabel();
 
 		edtComunicaFepsRast = new JEditorPane();
 		edtComunicaFepsRast.setEditable(false);
@@ -362,22 +342,22 @@ public class MonitorImpressao extends JPanel {
 		scrOrdemMontagem.setBounds(561, 118, 600, 315);
 		scrModeloProd.setBounds(561, 476, 600, 200);
 		scrComunicaFepsRast.setBounds(1173, 119, 182, 557);
-		cbBolha.setBounds(801, 89, 320, 30);
-
+		cbBolha.setBounds(843, 89, 278, 30);
+		lblNumMont.setBounds(780, 89, 42, 30);
 		monitor.setBounds(60, 0, 500, 410);
 
-		lblImpressao.setFont(new Font("Broadway", Font.PLAIN, 40));
-		lblOrdensParaMontagem.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblComunicaoFepsRast.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblListaModelosProduzidos.setFont(new Font("Broadway", Font.PLAIN, 17));
-		lblDesc.setFont(new Font("Broadway", Font.PLAIN, 30));
-		lblSeqDia.setFont(new Font("Broadway", Font.PLAIN, 30));
+		lblImpressao.setFont(new Font("Stencil", Font.PLAIN, 40));
+		lblOrdensParaMontagem.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblComunicaoFepsRast.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblListaModelosProduzidos.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblDesc.setFont(new Font("Stencil", Font.PLAIN, 30));
+		lblSeqDia.setFont(new Font("Stencil", Font.PLAIN, 30));
 		tblOrdemMontagem = new JTable();
 		tblModeloProd = new JTable();
 		tblOrdemMontagem.setFont(new Font("Calibri", Font.PLAIN, 15));
 		tblModeloProd.setFont(new Font("Calibri", Font.PLAIN, 15));
-		cbBolha.setFont(new Font("Broadway", Font.PLAIN, 17));
-
+		cbBolha.setFont(new Font("Stencil", Font.PLAIN, 17));
+		lblNumMont.setFont(new Font("Stencil", Font.PLAIN, 17));
 		edtComunicaFepsRast.setFont(new Font("Calibri", Font.PLAIN, 14));
 
 		lblImpressao.setForeground(Color.BLACK);
@@ -423,6 +403,27 @@ public class MonitorImpressao extends JPanel {
 		add(scrComunicaFepsRast);
 		add(cbBolha);
 		add(monitor);
+		add(lblNumMont);
+		
+		JButton btnEnviaS = new JButton("envia \"S\"");
+		btnEnviaS.setBounds(578, 12, 85, 25);
+		btnEnviaS.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				imprimeOrdem(S);
+			}
+		});
+		add(btnEnviaS);
+		
+		JButton btnEnviaI = new JButton("envia \"I\"");
+		btnEnviaI.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				imprimeOrdem(I);
+			}
+		});
+		btnEnviaI.setBounds(578, 46, 85, 25);
+		add(btnEnviaI);
 		
 		ckpEnviado = false;
 		imprimeBolha = false;
@@ -486,11 +487,13 @@ public class MonitorImpressao extends JPanel {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			tblOrdemMontagem.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-			tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth(108);
+			tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth(106);
 			if (fmtMontagem.getColumnName(i).contains("Data") || fmtMontagem.getColumnName(i).contains("Série"))
-				tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth((int) 137.5f);
+				tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth(136);
 		}
-
+		
+		tblOrdemMontagem.getTableHeader().setReorderingAllowed(false);
+		tblOrdemMontagem.getTableHeader().setResizingAllowed(false);
 		fmtMontagem.fireTableDataChanged();
 
 	}
@@ -511,9 +514,10 @@ public class MonitorImpressao extends JPanel {
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			tblModeloProd.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
-
+		
+		tblModeloProd.getTableHeader().setReorderingAllowed(false);
+		tblModeloProd.getTableHeader().setResizingAllowed(false);
 		fmtMontagem.fireTableDataChanged();
-
 	}
 
 	public void monitorStart() {
@@ -535,11 +539,9 @@ public class MonitorImpressao extends JPanel {
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
-		
-		fmtMontagem.clear();
 
 		try {
-			consultaSQL = "SELECT Ordem_Conti.*, Status_Cockpit.descricao, GM_Conti.apelido, GM_Conti.Codigo_GM FROM Status_Cockpit, "
+			consultaSQL = "SELECT Ordem_Conti.*, Status_Cockpit.descricao, GM_Conti.apelido, GM_Conti.Codigo_GM FROM Status_cockpit, "
 					+ "Ordem_Conti LEFT OUTER JOIN GM_Conti ON Ordem_Conti.PART_NUMBER_GM = GM_Conti.CODIGO_GM "
 					+ "WHERE Ordem_Conti.Status_cockpit = '001' AND Ordem_Conti.Status_cockpit = STATUS_COCKPIT.codigo ORDER BY Ordem_Conti.Ordem_Entrada";
 
@@ -552,7 +554,9 @@ public class MonitorImpressao extends JPanel {
 					String partNumber = rs.getString("part_number_gm");
 					String apelido = rs.getString("apelido");
 					String ordem_serie = rs.getString("ordem_conti_serie");
-					String ordem_data = rs.getString("ordem_conti_data");
+					LocalDate data = LocalDate.parse(rs.getString("ordem_conti_data").substring(0, 10));
+					LocalTime time = LocalTime.parse(rs.getString("ordem_conti_data").substring(11));
+					String ordem_data = LocalDateTime.of(data, time).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 					String ordem_entrada = rs.getString("ordem_entrada");
 
 					Ordem ordem = new Ordem(partNumber, apelido, ordem_serie, ordem_data, ordem_entrada);
@@ -561,7 +565,21 @@ public class MonitorImpressao extends JPanel {
 					rs.next();
 				}
 
+				fmtMontagem.clear();
 				fmtMontagem.addOrdemList(lista);
+				
+				lblNumMont.setText(Integer.toString(lista.size()));
+				
+				if(lista.size() > PreferenciaFeps.getAtraso()) {
+					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(255, 0, 0)));
+					lblNumMont.setForeground(new Color(255, 0, 0));
+				} else if(lista.size() <= PreferenciaFeps.getAtraso() && lista.size() > (PreferenciaFeps.getAtraso() / 2)) {
+					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(255, 210, 0)));
+					lblNumMont.setForeground(new Color(255, 210, 0));
+				} else {
+					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(0, 210, 0)));
+					lblNumMont.setForeground(new Color(0, 210, 0));
+				}
 			}
 
 			rs.close();
@@ -584,8 +602,6 @@ public class MonitorImpressao extends JPanel {
 		Connection c;
 		PreparedStatement p;
 		ResultSet rs;
-
-		fmtProduzido.clear();
 		
 		try {
 			consultaSQL = "SELECT gm_conti.*, qtde = (SELECT COUNT(*) FROM ordem_conti WHERE part_number_gm = codigo_gm"
@@ -608,6 +624,7 @@ public class MonitorImpressao extends JPanel {
 					rs.next();
 				}
 
+				fmtProduzido.clear();
 				fmtProduzido.addOrdemList(lista);
 			}
 
@@ -630,7 +647,7 @@ public class MonitorImpressao extends JPanel {
 			edtComunicaFepsRast.setText("Solicitado ordem do RFID\r\n" + edtComunicaFepsRast.getText());
 			if (cbBolha.isSelected() || fmtMontagem.getRowCount() < 1) {
 				idCKP = MenuPrincipal.padding(99, 3);
-				numBolha = MenuPrincipal.padding(1, 4);
+				numBolha = MenuPrincipal.padding(Integer.parseInt(numBolha), 4);
 				serialPort.write((char) 2 + numBolha + idCKP + (char) 3);
 				edtComunicaFepsRast.setText("Enviado comando de bolha\r\n" + edtComunicaFepsRast.getText());
 				ckpEnviado = true;
@@ -695,7 +712,9 @@ public class MonitorImpressao extends JPanel {
 				ckpEnviado = false;
 				imprimeBolha = false;
 				
-				Imprime.imprimeBolha();
+				Relatorio.imprimeBolha(numBolha);
+				
+				numBolha = MenuPrincipal.padding(Integer.parseInt(numBolha) + 1, 4);
 				
 			} else if (ckpEnviado && !imprimeBolha) {
 				edtComunicaFepsRast.setText("Comando de impressão recebido \r\n" + edtComunicaFepsRast.getText());
@@ -703,8 +722,8 @@ public class MonitorImpressao extends JPanel {
 				lblSeqDia.setText("Sequência dia - " + seqDia);
 				ckpEnviado = false;
 				
-				Imprime.setStatusImpressao(serieAtual, apelidoGM);
-				Imprime.imprimeOrdem(serieAtual, apelidoGM);
+				Relatorio.setStatusImpressao(serieAtual, apelidoGM);
+				Relatorio.imprimeOrdem(serieAtual, modelo);
 			}
 		}
 		start();
@@ -712,5 +731,11 @@ public class MonitorImpressao extends JPanel {
 
 	private void imprimeOrdem(String bufferSerial) {
 		receiveComm(bufferSerial);
+	}
+
+	public void fechar() {
+		monitor.stopTaskCountTempo();
+		monitor.cancelTask();
+		cancelTask();
 	}
 }
