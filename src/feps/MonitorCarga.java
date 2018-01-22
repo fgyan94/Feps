@@ -14,9 +14,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -61,8 +59,8 @@ public class MonitorCarga extends JPanel {
 	private JLabel lblNumTempo;
 	private boolean statusMonitor = true;
 
-	private static Timer timer, timerCountTempo;
-	private static TimerTask task, taskCountTempo;
+	private Timer timer, timerCountTempo;
+	private TimerTask task, taskCountTempo;
 
 	public MonitorCarga() {
 		buildPanel();
@@ -264,7 +262,6 @@ public class MonitorCarga extends JPanel {
 	}
 
 	public void start() {
-		if (PreferenciaFeps.loadPreferences()) {
 			cancelTask();
 			startTaskCountTempo();
 			lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
@@ -279,8 +276,7 @@ public class MonitorCarga extends JPanel {
 					atualizaDir();
 				}
 			};
-			timer.schedule(task, 1000, ConstantsFEPS.refresh.getIntValue());
-		}
+			timer.schedule(task, 1000, getTempoRefresh());
 	}
 
 	private void pause() {
@@ -296,14 +292,14 @@ public class MonitorCarga extends JPanel {
 
 			timer = null;
 			task = null;
-			
+
 			stopTaskCountTempo();
 		}
 	}
 
 	public void startTaskCountTempo() {
 		stopTaskCountTempo();
-
+		
 		timerCountTempo = new Timer();
 		taskCountTempo = new TimerTask() {
 			@Override
@@ -349,7 +345,7 @@ public class MonitorCarga extends JPanel {
 				criaOrdem(itemList.remove(itemList.indexOf(itemList.firstElement())));
 				updateParametros();
 				txtArquivoEsperado.setText(getExpectedNumDoc());
-			} else if (itemList.get(0).getName().contains(ConstantsFEPS.mascArqVazio.getStringValue())) {
+			} else if (itemList.get(0).getName().contains(getMascArqVazio())) {
 				gravaControleLeitura(itemList.remove(itemList.indexOf(itemList.firstElement())));
 			} else {
 				gravaErro();
@@ -361,13 +357,13 @@ public class MonitorCarga extends JPanel {
 	}
 
 	private ArrayList<File> recebeFile() {
-		File[] tmp = new File(ConstantsFEPS.dirCarga.getStringValue()).listFiles();
+		File[] tmp = new File(getDirCarga()).listFiles();
 		ArrayList<File> ret = new ArrayList<>();
 
 		if (tmp != null) {
 			for (int i = 0; i < tmp.length; i++) {
-				if (tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArq.getStringValue())
-						|| tmp[i].getName().toUpperCase().endsWith(ConstantsFEPS.mascArqVazio.getStringValue()))
+				if (tmp[i].getName().toUpperCase().endsWith(getMascArq())
+						|| tmp[i].getName().toUpperCase().endsWith(getMascArqVazio()))
 					ret.add(tmp[i]);
 			}
 		}
@@ -381,8 +377,6 @@ public class MonitorCarga extends JPanel {
 			String sequencia, nomeArq, stringDoc, consultaSQL;
 			Date data;
 			Time hora;
-			Connection c;
-			PreparedStatement p;
 
 			stringDoc = reader.readLine();
 			nomeArq = file.getName();
@@ -397,25 +391,13 @@ public class MonitorCarga extends JPanel {
 					+ "', '" + nomeArq + "', '" + new SimpleDateFormat("MM/dd/yyyy").format(data) + " "
 					+ new SimpleDateFormat("HH:mm:ss").format(hora) + "', '" + stringDoc + "')";
 
-			copyFile(file, new File(ConstantsFEPS.dirLido.getStringValue() + "\\" + file.getName()));
+			copyFile(file, new File(getDirLido() + "\\" + file.getName()));
 
 			reader.close();
 			file.delete();
 
-			try {
-				c = ConnectionFeps.getConnection();
-				p = c.prepareStatement(consultaSQL);
-				p.executeUpdate();
-
-				p.close();
-				c.close();
- 
-				p = null;
-				c = null;
-			} catch (SQLException sqlE) {
-				JOptionPane.showMessageDialog(null, "Erro ao consultar!");
-				sqlE.printStackTrace();
-			}
+			if (!ConnectionFeps.update(consultaSQL))
+				JOptionPane.showMessageDialog(null, "Não foi possível gravar o controle de leitura! Doc: " + nomeArq);
 
 			return stringDoc;
 		} catch (IOException e) {
@@ -437,14 +419,12 @@ public class MonitorCarga extends JPanel {
 		partNumberGM = doc.substring(46);
 		ordem_serie_conti = getApelido(partNumberGM);
 
-		gravaOrdem(numDoc, dataHora, ConstantsFEPS.prodIniciada.getStringValue(), ordem_serie_conti, pvi, check, vin,
-				partNumberGM, ConstantsFEPS.ordemAutomatica.getIntValue(), ConnectionFeps.getValorSeq("ORDEM_GM"));
+		gravaOrdem(numDoc, dataHora, ConstantsFEPS.PROD_INICIADA.getStringValue(), ordem_serie_conti, pvi, check, vin,
+				partNumberGM, ConstantsFEPS.ORDEM_AUTOMATICA.getStringValue(), ConnectionFeps.getValorSeq("ORDEM_GM"));
 	}
 
 	private String getApelido(String partNumberGM) {
 		String apelido, consultaSQL;
-		Connection c;
-		PreparedStatement p;
 		ResultSet rs;
 
 		apelido = null;
@@ -452,9 +432,7 @@ public class MonitorCarga extends JPanel {
 		try {
 
 			consultaSQL = "SELECT * FROM gm_conti WHERE codigo_gm = '" + partNumberGM + "'";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next()) {
 				apelido = rs.getString("apelido_serie");
@@ -462,79 +440,60 @@ public class MonitorCarga extends JPanel {
 			} else
 				JOptionPane.showMessageDialog(null, "Esse part number não está cadastrado!");
 
-			rs.close();
-			p.close();
-			c.close();
-
-			rs = null;
-			p = null;
-			c = null;
+			ConnectionFeps.closeConnection(rs, null, null);
 
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+			JOptionPane.showMessageDialog(null,
+					"Não foi possível buscar o apelido do Part Number GM: " + partNumberGM + "!");
 		}
 
 		return apelido;
 	}
 
 	private void gravaOrdem(String numDoc, String dataHora, String codProducao, String ordem_serie_conti, String pvi,
-			String check, String vin, String partNumberGM, int ordem_auto, int numSeq) {
-		Connection c;
-		PreparedStatement p;
+			String check, String vin, String partNumberGM, String ordem_origem, int numSeq) {
+
 		Date data = Date.valueOf(LocalDate.now());
 		Time hora = Time.valueOf(LocalTime.now());
-		String sData = ConstantsFEPS.dataSistema.getStringValue();
+		String sData = getDataSistema();
 		int totalSerieConti = ConnectionFeps.getValorSeq("Serie_" + ordem_serie_conti);
 		ordem_serie_conti = ordem_serie_conti.trim() + sData.substring(2, 4) + sData.substring(5, 7)
 				+ sData.substring(8) + MenuPrincipal.padding(totalSerieConti, 4);
 
-		try {
-			String consultaSQL = "INSERT INTO ORDEM_GM (ORDEM_GM_DOC, DATA_HORA, STATUS_CPROD_CODIGO, "
-					+ "USUARIO_CODIGO, ORDEM_CONTI_SERIE, PVI_CHECK, VIN, PART_NUMBER_GM, "
-					+ "ORDEM_GM_ORIGEM, DATA_GM, DATA_INCLUSAO, ORDEM_ENTRADA) VALUES (" + "'" + numDoc + "', " + "'"
-					+ dataHora + "', " + "'" + codProducao + "', " + "'" + MenuPrincipal.padding(Login.getUsuario(), 6)
-					+ "', '" + ordem_serie_conti + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'"
-					+ partNumberGM + "', " + "'" + ordem_auto + "', " + "'" + data + " " + hora + "', " + "'" + data
-					+ " " + hora + "', " + "'" + numSeq + "')";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			p.executeUpdate();
-
-			inclusaoGTM(ordem_serie_conti, ConstantsFEPS.cockpitIniciado.getStringValue(), "0",
-					MenuPrincipal.padding(Login.getUsuario(), 6),
-					new SimpleDateFormat("MM/dd/yyyy").format(data) + " "
-							+ new SimpleDateFormat("HH:mm:ss").format(hora),
-					partNumberGM, ConstantsFEPS.ordemAutomatica.getIntValue(),
-					ConnectionFeps.getValorSeq("ORDEM_CONTI"), ConnectionFeps.getValorSeq("SEQ_DIA"));
-
-			updateParametros(MenuPrincipal.padding(Integer.parseInt(numDoc), 4));
-
-			p.close();
-			c.close();
-
-			p = null;
-			c = null;
-
-		} catch (SQLException sqlE) {
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
-			sqlE.printStackTrace();
+		String consultaSQL = "INSERT INTO ORDEM_GM (ORDEM_GM_DOC, DATA_HORA, STATUS_CPROD_CODIGO, "
+				+ "USUARIO_CODIGO, ORDEM_CONTI_SERIE, PVI_CHECK, VIN, PART_NUMBER_GM, "
+				+ "ORDEM_GM_ORIGEM, DATA_GM, DATA_INCLUSAO, ORDEM_ENTRADA) VALUES (" + "'" + numDoc + "', " + "'"
+				+ dataHora + "', " + "'" + codProducao + "', " + "'" + Login.getUsuario()
+				+ "', '" + ordem_serie_conti + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'"
+				+ partNumberGM + "', " + "'" + ordem_origem + "', " + "'" + data + " " + hora + "', " + "'" + data + " "
+				+ hora + "', " + "'" + numSeq + "')";
+		if (!ConnectionFeps.update(consultaSQL)) {
+			JOptionPane.showMessageDialog(null,
+					"Não foi possível criar a ordem de montagem " + ordem_serie_conti + "!");
+			return;
 		}
+
+		inclusaoGTM(ordem_serie_conti, ConstantsFEPS.COCKPIT_INICIADO.getStringValue(), "0",
+				Login.getUsuario(),
+				new SimpleDateFormat("MM/dd/yyyy").format(data) + " " + new SimpleDateFormat("HH:mm:ss").format(hora),
+				partNumberGM, ConstantsFEPS.ORDEM_AUTOMATICA.getStringValue(), 
+				ConnectionFeps.getValorSeq("ORDEM_CONTI"),
+				ConnectionFeps.getValorSeq("SEQ_DIA"), 
+				numDoc);
+
+		updateParametros(MenuPrincipal.padding(Integer.parseInt(numDoc), 4));
 	}
 
-	private static String getExpectedNumDoc() {
+	private String getExpectedNumDoc() {
 		String sNumDoc = "0000";
 		int numDoc;
 		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
 		ResultSet rs;
 
 		try {
 			consultaSQL = "SELECT * FROM parametros";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = ConnectionFeps.query(consultaSQL);
 			if (rs.next()) {
 				numDoc = Integer.parseInt(MenuPrincipal.padding(rs.getInt("ultima_chamada") + 1, 4));
 
@@ -544,10 +503,12 @@ public class MonitorCarga extends JPanel {
 					sNumDoc = MenuPrincipal.padding(numDoc, 4);
 			}
 
-			return sNumDoc + ConstantsFEPS.mascArq.getStringValue().toLowerCase();
+			ConnectionFeps.closeConnection(rs, null, null);
+
+			return sNumDoc + getMascArq().toLowerCase();
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+			JOptionPane.showMessageDialog(null, "Não foi possível retornar o doc esperado!");
 		}
 		return null;
 	}
@@ -576,8 +537,7 @@ public class MonitorCarga extends JPanel {
 
 	private String getTotalArqDia() {
 		String totalArq, consultaSQL;
-		Connection c;
-		PreparedStatement p;
+		;
 		ResultSet rs;
 
 		totalArq = null;
@@ -585,125 +545,103 @@ public class MonitorCarga extends JPanel {
 		try {
 			consultaSQL = "SELECT COUNT(*) FROM controle_leitura WHERE data >= '" + LocalDate.now() + " " + "00:00:00"
 					+ "' AND data <= '" + LocalDate.now() + " " + "23:59:59" + "'";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next())
 				totalArq = rs.getString(1);
-
-			rs.close();
-			p.close();
-			c.close();
-
-			rs = null;
-			p = null;
-			c = null;
+			ConnectionFeps.closeConnection(rs, null, null);
 
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+			JOptionPane.showMessageDialog(null, "Erro ao tentar buscar o total de arquivos do dia atual!");
 		}
 
 		return totalArq;
 	}
 
 	private void gravaErro() {
-		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
-
-		try {
-			consultaSQL = "UPDATE parametros SET erro_sequencia = 'S'";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			p.executeUpdate();
-
-			p.close();
-			c.close();
-
-			p = null;
-			c = null;
-		} catch (SQLException sqlE) {
-			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
-		}
+		String consultaSQL = "UPDATE parametros SET erro_sequencia = 'S'";
+		if(!ConnectionFeps.update(consultaSQL))
+			JOptionPane.showMessageDialog(null, "Não foi possível gravar no banco o erro de sequência!");
 	}
 
 	private void updateParametros(String doc) {
-		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
-
-		try {
-			consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
+		String consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
 					+ "' " + ", ultima_chamada = '" + doc + "', " + "ultima_chamada_valida = '" + LocalDate.now() + " "
 					+ LocalTime.now() + "'";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			p.executeUpdate();
-
-			p.close();
-			c.close();
-
-			p = null;
-			c = null;
-
-		} catch (SQLException sqlE) {
-			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
-		}
+		if(!ConnectionFeps.update(consultaSQL))
+			JOptionPane.showMessageDialog(null, "Não foi possível atualizar oo último doc lido! Doc GM: " + doc);
 	}
 
 	private void updateParametros() {
-		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
-
-		try {
-			consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
+		String consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
 					+ "' " + ", erro_sequencia = 'N'";
-
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			p.executeUpdate();
-
-			p.close();
-			c.close();
-
-			p = null;
-			c = null;
-		} catch (SQLException sqlE) {
-			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
-		}
+		if(!ConnectionFeps.update(consultaSQL))
+			JOptionPane.showMessageDialog(null, "Não foi possível atualizar a data e hora da última chamada!");
 	}
 
 	private void inclusaoGTM(String ordem_conti_serie, String status_cockpit, String num_gtm, String usuario_cod,
-			String ordem_conti_data, String part_number_gm, int ordem_conti_origem, int ordem_entrada,
-			int sequencia_dia) {
-		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
-
-		try {
-			consultaSQL = "INSERT INTO ordem_conti (ordem_conti_serie, status_cockpit, num_gtm, usuario_cod, ordem_conti_data, part_number_gm,"
-					+ "ordem_conti_origem, ordem_entrada, sequencia_dia) VALUES ('" + ordem_conti_serie + "', '"
+			String ordem_conti_data, String part_number_gm, String ordem_origem, int ordem_entrada,
+			int sequencia_dia, String numDoc) {
+		String consultaSQL = "INSERT INTO ordem_conti (ordem_conti_serie, status_cockpit, num_gtm, usuario_cod, ordem_conti_data, part_number_gm,"
+					+ "ordem_conti_origem, ordem_entrada, sequencia_dia, numDoc) VALUES ('" + ordem_conti_serie + "', '"
 					+ status_cockpit + "', '" + num_gtm + "', '" + usuario_cod + "', '" + ordem_conti_data + "', '"
-					+ part_number_gm + "', '" + ordem_conti_origem + "', '" + ordem_entrada + "', '" + sequencia_dia
-					+ "')";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			p.executeUpdate();
+					+ part_number_gm + "', '" + ordem_origem + "', '" + ordem_entrada + "', '" + sequencia_dia + "', '"
+					+ numDoc + "')";
 
-			p.close();
-			c.close();
+		if(!ConnectionFeps.update(consultaSQL))
+			JOptionPane.showMessageDialog(null, "Erro ao tetnar incluir a ordem " + ordem_conti_serie + " ao banco de dados!");
+	}
+	
+	private Object getParameter(String tmp) {
+		String consultaSQL = "SELECT * FROM parametros";
+		String parametro = null;
+		ResultSet rs;
+		try {
+			rs = ConnectionFeps.query(consultaSQL);
 
-			p = null;
-			c = null;
+			if (rs.next())
+				if(rs.getString(tmp) == null)
+					parametro = "";
+				else
+					parametro = rs.getString(tmp).trim();
+
+			ConnectionFeps.closeConnection(rs, null, null);
+
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+			JOptionPane.showMessageDialog(null, "Erro ao buscar o parâmetro: " + tmp + "!");
 		}
+
+		return parametro;
+	}
+	
+	public int getTempoRefresh() {
+		return Integer.parseInt((String) getParameter("tempo_refresh"));
+	}
+	
+	public String getDataSistema() {
+		return (String) getParameter("data_sistema");
+	}
+	
+	public String getMascArqVazio() {
+		return (String) getParameter("mascara_vazio");
+	}
+	
+	public String getDirCarga() {
+		return (String) getParameter("diretorio_carga");
+	}
+	
+	public String getMascArq() {
+		return (String) getParameter("masc_arq_gm");
+	}
+	
+	public String getDirLido() {
+		return (String) getParameter("diretorio_lido");
+	}
+
+	public void clearValues() {
+		this.txtArquivoEsperado.setText("");
+		this.lblNumTempo.setText("00:00:00");
 	}
 }

@@ -1,56 +1,28 @@
 package feps;
 
 public enum ConstantsFEPS {
-	prodIniciada("001"),
-	prodImpressa("002"),
-	prodAtendia("003"),
+	PROD_INICIADA("001"),
+	PROD_IMPRESSA("002"),
+	PROD_ATENDIDA("003"),
 	
-	cockpitIniciado("001"),
-	cockpitImpressa("002"),
-	cockpitBuffer("003"),
-	cockpitConcluido("004"),
-	cockpitEntregue("005"),
+	COCKPIT_INICIADO("001"),
+	COCKPIT_IMPRESSA("002"),
+	COCKPIT_BUFFER("003"),
+	COCKPIT_CONCLUIDO("004"),
+	COCKPIT_ENTREGUE("005"),
 	
-	ordemAutomatica(1),
-	ordemManual(2),
+	ORDEM_AUTOMATICA("1"),
+	ORDEM_MANUAL("2"),
+
+	USER_ID(Login.getUsuario());
 	
-	mascArq(PreferenciaFeps.getMascArq()),
-	dirCarga(PreferenciaFeps.getDirCarga()),
-	dirLido(PreferenciaFeps.getDirLido()),
-	refresh(PreferenciaFeps.getTempoRefresh()),
-	fechaGTM(PreferenciaFeps.getQtdFechaGTM()),
-	mascArqVazio(PreferenciaFeps.getMascArqVazio()),
-	tempoMax(PreferenciaFeps.getTemMax()),
-	atrasoOrdem(PreferenciaFeps.getAtraso()),
-	horaUltimoArq(PreferenciaFeps.getHoraUltimaChamada()),
-	dataSistema(PreferenciaFeps.getDataSistema()),
-	statusSistema(PreferenciaFeps.getStatus());
+	String var;
 	
-	String a;
-	int b;
-	boolean c;
-	
-	ConstantsFEPS(String status){
-		this.a = status;
-	}
-	
-	ConstantsFEPS(int ordem){
-		this.b = ordem;
-	}
-	
-	ConstantsFEPS(boolean statusSistema){
-		this.c = statusSistema;
+	ConstantsFEPS(String var){
+		this.var = var;
 	}
 	
 	public String getStringValue(){
-		return a;
-	}
-	
-	public int getIntValue(){
-		return b;
-	}
-	
-	public boolean getBooleanValue(){
-		return c;
+		return var;
 	}
 }

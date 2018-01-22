@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="421" pageHeight="595" columnWidth="421" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0cae6a97-1c86-4871-85c7-bfd85cd1b775">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="STYLE_TR_ELLIPSE" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fill="Solid">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARTR}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#000000"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARTR}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="STYLE_TR_TEXT">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARTR}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#FFFFFF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARTR}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000"/>
+		</conditionalStyle>
+	</style>
+	<style name="STYLE_LD_ELLIPSE">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARLD}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#000000"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARLD}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="STYLE_LD_TEXT">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARLD}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#FFFFFF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARLD}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000"/>
+		</conditionalStyle>
+	</style>
+	<style name="STYLE_PM_ELLIPSE">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARPM}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#000000"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARPM}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="STYLE_PM_TEXT">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARPM}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#FFFFFF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARPM}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000"/>
+		</conditionalStyle>
+	</style>
+	<style name="STYLE_AC_ELLIPSE">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARAC}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#000000"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARAC}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="STYLE_AC_TEXT">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARAC}.toString().equalsIgnoreCase("1"))]]></conditionExpression>
+			<style forecolor="#FFFFFF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($P{AMBARAC}.toString().equalsIgnoreCase("0"))]]></conditionExpression>
+			<style forecolor="#000000"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="TR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="LD" class="java.lang.String"/>
+	<parameter name="PM" class="java.lang.String"/>
+	<parameter name="AC" class="java.lang.String"/>
+	<parameter name="MANUAL" class="java.lang.String"/>
+	<parameter name="CODSEQGMPN" class="java.lang.String"/>
+	<parameter name="PNCONTI" class="java.lang.String"/>
+	<parameter name="PNGM" class="java.lang.String"/>
+	<parameter name="APELIDO" class="java.lang.String"/>
+	<parameter name="DATAHORA" class="java.lang.String"/>
+	<parameter name="SEQDIA" class="java.lang.String"/>
+	<parameter name="SEQGM" class="java.lang.String"/>
+	<parameter name="SERIECONTI" class="java.lang.String"/>
+	<parameter name="CODVAR1" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="CODVAR2" class="java.lang.String"/>
+	<parameter name="CODVAR3" class="java.lang.String"/>
+	<parameter name="CODVAR4" class="java.lang.String"/>
+	<parameter name="CODVAR5" class="java.lang.String"/>
+	<parameter name="CODVAR6" class="java.lang.String"/>
+	<parameter name="CODVAR7" class="java.lang.String"/>
+	<parameter name="CODVAR8" class="java.lang.String"/>
+	<parameter name="CODVAR9" class="java.lang.String"/>
+	<parameter name="CODVAR10" class="java.lang.String"/>
+	<parameter name="CODVAR11" class="java.lang.String"/>
+	<parameter name="CODVAR12" class="java.lang.String"/>
+	<parameter name="TXTVAR1" class="java.lang.String"/>
+	<parameter name="TXTVAR2" class="java.lang.String"/>
+	<parameter name="TXTVAR3" class="java.lang.String"/>
+	<parameter name="TXTVAR4" class="java.lang.String"/>
+	<parameter name="TXTVAR5" class="java.lang.String"/>
+	<parameter name="TXTVAR6" class="java.lang.String"/>
+	<parameter name="TXTVAR7" class="java.lang.String"/>
+	<parameter name="TXTVAR8" class="java.lang.String"/>
+	<parameter name="TXTVAR9" class="java.lang.String"/>
+	<parameter name="TXTVAR10" class="java.lang.String"/>
+	<parameter name="TXTVAR11" class="java.lang.String"/>
+	<parameter name="TXTVAR12" class="java.lang.String"/>
+	<parameter name="AMBARTR" class="java.lang.String"/>
+	<parameter name="AMBARLD" class="java.lang.String"/>
+	<parameter name="AMBARPM" class="java.lang.String"/>
+	<parameter name="AMBARAC" class="java.lang.String"/>
+	<parameter name="BUFFERMANUAL" class="java.lang.String"/>
+	<detail>
+		<band height="595" splitType="Stretch">
+			<rectangle>
+				<reportElement x="15" y="80" width="380" height="483" uuid="f546a496-98a7-46ee-9e61-b010c0906699"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<ellipse>
+				<reportElement key="" style="STYLE_TR_ELLIPSE" x="15" y="15" width="60" height="60" uuid="7fa9a2ba-ee95-45f7-b307-8c33c1bfab69">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="STYLE_LD_ELLIPSE" x="90" y="15" width="60" height="60" uuid="f744a8a2-9b23-4200-bd7c-3f2aea2a7c81">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="STYLE_PM_ELLIPSE" x="165" y="15" width="60" height="60" uuid="32ba4115-0e45-4ec1-8024-a71af6be5ac2">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="STYLE_AC_ELLIPSE" x="240" y="15" width="60" height="60" uuid="7d39fac2-1abd-4abc-b7c0-4e0ae9d2b818">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<line>
+				<reportElement x="15" y="160" width="380" height="1" uuid="cddca6a9-ba22-478b-86da-3f94fab18cbe"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="275" width="380" height="1" uuid="87a91ed9-80df-4c34-bec4-8d958dd2dcb4"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="193" y="276" width="1" height="287" uuid="a2e38c8e-be18-47c7-a230-728e06b3a8b4"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="310" width="380" height="1" uuid="d713c722-337d-48a0-adf0-4e5151023eb5"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="350" width="380" height="1" uuid="bbe5986e-25d4-4f27-bbef-a000722d1e76"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="390" width="380" height="1" uuid="836aeafb-dbc0-4a18-bc1a-f66ce5f5553d"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="430" width="380" height="1" uuid="f5b34dc7-3c45-4b50-a8d6-67179ca05874"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="470" width="380" height="1" uuid="742668b0-db6c-44c1-943e-90615d8489db"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="510" width="178" height="1" uuid="c563b33b-7099-41ed-9e5e-61298eb8b100"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<componentElement>
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="204" y="83" width="191" height="77" uuid="2009bc50-74dc-4476-a47d-75fdc422563b"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="true" checksumRequired="false" barWidth="1" barHeight="55">
+					<jr:codeExpression><![CDATA[$P{CODSEQGMPN}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<componentElement>
+				<reportElement x="188" y="166" width="201" height="108" uuid="69eaa183-7d21-4068-a416-bcbeff660147"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="true" checksumRequired="false" barWidth="1" barHeight="80">
+					<jr:codeExpression><![CDATA[$P{SERIECONTI}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<componentElement>
+				<reportElement x="235" y="475" width="155" height="85" uuid="7d2996fd-d137-4fdd-a8fd-0c9921fde990"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false" barWidth="1" barHeight="90">
+					<jr:codeExpression><![CDATA[$P{PNGM}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<staticText>
+				<reportElement x="18" y="197" width="64" height="20" uuid="4c353bda-62d9-4c5b-906a-49969f105c92"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[SEQ. DIA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="217" width="64" height="20" uuid="8a959687-5637-4fcc-a32f-e7859df94360"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[SEQ. GM:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="252" width="100" height="20" uuid="303010ac-cd59-4e8d-bad4-8f295fcec0a8"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[VARIANTES:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="STYLE_TR_TEXT" x="15" y="15" width="60" height="60" uuid="200789e9-4743-4fc2-bf84-fe180d5c6d97">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="25" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="STYLE_LD_TEXT" x="90" y="15" width="60" height="60" uuid="f5b1349a-ea3f-4575-919e-b4011bb91d3e">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="25" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{LD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="STYLE_PM_TEXT" x="165" y="15" width="60" height="60" uuid="990be75f-54a7-4eb1-972a-0ad4f34bfe05">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="25" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="STYLE_AC_TEXT" x="240" y="15" width="60" height="60" uuid="5f37a7f6-ecd4-4734-bebc-ba81582ce4e5">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="25" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{AC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="315" y="30" width="80" height="30" uuid="50fa5e0b-905e-499d-b23a-0d732e90865b">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MANUAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="141" width="100" height="20" uuid="8dc91950-b3b7-4b17-8c0e-2dce92613e3f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PNCONTI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="141" width="100" height="20" uuid="4e97625c-8204-4d80-ae0b-42e09819fa9e">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PNGM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="83" width="176" height="36" uuid="3b368dc4-974b-4ab9-8e1f-50578ad2839f"/>
+				<textElement>
+					<font size="25" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{APELIDO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="165" width="136" height="20" uuid="a8d377a2-8e31-4cf4-b3af-37f9d0f1e550"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATAHORA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="195" width="100" height="20" uuid="f20d4f4e-5529-4fa7-a221-2dfeb29b18ff"/>
+				<textElement>
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEQDIA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="215" width="100" height="20" uuid="2c721c72-7202-472d-804b-e2548b5b63ce">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEQGM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="274" width="170" height="18" uuid="acb0cc58-5d86-4a82-bbca-e74d19d11cb9">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="292" width="170" height="18" uuid="c80fde3e-8920-4cb9-8a56-515b496c5c88">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="314" width="170" height="18" uuid="ba452c8e-a0a0-4acf-943e-3b05c1a9c7aa">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="332" width="170" height="18" uuid="2b69d1d6-2f87-4c90-bf30-0779ac58b480">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="355" width="170" height="18" uuid="9fc3ac9e-fe24-4679-82d5-4d7a4c91ff01">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="373" width="170" height="18" uuid="f05346b0-d2b6-45ca-8e24-eb8ab4c15a8b">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="395" width="170" height="18" uuid="9062cd95-1e06-4b8e-ac4e-2769dc519b12">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR4}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="413" width="170" height="18" uuid="84890dac-0eae-4626-b301-389e689a1354">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR4}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="435" width="170" height="18" uuid="08eaf2a2-ac99-40d3-979a-e4e28e5786b7">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR5}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="453" width="170" height="18" uuid="28f8ef39-4cb7-4d3f-a0e0-f2b15770fc0a">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR5}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="19" y="473" width="170" height="18" uuid="096c011c-f822-4063-bc8c-86c346be8849">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR6}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="491" width="170" height="18" uuid="2d9d077c-22e4-4bd0-85e1-cf351c2832ec">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR6}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="511" width="170" height="18" uuid="534d9f12-08df-4f99-b26c-f950fadfd228">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="20" y="530" width="170" height="30" uuid="c66fd710-053a-43d7-9fc6-4d434e94d2c1">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR7}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="274" width="170" height="18" uuid="aab127b7-0dce-4638-ad07-e73b9100cc50">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR8}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="204" y="292" width="170" height="18" uuid="3bfb49e1-0779-4106-bdcd-166de38f9167">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR8}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="204" y="314" width="170" height="18" uuid="4e186adf-7264-42e5-951f-500d2c387a04">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR9}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="204" y="332" width="170" height="18" uuid="e79775b4-27f8-4de6-a540-c817eaa18adc">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR9}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="355" width="170" height="18" uuid="09d528dd-08c4-41a6-af44-6546a1a4c3e6">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR10}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="373" width="170" height="18" uuid="5219bd66-e076-4553-90da-f7126b0c0357">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR10}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="395" width="170" height="18" uuid="34ef4e30-5d01-4339-a02c-00d641176e65">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR11}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="413" width="170" height="18" uuid="c99449cb-e980-4cae-99ec-3d6f27089617">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR11}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="435" width="170" height="18" uuid="bbb667ba-7f5f-41c4-ba22-e35571731c2d">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CODVAR12}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="453" width="170" height="18" uuid="45f48d22-f0ff-4997-96e2-b6658bcf946c">
+					<printWhenExpression><![CDATA[!new Boolean($P{APELIDO}.toString().equalsIgnoreCase("BOLHA"))]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TXTVAR12}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="194" y="560" width="201" height="24" uuid="55bed6b6-0813-4121-81aa-02f26a09a960"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PNGM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="230" width="153" height="20" uuid="17e0ea4a-e1cb-4fec-b58d-a5dc50c89fb5">
+					<printWhenExpression><![CDATA[!$P{BUFFERMANUAL}.equals("")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{BUFFERMANUAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

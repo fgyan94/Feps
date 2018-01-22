@@ -13,8 +13,6 @@ import java.awt.event.WindowEvent;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -31,9 +29,9 @@ import javax.swing.SwingConstants;
 
 public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
-	
+
 	static MenuPrincipal menu;
-	
+
 	private static JTextField txtUser;
 	private static JPasswordField txtSenha;
 	private static String user;
@@ -49,8 +47,6 @@ public class Login extends JFrame {
 	private JPasswordField txtSenhaNova1, txtSenhaNova2;
 	private JButton btnOk2, btnCancel2;
 
-	Connection c;
-	PreparedStatement p;
 	ResultSet rs;
 
 	public Login() {
@@ -193,7 +189,6 @@ public class Login extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				closeConnection();
 				super.windowClosing(e);
 			}
 		});
@@ -327,7 +322,6 @@ public class Login extends JFrame {
 			if (trocaSenha()) {
 				slider.slideGetVertical(trocaSenha);
 			} else {
-				closeConnection();
 				abreMonitor();
 			}
 
@@ -354,23 +348,21 @@ public class Login extends JFrame {
 				+ criptografa(new String(senha)) + "'";
 
 		try {
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = ConnectionFeps.query(consultaSQL);
 			b = rs.next();
 
-			closeConnection();
+			ConnectionFeps.closeConnection(rs, null, null);
 
 			return b;
 		} catch (SQLException sqlE) {
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
 			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível validar os dados de login!");
 			return false;
 		}
 	}
 
-	public static int getUsuario() {
-		return Integer.parseInt(user);
+	public static String getUsuario() {
+		return user;
 	}
 
 	public static String getSenha() {
@@ -388,26 +380,6 @@ public class Login extends JFrame {
 		txtUser.requestFocusInWindow();
 	}
 
-	private void closeConnection() {
-		try {
-			if (rs != null) {
-				rs.close();
-				rs = null;
-			}
-			if (p != null) {
-				p.close();
-				p = null;
-			}
-			if (c != null) {
-				c.close();
-				c = null;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	// Troca Senha
 	private void validaNovaSenha() {
 		String senha1 = new String(txtSenhaNova1.getPassword());
@@ -415,33 +387,25 @@ public class Login extends JFrame {
 		String senhaCrypt = Login.criptografa(senha1);
 		String loginSenha = Login.getSenha();
 
-		try {
-			if (!senhaCrypt.equals(loginSenha)) {
-				if (senha1.equals(senha2)) {
-					String consultaSQL = "UPDATE Usuario SET senha = '" + senhaCrypt + "'" + "WHERE Usuario_codigo = '"
-							+ Login.getUsuario() + "'";
+		if (!senhaCrypt.equals(loginSenha)) {
+			if (senha1.equals(senha2)) {
+				String consultaSQL = "UPDATE Usuario SET senha = '" + senhaCrypt + "'" + "WHERE Usuario_codigo = '"
+						+ Login.getUsuario() + "'";
 
-					c = ConnectionFeps.getConnection();
-					p = c.prepareStatement(consultaSQL);
-					p.executeUpdate();
-
-					closeConnection();
-
+				if (ConnectionFeps.update(consultaSQL))
 					JOptionPane.showMessageDialog(null, "Senha alterada com sucesso!");
+				else
+					JOptionPane.showMessageDialog(null, "Erro ao tentar alterar a senha!");
 
-					abreMonitor();
-				} else {
-					limpaCampos();
-					txtSenhaNova1.requestFocusInWindow();
-					JOptionPane.showMessageDialog(null, "As senhas não conferem!");
-				}
+				abreMonitor();
 			} else {
 				limpaCampos();
-				JOptionPane.showMessageDialog(null,
-						"Senha igual à atual, por favor, mude a senha ou cancele a operação!");
+				txtSenhaNova1.requestFocusInWindow();
+				JOptionPane.showMessageDialog(null, "As senhas não conferem!");
 			}
-		} catch (SQLException sqlE) {
-
+		} else {
+			JOptionPane.showMessageDialog(null, "Senha igual à atual, por favor, mude a senha ou cancele a operação!");
+			limpaCampos();
 		}
 	}
 

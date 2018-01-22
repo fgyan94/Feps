@@ -4,14 +4,19 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -19,10 +24,13 @@ import javax.swing.border.MatteBorder;
 
 public class CardFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+//	private Dimension dimension = new Dimension(1366, 768);
 
-	final String MONITOR = "monitor";
-	final String PREFERENCES = "preferences";
-	final String EMISSAOGTM = "emissaogtm";
+	public final String MONITOR = "monitor";
+	public final String PREFERENCES = "preferences";
+	public final String EMISSAOGTM = "emissaogtm";
 
 	private JPanel path = new JPanel();
 	private JPanel cardPanel = new JPanel(new CardLayout());
@@ -31,8 +39,8 @@ public class CardFeps extends JPanel {
 	private PreferenciaFeps preferenciaFeps;
 	private EmissaoGTM emissaogtm;
 
-	private static JLabel lblMinimizar = new JLabel("-");
-	private static JLabel lblFechar = new JLabel("X");
+	private JLabel lblMinimizar = new JLabel("-");
+	private JLabel lblFechar = new JLabel("X");
 
 	private JLabel lblHome = new JLabel(new ImageIcon("icofeps\\menu_barra\\home\\home1.png"));
 	private JLabel lblUsuario = new JLabel(new ImageIcon("icofeps\\menu_barra\\user\\user1.png"));
@@ -71,17 +79,17 @@ public class CardFeps extends JPanel {
 	}
 
 	private void buildPanel() {
-		this.setBounds(0, 0, 1366, 768);
+		this.setSize(dimension);
 		this.setLayout(null);
 		this.setBackground(Color.WHITE);
 
 		path.setLocation(0, 0);
-		path.setSize(1366, 80);
+		path.setSize(dimension.width, 80);
 		path.setLayout(null);
 		path.setBackground(Color.WHITE);
 
 		cardPanel.setLocation(0, 80);
-		cardPanel.setSize(1366, 688);
+		cardPanel.setSize(dimension.width, dimension.height - 80);
 		cardPanel.setBackground(Color.WHITE);
 
 		add(path);
@@ -89,14 +97,6 @@ public class CardFeps extends JPanel {
 
 	public Container getCardPanel() {
 		return cardPanel;
-	}
-
-	public void monitorStart() {
-		monitorImpressao.monitorStart();
-	}
-
-	public void monitorStop() {
-		monitorImpressao.monitorStop();
 	}
 
 	private void initializeComponents() {
@@ -174,10 +174,11 @@ public class CardFeps extends JPanel {
 		lblSaidaBuffer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSaidaBuffer.setBounds(1068, 0, 70, 70);
 		lblSaidaBuffer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+		
 		monitorImpressao = new MonitorImpressao();
 		preferenciaFeps = new PreferenciaFeps();
 		emissaogtm = new EmissaoGTM();
+		
 		cardPanel.add(monitorImpressao, MONITOR);
 		cardPanel.add(preferenciaFeps, PREFERENCES);
 		cardPanel.add(emissaogtm, EMISSAOGTM);
@@ -202,25 +203,25 @@ public class CardFeps extends JPanel {
 	}
 
 	private void initializeListeners() {
-		lblFechar.addMouseListener(mouseListenerLabel(lblFechar, FECHAR));
-		lblMinimizar.addMouseListener(mouseListenerLabel(lblMinimizar, MINIMIZAR));
-		lblHome.addMouseListener(mouseListenerLabel(lblHome, S_HOME));
-		lblUsuario.addMouseListener(mouseListenerLabel(lblUsuario, S_USER));
-		lblManTable.addMouseListener(mouseListenerLabel(lblManTable, S_MANUT));
-		lblPropriedade.addMouseListener(mouseListenerLabel(lblPropriedade, S_TOOLS));
-		lblImpressaoOrdem.addMouseListener(mouseListenerLabel(lblImpressaoOrdem, S_IMP));
-		lblReimpressao.addMouseListener(mouseListenerLabel(lblReimpressao, S_REIMP));
-		lblApagarOrdem.addMouseListener(mouseListenerLabel(lblApagarOrdem, S_ERASE));
-		lblSaidaGTM.addMouseListener(mouseListenerLabel(lblSaidaGTM, S_GTM));
-		lblReverseGTM.addMouseListener(mouseListenerLabel(lblReverseGTM, S_REVERSE));
-		lblMonitorCarga.addMouseListener(mouseListenerLabel(lblMonitorCarga, S_MONITOR));
-		lblOrdemManual.addMouseListener(mouseListenerLabel(lblOrdemManual, S_MANUAL));
-		lblOrdemBuffer.addMouseListener(mouseListenerLabel(lblOrdemBuffer, S_INBUFFER));
-		lblSaidaBuffer.addMouseListener(mouseListenerLabel(lblSaidaBuffer, S_OUTBUFFER));
+		mouseListenerLabel(lblFechar, FECHAR);
+		mouseListenerLabel(lblMinimizar, MINIMIZAR);
+		mouseListenerLabel(lblHome, S_HOME);
+		mouseListenerLabel(lblUsuario, S_USER);
+		mouseListenerLabel(lblManTable, S_MANUT);
+		mouseListenerLabel(lblPropriedade, S_TOOLS);
+		mouseListenerLabel(lblImpressaoOrdem, S_IMP);
+		mouseListenerLabel(lblReimpressao, S_REIMP);
+		mouseListenerLabel(lblApagarOrdem, S_ERASE);
+		mouseListenerLabel(lblSaidaGTM, S_GTM);
+		mouseListenerLabel(lblReverseGTM, S_REVERSE);
+		mouseListenerLabel(lblMonitorCarga, S_MONITOR);
+		mouseListenerLabel(lblOrdemManual, S_MANUAL);
+		mouseListenerLabel(lblOrdemBuffer, S_INBUFFER);
+		mouseListenerLabel(lblSaidaBuffer, S_OUTBUFFER);
 	}
 
-	private MouseAdapter mouseListenerLabel(JLabel label, String nome) {
-		return new MouseAdapter() {
+	private void mouseListenerLabel(JLabel label, String nome) {
+		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (!nome.equals(MINIMIZAR) && !nome.equals(FECHAR)) {
@@ -284,6 +285,7 @@ public class CardFeps extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				stop();
 				if (nome.equals(FECHAR))
 					fechar();
 				else if (nome.equals(MINIMIZAR))
@@ -291,17 +293,18 @@ public class CardFeps extends JPanel {
 				else {
 					if (label == lblHome)
 						MenuPrincipal.getMain();
-					if (PreferenciaFeps.loadPreferences() && PreferenciaFeps.getStatus()) {
+					if (preferenciaFeps.getStatus()) {
 						sistemaAberto(true);
-						monitorStop();
-						if (label == lblPropriedade)
+						if (label == lblPropriedade) {
 							((CardLayout) cardPanel.getLayout()).show(cardPanel, PREFERENCES);
+							loadPreferences();
+						}
 						else if (label == lblMonitorCarga) {
 							((CardLayout) cardPanel.getLayout()).show(cardPanel, MONITOR);
 							monitorStart();
 						} else if (label == lblSaidaGTM) {
 							((CardLayout) cardPanel.getLayout()).show(cardPanel, EMISSAOGTM);
-							emissaogtm.requestFocusTextSequencia();
+							startEmissaoGTM(); 
 						}
 					} else
 						sistemaAberto(false);
@@ -341,25 +344,73 @@ public class CardFeps extends JPanel {
 				}
 				super.mouseReleased(e);
 			}
-		};
+		});
 	}
 
 	public void sistemaAberto(boolean aberto) {
 		for (int i = 0; i < path.getComponentCount(); i++) {
 			if (path.getComponent(i) instanceof JLabel)
-				if (((JLabel) path.getComponent(i)) != lblHome && ((JLabel) path.getComponent(i)) != lblFechar && ((JLabel) path.getComponent(i)) != lblMinimizar)
+				if (((JLabel) path.getComponent(i)) != lblHome && ((JLabel) path.getComponent(i)) != lblFechar
+						&& ((JLabel) path.getComponent(i)) != lblMinimizar)
 					path.getComponent(i).setVisible(aberto);
 		}
 	}
-
+	
 	private void fechar() {
-		monitorImpressao.fechar();
-		emissaogtm.cancelTask();
+		stop();
 		Login.menu.fechar();
+	}
+
+	public void monitorStart() {
+		monitorImpressao.monitorStart();
+		monitorImpressao.start();
 	}
 
 	public void startEmissaoGTM() {
 		emissaogtm.start();
 		emissaogtm.requestFocusTextSequencia();
+	}
+	
+	public void stop() {
+		emissaogtm.cancelTask();
+		monitorImpressao.monitorStop();
+		monitorImpressao.cancelTask();
+		monitorImpressao.clearValues();
+	}
+	
+	public boolean loadPreferences() {
+		String consultaSQL;
+		ResultSet rs;
+		boolean ok = false;
+
+		try {
+			consultaSQL = "SELECT * FROM parametros";
+			rs = ConnectionFeps.query(consultaSQL);
+
+			if (rs.next())
+				ok = true;
+			
+			preferenciaFeps.loadPreferences();
+			
+			ConnectionFeps.closeConnection(rs, null, null);
+
+		} catch (SQLException sql) {
+			sql.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível carregar os parâmetros do sistema!");
+		}
+		
+		return ok;
+	}
+
+	public void preferencesCarregaPadrao() {
+		preferenciaFeps.carregaPadrao();
+	}
+	
+	public void preferencesNovo() {
+		preferenciaFeps.novo();
+	}
+
+	public void clearValues() {
+		monitorImpressao.clearValues();
 	}
 }

@@ -1,6 +1,7 @@
 package feps;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +10,6 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -25,6 +24,7 @@ import java.util.TimerTask;
 import java.util.TooManyListenersException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -45,7 +45,9 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
-import javax.swing.JButton;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class MonitorImpressao extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -251,7 +253,10 @@ public class MonitorImpressao extends JPanel {
 			};
 		}
 	}
-
+	
+	private Dimension dimension = new Dimension(1366, 768);
+//	private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	
 	static final String S = "S";
 	static final String I = "I";
 
@@ -264,9 +269,11 @@ public class MonitorImpressao extends JPanel {
 	private JEditorPane edtComunicaFepsRast;
 	private MonitorCarga monitor;
 	private JCheckBox cbBolha;
+	
+	private Relatorio relatorio;
 
-	private static Timer timer;
-	private static TimerTask task;
+	private Timer timer;
+	private TimerTask task;
 
 	private String idCKP, seqDia, seqGM, modelo, descr, serieAtual, apelidoGM, numBolha;
 	private boolean ckpEnviado, imprimeBolha;
@@ -293,7 +300,7 @@ public class MonitorImpressao extends JPanel {
 		timer.schedule(task, 1000, 10000);
 	}
 
-	private void cancelTask() {
+	protected void cancelTask() {
 		if (timer != null && task != null) {
 			timer.cancel();
 			task.cancel();
@@ -307,13 +314,13 @@ public class MonitorImpressao extends JPanel {
 		UIManager.put("List.disabledForeground", Color.BLACK);
 
 		this.setBackground(Color.WHITE);
-		this.setBounds(0, 0, 1366, 688);
-
-		this.setLayout(null);
+		this.setSize(dimension);
 	}
 
 	private void initializeComponents() {
 		serialPort = new SerialComm();
+		relatorio = new Relatorio();
+		
 		lblImpressao = new JLabel("Impressão");
 		lblOrdensParaMontagem = new JLabel("Ordens para montagem:");
 		lblListaModelosProduzidos = new JLabel("Lista de modelos para montagem:");
@@ -331,20 +338,6 @@ public class MonitorImpressao extends JPanel {
 		scrComunicaFepsRast = new JScrollPane();
 
 		monitor = new MonitorCarga();
-
-		lblImpressao.setBounds(578, 0, 777, 98);
-		lblOrdensParaMontagem.setBounds(561, 89, 230, 30);
-		lblListaModelosProduzidos.setBounds(561, 447, 570, 30);
-		lblComunicaoFepsRast.setBounds(1173, 72, 150, 47);
-		lblDesc.setBounds(60, 430, 500, 100);
-		lblSeqDia.setBounds(60, 530, 500, 47);
-		btnManualPrint.setBounds(1131, 89, 30, 30);
-		scrOrdemMontagem.setBounds(561, 118, 600, 315);
-		scrModeloProd.setBounds(561, 476, 600, 200);
-		scrComunicaFepsRast.setBounds(1173, 119, 182, 557);
-		cbBolha.setBounds(843, 89, 278, 30);
-		lblNumMont.setBounds(780, 89, 42, 30);
-		monitor.setBounds(60, 0, 500, 410);
 
 		lblImpressao.setFont(new Font("Stencil", Font.PLAIN, 40));
 		lblOrdensParaMontagem.setFont(new Font("Stencil", Font.PLAIN, 17));
@@ -390,30 +383,14 @@ public class MonitorImpressao extends JPanel {
 		scrComunicaFepsRast.setBorder(new LineBorder(Color.BLACK));
 
 		btnManualPrint.setToolTipText("Impressão manual");
-
-		add(lblImpressao);
-		add(lblOrdensParaMontagem);
-		add(lblComunicaoFepsRast);
-		add(lblListaModelosProduzidos);	
-		add(lblDesc);
-		add(lblSeqDia);
-		add(btnManualPrint);
-		add(scrOrdemMontagem);
-		add(scrModeloProd);
-		add(scrComunicaFepsRast);
-		add(cbBolha);
-		add(monitor);
-		add(lblNumMont);
 		
 		JButton btnEnviaS = new JButton("envia \"S\"");
-		btnEnviaS.setBounds(578, 12, 85, 25);
 		btnEnviaS.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				imprimeOrdem(S);
 			}
 		});
-		add(btnEnviaS);
 		
 		JButton btnEnviaI = new JButton("envia \"I\"");
 		btnEnviaI.addActionListener(new ActionListener() {
@@ -422,8 +399,94 @@ public class MonitorImpressao extends JPanel {
 				imprimeOrdem(I);
 			}
 		});
-		btnEnviaI.setBounds(578, 46, 85, 25);
-		add(btnEnviaI);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(60)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(monitor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblDesc, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSeqDia, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE))
+					.addGap(0)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(570)
+							.addComponent(btnManualPrint, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(281)
+							.addComponent(cbBolha, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(16)
+							.addComponent(btnEnviaI, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(84)
+							.addComponent(lblImpressao, GroupLayout.PREFERRED_SIZE, 683, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblOrdensParaMontagem, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(16)
+							.addComponent(btnEnviaS, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(219)
+							.addComponent(lblNumMont, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(612)
+							.addComponent(lblComunicaoFepsRast, GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrOrdemMontagem, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
+								.addComponent(scrModeloProd, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblListaModelosProduzidos, GroupLayout.PREFERRED_SIZE, 570, GroupLayout.PREFERRED_SIZE))
+							.addGap(12)
+							.addComponent(scrComunicaFepsRast))))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(monitor, GroupLayout.PREFERRED_SIZE, 410, GroupLayout.PREFERRED_SIZE)
+							.addGap(20)
+							.addComponent(lblDesc, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblSeqDia, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(89)
+									.addComponent(btnManualPrint, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(89)
+									.addComponent(cbBolha, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(46)
+									.addComponent(btnEnviaI))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(118)
+									.addComponent(scrOrdemMontagem, GroupLayout.PREFERRED_SIZE, 315, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(89)
+									.addComponent(lblOrdensParaMontagem, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(12)
+									.addComponent(btnEnviaS)))
+							.addGap(43)
+							.addComponent(scrModeloProd, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(89)
+							.addComponent(lblNumMont, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(447)
+							.addComponent(lblListaModelosProduzidos, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblImpressao, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(89)
+									.addComponent(lblComunicaoFepsRast, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(scrComunicaFepsRast, GroupLayout.PREFERRED_SIZE, 558, GroupLayout.PREFERRED_SIZE)))
+					.addGap(92))
+		);
+		setLayout(groupLayout);
 		
 		ckpEnviado = false;
 		imprimeBolha = false;
@@ -525,7 +588,9 @@ public class MonitorImpressao extends JPanel {
 	}
 
 	public void monitorStop() {
+		monitor.stopTaskCountTempo();
 		monitor.cancelTask();
+		cancelTask();
 	}
 
 	private void fillTables() {
@@ -536,30 +601,31 @@ public class MonitorImpressao extends JPanel {
 	private void fillTableMontagem() {
 		List<Ordem> lista = new ArrayList<Ordem>();
 		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
 		ResultSet rs;
 
 		try {
 			consultaSQL = "SELECT Ordem_Conti.*, Status_Cockpit.descricao, GM_Conti.apelido, GM_Conti.Codigo_GM FROM Status_cockpit, "
-					+ "Ordem_Conti LEFT OUTER JOIN GM_Conti ON Ordem_Conti.PART_NUMBER_GM = GM_Conti.CODIGO_GM "
-					+ "WHERE Ordem_Conti.Status_cockpit = '001' AND Ordem_Conti.Status_cockpit = STATUS_COCKPIT.codigo ORDER BY Ordem_Conti.Ordem_Entrada";
+					+ "Ordem_Conti, GM_Conti WHERE Ordem_Conti.PART_NUMBER_GM = GM_Conti.CODIGO_GM "
+					+ "AND Ordem_Conti.Status_cockpit = '" + ConstantsFEPS.COCKPIT_INICIADO.getStringValue() 
+					+ "' AND Ordem_Conti.Status_cockpit = STATUS_COCKPIT.codigo ORDER BY Ordem_Conti.Ordem_Entrada";
 
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next()) {
 				while (!rs.isAfterLast()) {
-					String partNumber = rs.getString("part_number_gm");
-					String apelido = rs.getString("apelido");
-					String ordem_serie = rs.getString("ordem_conti_serie");
-					LocalDate data = LocalDate.parse(rs.getString("ordem_conti_data").substring(0, 10));
-					LocalTime time = LocalTime.parse(rs.getString("ordem_conti_data").substring(11));
+					String partNumber = rs.getString("part_number_gm").trim();
+					String apelido = rs.getString("apelido").trim();
+					String ordem_serie = rs.getString("ordem_conti_serie").trim();
+					LocalDate data = LocalDate.parse(rs.getString("ordem_conti_data").trim().substring(0, 10));
+					LocalTime time = LocalTime.parse(rs.getString("ordem_conti_data").trim().substring(11));
 					String ordem_data = LocalDateTime.of(data, time).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-					String ordem_entrada = rs.getString("ordem_entrada");
-
-					Ordem ordem = new Ordem(partNumber, apelido, ordem_serie, ordem_data, ordem_entrada);
+					String ordem_entrada = rs.getString("ordem_entrada").trim();
+					String seq_dia = rs.getString("sequencia_dia").trim();
+					String qtde = String.valueOf(1).trim();
+					String seq_gm = rs.getString("numDoc").trim();
+					String statusCockpit = rs.getString("status_cockpit").trim();
+					
+					Ordem ordem = new Ordem(partNumber, apelido, ordem_serie, ordem_data, ordem_entrada, seq_dia, qtde, seq_gm, statusCockpit);
 					lista.add(ordem);
 
 					rs.next();
@@ -570,45 +636,64 @@ public class MonitorImpressao extends JPanel {
 				
 				lblNumMont.setText(Integer.toString(lista.size()));
 				
-				if(lista.size() > PreferenciaFeps.getAtraso()) {
+				if(lista.size() > getAtraso()) {
 					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(255, 0, 0)));
 					lblNumMont.setForeground(new Color(255, 0, 0));
-				} else if(lista.size() <= PreferenciaFeps.getAtraso() && lista.size() > (PreferenciaFeps.getAtraso() / 2)) {
+				} else if(lista.size() <= getAtraso() && lista.size() > (getAtraso() / 2)) {
 					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(255, 210, 0)));
 					lblNumMont.setForeground(new Color(255, 210, 0));
 				} else {
 					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(0, 210, 0)));
 					lblNumMont.setForeground(new Color(0, 210, 0));
 				}
+			} else {
+				fmtMontagem.clear();
+				lblNumMont.setText("0");
+				scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(0, 210, 0)));
+				lblNumMont.setForeground(new Color(0, 210, 0));
 			}
-
-			rs.close();
-			p.close();
-			c.close();
-
-			rs = null;
-			p = null;
-			c = null;
+			
+			ConnectionFeps.closeConnection(rs, null, null);
 
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao tentar preencher a tabela de montagem!");
 		}
+	}
+
+	private int getAtraso() {
+		String consultaSQL = "SELECT * FROM parametros";
+		int parametro = -1;
+		ResultSet rs;
+		try {
+			rs = ConnectionFeps.query(consultaSQL);
+
+			if (rs.next())
+				if(rs.getString("atraso_linha") == null)
+					parametro = -1;
+				else
+					parametro = Integer.parseInt(rs.getString("atraso_linha").trim());
+
+			ConnectionFeps.closeConnection(rs, null, null);
+
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao buscar o parâmetro: Atraso da linha!");
+		}
+
+		return parametro;
 	}
 
 	private void fillTableProduzido() {
 
 		List<Ordem> lista = new ArrayList<Ordem>();
 		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
 		ResultSet rs;
 		
 		try {
 			consultaSQL = "SELECT gm_conti.*, qtde = (SELECT COUNT(*) FROM ordem_conti WHERE part_number_gm = codigo_gm"
-					+ "   AND status_cockpit = '001') FROM gm_conti ORDER BY qtde DESC";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+					+ "   AND status_cockpit = '" + ConstantsFEPS.COCKPIT_INICIADO.getStringValue() + "') FROM gm_conti ORDER BY qtde DESC";
+			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next()) {
 				while (!rs.isAfterLast()) {
@@ -628,16 +713,11 @@ public class MonitorImpressao extends JPanel {
 				fmtProduzido.addOrdemList(lista);
 			}
 
-			rs.close();
-			p.close();
-			c.close();
-
-			rs = null;
-			p = null;
-			c = null;
+			ConnectionFeps.closeConnection(rs, null, null);
 
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao tentar preencher a tabela dos modelos produzidos!");
 		}
 	}
 
@@ -656,8 +736,6 @@ public class MonitorImpressao extends JPanel {
 
 			else if (!cbBolha.isSelected() && fmtMontagem.getRowCount() > 0) {
 				String consultaSQL;
-				Connection c;
-				PreparedStatement p;
 				ResultSet rs;
 
 				modelo = (String) fmtMontagem.getValueAt(0, 0);
@@ -669,9 +747,7 @@ public class MonitorImpressao extends JPanel {
 				try {
 					consultaSQL = "SELECT * FROM ORDEM_GM WHERE ordem_conti_serie = '" + serieAtual + "'";
 
-					c = ConnectionFeps.getConnection();
-					p = c.prepareStatement(consultaSQL);
-					rs = p.executeQuery();
+					rs = ConnectionFeps.query(consultaSQL);
 
 					if (rs.next())
 						seqGM = rs.getString("ordem_gm_doc");
@@ -679,8 +755,7 @@ public class MonitorImpressao extends JPanel {
 						seqGM = (char) 2 + "B" + seqDia.substring((seqDia.length() - 1) - 3) + idCKP + (char) 3;
 
 					consultaSQL = "SELECT * FROM gm_conti WHERE codigo_gm = '" + modelo + "'";
-					p = c.prepareStatement(consultaSQL);
-					rs = p.executeQuery();
+					rs = ConnectionFeps.query(consultaSQL);
 
 					if (rs.next()) {
 						idCKP = MenuPrincipal.padding(rs.getInt("id"), 3);
@@ -696,12 +771,11 @@ public class MonitorImpressao extends JPanel {
 					ckpEnviado = true;
 					imprimeBolha = false;
 
-					rs.close();
-					p.close();
-					c.close();
+					ConnectionFeps.closeConnection(rs, null, null);
+					
 				} catch (SQLException sqlE) {
 					sqlE.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+					JOptionPane.showMessageDialog(null, "Erro ao receber os dados de entrada da porta serial!");
 				}
 
 			}
@@ -712,7 +786,7 @@ public class MonitorImpressao extends JPanel {
 				ckpEnviado = false;
 				imprimeBolha = false;
 				
-				Relatorio.imprimeBolha(numBolha);
+				relatorio.imprimeBolha(numBolha);
 				
 				numBolha = MenuPrincipal.padding(Integer.parseInt(numBolha) + 1, 4);
 				
@@ -722,8 +796,8 @@ public class MonitorImpressao extends JPanel {
 				lblSeqDia.setText("Sequência dia - " + seqDia);
 				ckpEnviado = false;
 				
-				Relatorio.setStatusImpressao(serieAtual, apelidoGM);
-				Relatorio.imprimeOrdem(serieAtual, modelo);
+				relatorio.setStatusImpressao(serieAtual, apelidoGM);
+				relatorio.imprimeOrdem(serieAtual, modelo);
 			}
 		}
 		start();
@@ -733,9 +807,7 @@ public class MonitorImpressao extends JPanel {
 		receiveComm(bufferSerial);
 	}
 
-	public void fechar() {
-		monitor.stopTaskCountTempo();
-		monitor.cancelTask();
-		cancelTask();
+	public void clearValues() {
+		monitor.clearValues();		
 	}
 }

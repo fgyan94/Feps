@@ -16,53 +16,84 @@ public class ConnectionFeps {
 					.getConnection("jdbc:sqlserver://localhost:1433;databaseName=Feps;integratedSecurity=true;");
 
 			return c;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar");
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível obter a conexão ao banco de dados!");
 			return null;
 		}
 	}
+	
+	public static boolean update(String consultaSQL){
+		try {
+			Connection c = getConnection();
+			PreparedStatement p = c.prepareStatement(consultaSQL);
+			p.executeUpdate();
+			
+			closeConnection(null, p, c);
+			
+			return true;
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível fazer o update!");
+		}		
+		return false;
+}
 
+	public static ResultSet query(String consultaSQL){
+		try {
+			return getConnection().prepareStatement(consultaSQL).executeQuery();
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível consultar o banco de dados!");
+		}
+		return null;
+	}
+	
 	public static int getValorSeq(String nome) {
 		try {
-			Connection c;
-			PreparedStatement p;
 			ResultSet rs;
 			String consultaSQL = "SELECT * FROM Controle_geral WHERE nome = '" + nome + "'";
 
-			c = getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = query(consultaSQL);
 
 			if (rs.next()) {
 				int valor = rs.getInt("valor") + 1;
-				p.close();
-				p = c.prepareStatement(
-						"UPDATE Controle_geral SET valor = '" + valor + "'" + " WHERE nome = '" + nome + "'");
-				p.executeUpdate();
+				consultaSQL = "UPDATE Controle_geral SET valor = '" + valor + "'" + " WHERE nome = '" + nome + "'";
+				update(consultaSQL);
+				
+				closeConnection(rs, null, null);
 
-				rs.close();
-				p.close();
-				c.close();
-				
-				rs = null;
-				p = null;
-				c = null;
-				
 				return valor;
 			} else {
-				PreparedStatement p2 = c.prepareStatement(
-						"INSERT INTO Controle_geral(nome, valor) VALUES (" + "'" + nome + "', '" + 1 + "')");
-				p2.executeUpdate();
-
-				p2.close();
-				c.close();
+				consultaSQL = "INSERT INTO Controle_geral(nome, valor) VALUES (" + "'" + nome + "', '" + 1 + "')";
+				update(consultaSQL);
+				closeConnection(rs, null, null);
 				return 1;
 			}
-		} catch (SQLException sql) {
-			JOptionPane.showMessageDialog(null, "Erro ao consultar");
-			sql.printStackTrace();
+		} catch (SQLException sqlE) {
+			JOptionPane.showMessageDialog(null, "Não foi possível obter o valor sequencial!");
+			sqlE.printStackTrace();
 			return -1;
+		}
+	}
+
+	public static void closeConnection(ResultSet rs, PreparedStatement p, Connection c) {
+		try {
+			if (rs != null) {
+				rs.close();
+				rs = null;
+			}
+			if (p != null) {
+				p.close();
+				p = null;
+			}
+			if (c != null) {
+				c.close();
+				c = null;
+			}
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível fechar as conexões!");
 		}
 	}
 }

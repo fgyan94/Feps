@@ -2,77 +2,427 @@ package feps;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
+
 public class MenuPrincipal extends JFrame {
 
+	private class InicializaSistema extends JDialog {
+		private static final long serialVersionUID = 1L;
+
+		private JLabel lblUltimaData = new JLabel("Última data:");
+		private JLabel lblDataAbertura = new JLabel("Data abertura:");
+		private JTextField txtUltimaData = new JTextField();
+		private JComboBox<String> cbDataAbertura = new JComboBox<String>();
+		private JLabel btnInicializar = new JLabel("Inicializar");
+		private JLabel btnCancelar = new JLabel("Cancelar");
+
+		public InicializaSistema() {
+			buildPanel();
+			initializeComponents();
+			initializeListeners();
+			loadComponents();
+		}
+
+		private void buildPanel() {
+			this.setBounds(0, 0, 300, 200);
+			this.setModal(true);
+			this.setUndecorated(true);
+			this.setOpacity(0.95f);
+			this.setLocationRelativeTo(null);
+			this.setBackground(Color.BLACK);
+
+			this.getContentPane().setLayout(null);
+			this.getContentPane().setBackground(Color.BLACK);
+		}
+
+		private void initializeComponents() {
+
+			lblUltimaData.setFont(new Font("Stencil", Font.PLAIN, 14));
+			lblUltimaData.setBounds(10, 30, 120, 30);
+			lblUltimaData.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblUltimaData.setForeground(Color.LIGHT_GRAY);
+			getContentPane().add(lblUltimaData);
+
+			lblDataAbertura.setFont(new Font("Stencil", Font.PLAIN, 14));
+			lblDataAbertura.setBounds(10, 80, 120, 30);
+			lblDataAbertura.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblDataAbertura.setForeground(Color.LIGHT_GRAY);
+			getContentPane().add(lblDataAbertura);
+
+			cbDataAbertura.setFont(new Font("Stencil", Font.PLAIN, 14));
+			cbDataAbertura.setBounds(140, 80, 120, 30);
+			cbDataAbertura.setBackground(Color.LIGHT_GRAY);
+			getContentPane().add(cbDataAbertura);
+
+			txtUltimaData.setFont(new Font("Stencil", Font.PLAIN, 14));
+			txtUltimaData.setBounds(140, 30, 120, 30);
+			txtUltimaData.setBorder(new MatteBorder(1, 1, 1, 1, new Color(255, 255, 200)));
+			txtUltimaData.setHorizontalAlignment(SwingConstants.CENTER);
+			txtUltimaData.setForeground(Color.LIGHT_GRAY);
+			txtUltimaData.setBackground(Color.DARK_GRAY);
+			txtUltimaData.setEditable(false);
+			getContentPane().add(txtUltimaData);
+
+			btnInicializar.setFont(new Font("Stencil", Font.PLAIN, 14));
+			btnInicializar.setBounds(30, 150, 130, 30);
+			btnInicializar.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+			btnInicializar.setHorizontalAlignment(SwingConstants.CENTER);
+			btnInicializar.setForeground(Color.LIGHT_GRAY);
+			getContentPane().add(btnInicializar);
+
+			btnCancelar.setFont(new Font("Stencil", Font.PLAIN, 14));
+			btnCancelar.setBounds(170, 150, 90, 30);
+			btnCancelar.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+			btnCancelar.setHorizontalAlignment(SwingConstants.CENTER);
+			btnCancelar.setForeground(Color.LIGHT_GRAY);
+			getContentPane().add(btnCancelar);
+		}
+
+		private void initializeListeners() {
+			btnInicializar.addMouseListener(mouseListenerLabel(btnInicializar));
+			btnCancelar.addMouseListener(mouseListenerLabel(btnCancelar));
+		}
+
+		private void loadComponents() {
+			loadUltimaData();
+			loadComboBox();
+			setCellRenderComboBox();
+		}
+
+		private void loadUltimaData() {
+			String consultaSQL;
+			ResultSet rs;
+
+			try {
+				consultaSQL = "SELECT * FROM parametros";
+				rs = ConnectionFeps.query(consultaSQL);
+
+				if (rs.next()) {
+					String sDate = rs.getString("data_sistema");
+					if (sDate == null)
+						txtUltimaData.setText("");
+					else {
+						sDate = new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(sDate));
+						txtUltimaData.setText(sDate);
+					}
+				}
+
+				ConnectionFeps.closeConnection(rs, null, null);
+			} catch (SQLException sqlE) {
+				sqlE.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Não foi possível carregar a última data do sistema!");
+			}
+		}
+
+		private void loadComboBox() {
+			cbDataAbertura.removeAll();
+			LocalDate data;
+
+			if (txtUltimaData.getText().equals(""))
+				data = LocalDate.now();
+			else {
+				int dayOfMonth = Integer.parseInt(txtUltimaData.getText().substring(0, 2));
+				int month = Integer.parseInt(txtUltimaData.getText().substring(3, 5));
+				int year = Integer.parseInt(txtUltimaData.getText().substring(6));
+
+				data = LocalDate.of(year, month, dayOfMonth);
+				data = data.plusDays(1);
+			}
+
+			for (int i = 0; i < 30; i++) {
+				String stringData = new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(data));
+				cbDataAbertura.addItem(stringData);
+				data = data.plusDays(1);
+			}
+		}
+
+		private void setCellRenderComboBox() {
+			cbDataAbertura.setRenderer(new ListCellRenderer<String>() {
+
+				@Override
+				public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
+						boolean isSelected, boolean cellHasFocus) {
+
+					JLabel renderer = (JLabel) new DefaultListCellRenderer().getListCellRendererComponent(list, value,
+							index, isSelected, cellHasFocus);
+
+					if (isSelected) {
+						renderer.setForeground(Color.BLACK);
+						renderer.setBackground(Color.LIGHT_GRAY);
+					}
+
+					if (list.isSelectedIndex(index)) {
+						list.setSelectionForeground(Color.BLACK);
+						list.setSelectionBackground(Color.LIGHT_GRAY);
+					}
+
+					return renderer;
+				}
+			});
+
+		}
+
+		private void run() {
+			String consultaSQL;
+			String data = (String) cbDataAbertura.getSelectedItem();
+
+			int dayOfMonth = Integer.parseInt(data.substring(0, 2));
+			int month = Integer.parseInt(data.substring(3, 5));
+			int year = Integer.parseInt(data.substring(6));
+
+			consultaSQL = "UPDATE parametros SET aberto = 'S', data_sistema = '" + LocalDate.of(year, month, dayOfMonth)
+					+ "'";
+
+			if (!ConnectionFeps.update(consultaSQL))
+				JOptionPane.showMessageDialog(null, "Não foi possível inicializar o dia!");
+		}
+
+		private MouseAdapter mouseListenerLabel(JLabel label) {
+			return new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (label == btnInicializar) {
+						run();
+						change();
+						dispose();
+					} else
+						dispose();
+
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					label.setBorder(new MatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY));
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+				}
+			};
+		}
+	}
+	
+	private class EncerraSistema extends JDialog {
+		private static final long serialVersionUID = 1L;
+
+		private JLabel lblEncerraDia = new JLabel("Encerrar o dia?");
+		private JLabel btnSim = new JLabel("SIM");
+		private JLabel btnNao = new JLabel("NÃO");
+
+		public EncerraSistema() {
+			buildPanel();
+			initializeComponents();
+			initializeListeners();
+		}
+
+		private void buildPanel() {
+			this.setBounds(0, 0, 300, 140);
+			this.setModal(true);
+			this.setUndecorated(true);
+			this.setOpacity(0.95f);
+			this.setLocationRelativeTo(null);
+			this.setBackground(Color.BLACK);
+			this.getContentPane().setBackground(Color.BLACK);
+			getContentPane().setLayout(null);
+		}
+
+		private void initializeComponents() {
+
+			lblEncerraDia.setHorizontalAlignment(SwingConstants.LEFT);
+			lblEncerraDia.setFont(new Font("Stencil", Font.PLAIN, 20));
+			lblEncerraDia.setForeground(Color.LIGHT_GRAY);
+			lblEncerraDia.setBounds(10, 10, 280, 90);
+			getContentPane().add(lblEncerraDia);
+			
+			btnSim.setHorizontalAlignment(SwingConstants.CENTER);
+			btnSim.setFont(new Font("Stencil", Font.PLAIN, 14));
+			btnSim.setBounds(105, 100, 90, 30);
+			btnSim.setForeground(Color.LIGHT_GRAY);
+			btnSim.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+			getContentPane().add(btnSim);
+			
+			btnNao.setHorizontalAlignment(SwingConstants.CENTER);
+			btnNao.setFont(new Font("Stencil", Font.PLAIN, 14));
+			btnNao.setBounds(200, 100, 90, 30);
+			btnNao.setForeground(Color.LIGHT_GRAY);
+			btnNao.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+			getContentPane().add(btnNao);
+		}
+
+		private void initializeListeners() {
+			btnSim.addMouseListener(mouseListenerLabel(btnSim));
+			btnNao.addMouseListener(mouseListenerLabel(btnNao));
+		}
+
+		private void end() {
+			String consultaSQL = "UPDATE parametros SET aberto = 'N'";
+			if (!ConnectionFeps.update(consultaSQL))
+				JOptionPane.showMessageDialog(null, "Não foi possível encerrar o dia!");
+		}
+
+		private void clearValues() {
+			String consultaSQL, serie;
+			ResultSet rs;
+
+			try {
+				consultaSQL = "SELECT * FROM gm_conti";
+				rs = ConnectionFeps.query(consultaSQL);
+
+				if (rs.next()) {
+					while (!rs.isAfterLast()) {
+						serie = "SERIE_" + rs.getString("apelido_serie");
+						consultaSQL = "UPDATE controle_geral SET valor = '0' WHERE nome = '" + serie + "'";
+						if (!ConnectionFeps.update(consultaSQL)) {
+							JOptionPane.showMessageDialog(null, "Não foi possível zerar o controle da série: " + serie + "!");
+							return;
+						}
+						rs.next();
+					}
+				}
+				
+				ConnectionFeps.closeConnection(rs, null, null);
+				
+				consultaSQL = "UPDATE controle_geral SET valor = '0' WHERE nome = 'SEQ_DIA'";
+				if (!ConnectionFeps.update(consultaSQL)) {
+					JOptionPane.showMessageDialog(null, "Não foi possível zerar o controle das sequências dia!");
+					return;
+				}
+				
+
+			} catch (SQLException sqlE) {
+				sqlE.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Não foi possível buscar os dados para zerar os valores de controle!");
+			}
+		}
+		
+		private MouseAdapter mouseListenerLabel(JLabel label) {
+			return new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(label == btnSim) {
+						setCursor(new Cursor(Cursor.WAIT_CURSOR));
+						end();
+						clearValues();
+						change();
+						close();
+						dispose();
+						setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					} else
+						dispose();
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					label.setBorder(new MatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY));
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					label.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+				}
+			};
+		}
+		
+		private void close() {
+			card.stop();
+			card.clearValues();
+		}
+	}
+	
 	private static final long serialVersionUID = 1L;
 
-	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	private Dimension dimension = new Dimension(1366, 768);
+//	private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	
 	private static JPanel cardPanel = new JPanel(new CardLayout());
 
 	private JPanel main = new JPanel();
-	private static CardFeps card = new CardFeps();
+	private CardFeps card = new CardFeps();
 
-	private static JLabel lblMinimizar = new JLabel("-");
-	private static JLabel lblFechar = new JLabel("X");
+	private JLabel lblMinimizar = new JLabel("-");
+	private JLabel lblFechar = new JLabel("X");
 
 	// Aba "SISTEMA"
-	private static JLabel lblSistema = new JLabel("SISTEMA");
-	private static JLabel lblStatusProd = new JLabel(getIconSystemStatus());
-	private static JLabel lblUsuarios = new JLabel(new ImageIcon("icofeps\\menu\\user.png"));
-	private static JLabel lblManTable = new JLabel(new ImageIcon("icofeps\\menu\\avancedMaintenence.png"));
-	private static JLabel lblPropriedades = new JLabel(new ImageIcon("icofeps\\menu\\tools.png"));
+	private JLabel lblSistema = new JLabel("SISTEMA");
+	private JLabel lblStatusProd = new JLabel(getIconSystemStatus());
+	private JLabel lblUsuarios = new JLabel(new ImageIcon("icofeps\\menu\\user.png"));
+	private JLabel lblManTable = new JLabel(new ImageIcon("icofeps\\menu\\avancedMaintenence.png"));
+	private JLabel lblPropriedades = new JLabel(new ImageIcon("icofeps\\menu\\tools.png"));
 
 	// Aba "PRODUÇÃO"
-	private static JLabel lblProducao = new JLabel("PRODUÇÃO");
-	private static JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
-	private static JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu\\reprint.png"));
-	private static JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
+	private JLabel lblProducao = new JLabel("PRODUÇÃO");
+	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
+	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu\\reprint.png"));
+	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
 
 	// Aba "EXPEDIÇÃO"
-	private static JLabel lblExpedicao = new JLabel("EXPEDIÇÃO");
-	private static JLabel lblSaidaGTM = new JLabel(new ImageIcon("icofeps\\menu\\saida-gtm.png"));
-	private static JLabel lblReverseGTM = new JLabel(new ImageIcon("icofeps\\menu\\estorno-gtm.png"));
+	private JLabel lblExpedicao = new JLabel("EXPEDIÇÃO");
+	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("icofeps\\menu\\saida-gtm.png"));
+	private JLabel lblReverseGTM = new JLabel(new ImageIcon("icofeps\\menu\\estorno-gtm.png"));
 
 	// Aba "CONTINGÊNCIA"
-	private static JLabel lblContingencia = new JLabel("CONTINGÊNCIA");
-	private static JLabel lblMonitorCarga = new JLabel(new ImageIcon("icofeps\\menu\\monitor-carga.png"));
-	private static JLabel lblOrdemManual = new JLabel(new ImageIcon("icofeps\\menu\\manualOrder.png"));
-	private static JLabel lblOrdemBuffer = new JLabel(new ImageIcon("icofeps\\menu\\bufferOrder.png"));
-	private static JLabel lblSaidaBuffer = new JLabel(new ImageIcon("icofeps\\menu\\sendBuffer.png"));
+	private JLabel lblContingencia = new JLabel("CONTINGÊNCIA");
+	private JLabel lblMonitorCarga = new JLabel(new ImageIcon("icofeps\\menu\\monitor-carga.png"));
+	private JLabel lblOrdemManual = new JLabel(new ImageIcon("icofeps\\menu\\manualOrder.png"));
+	private JLabel lblOrdemBuffer = new JLabel(new ImageIcon("icofeps\\menu\\bufferOrder.png"));
+	private JLabel lblSaidaBuffer = new JLabel(new ImageIcon("icofeps\\menu\\sendBuffer.png"));
 
 	public MenuPrincipal() {
 		setTitle("FEPS");
 		buildFrame();
 		initializeComponents();
 		initializeListeners();
-		verificaSistema();
+		change();
 	}
 
 	private void buildFrame() {
 		this.setUndecorated(true);
 		this.setOpacity(0.9f);
 		this.setLocationRelativeTo(null);
-		this.setExtendedState(MAXIMIZED_BOTH);
+//		this.setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		this.setPreferredSize(dimension);
@@ -94,7 +444,7 @@ public class MenuPrincipal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				if (!PreferenciaFeps.loadPreferences()) {
+				if (!card.loadPreferences()) {
 					((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 					((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
 					card.sistemaAberto(false);
@@ -104,9 +454,9 @@ public class MenuPrincipal extends JFrame {
 							null, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 					if (resposta == 0)
-						PreferenciaFeps.novo();
+						card.preferencesNovo();
 					else
-						PreferenciaFeps.carregaPadrao();
+						card.preferencesCarregaPadrao();
 
 				}
 				super.windowOpened(e);
@@ -255,7 +605,7 @@ public class MenuPrincipal extends JFrame {
 		lblSaidaBuffer.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblSaidaBuffer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSaidaBuffer.setToolTipText("Saída Buffer");
-
+		
 		GroupLayout gl_main = new GroupLayout(main);
 		gl_main.setHorizontalGroup(gl_main.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_main.createSequentialGroup().addGap(dimension.width - 100)
@@ -395,7 +745,7 @@ public class MenuPrincipal extends JFrame {
 				else if (label == lblMinimizar)
 					minimizar();
 				else if (label == lblStatusProd)
-					if (PreferenciaFeps.getStatus())
+					if (getStatus())
 						new EncerraSistema().setVisible(true);
 					else
 						new InicializaSistema().setVisible(true);
@@ -408,9 +758,9 @@ public class MenuPrincipal extends JFrame {
 					else if (label == lblManTable)
 						;
 					else if (label == lblPropriedades) {
+						card.loadPreferences();
 						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
-						PreferenciaFeps.loadPreferences();
 					}
 					// PRODUÇÃO
 					else if (label == lblImpressaoOrdem)
@@ -422,9 +772,9 @@ public class MenuPrincipal extends JFrame {
 
 					// EXPEDIÇÃO
 					else if (label == lblSaidaGTM) {
+						card.startEmissaoGTM();
 						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.EMISSAOGTM);
-						card.startEmissaoGTM();
 					}
 					
 					else if (label == lblReverseGTM)
@@ -432,10 +782,9 @@ public class MenuPrincipal extends JFrame {
 
 					// CONTINGÊNCIA
 					else if (label == lblMonitorCarga) {
+						card.monitorStart();
 						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MONITOR);
-						if (PreferenciaFeps.loadPreferences())
-							card.monitorStart();
 
 					} else if (label == lblOrdemManual)
 						;
@@ -456,7 +805,7 @@ public class MenuPrincipal extends JFrame {
 					if (label == lblUsuarios)
 						lblUsuarios.setIcon(new ImageIcon("icofeps\\menu\\userClicked.png"));
 					else if (label == lblStatusProd) {
-						if (PreferenciaFeps.getStatus())
+						if (getStatus())
 							lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stopClicked.png"));
 						else
 							lblStatusProd.setIcon(new ImageIcon("icoFeps\\menu\\playClicked.png"));
@@ -510,7 +859,7 @@ public class MenuPrincipal extends JFrame {
 					if (label == lblUsuarios)
 						lblUsuarios.setIcon(new ImageIcon("icofeps\\menu\\user.png"));
 					else if (label == lblStatusProd) {
-						if (PreferenciaFeps.getStatus())
+						if (getStatus())
 							lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
 						else
 							lblStatusProd.setIcon(new ImageIcon("icoFeps\\menu\\play.png"));
@@ -560,8 +909,8 @@ public class MenuPrincipal extends JFrame {
 		};
 	}
 
-	public static void verificaSistema() {
-		if (PreferenciaFeps.getStatus()) {
+	public void change() {
+		if (getStatus()) {
 			sistemaAberto(true);
 			card.sistemaAberto(true);
 			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
@@ -576,7 +925,7 @@ public class MenuPrincipal extends JFrame {
 		((CardLayout) cardPanel.getLayout()).show(cardPanel, "main");
 	}
 
-	private static void sistemaAberto(boolean aberto) {
+	private void sistemaAberto(boolean aberto) {
 		lblManTable.setVisible(aberto);
 		lblImpressaoOrdem.setVisible(aberto);
 		lblReimpressao.setVisible(aberto);
@@ -589,8 +938,8 @@ public class MenuPrincipal extends JFrame {
 		lblSaidaBuffer.setVisible(aberto);
 	}
 
-	private static ImageIcon getIconSystemStatus() {
-		if (PreferenciaFeps.getStatus())
+	private ImageIcon getIconSystemStatus() {
+		if (getStatus())
 			return new ImageIcon("icofeps\\menu\\stop.png");
 		else
 			return new ImageIcon("icofeps\\menu\\play.png");
@@ -610,8 +959,36 @@ public class MenuPrincipal extends JFrame {
 	}
 
 	public void fechar() {
-		card.monitorStop();
+		card.stop();
 		dispose();
 		System.exit(0);
+	}
+	
+	private Object getParameter(String tmp) {
+		String consultaSQL = "SELECT * FROM parametros";
+		String parametro = null;
+		ResultSet rs;
+		try {
+			rs = ConnectionFeps.query(consultaSQL);
+
+			if (rs.next())
+				if(rs.getString(tmp) == null)
+					parametro = "";
+				else
+					parametro = rs.getString(tmp).trim();
+
+			ConnectionFeps.closeConnection(rs, null, null);
+
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao buscar o parâmetro: " + tmp + "!");
+		}
+
+		return parametro;
+	}
+	
+	public boolean getStatus() {
+		String ret = ((String) getParameter("aberto"));
+		return ret != null && ret.equals("S");
 	}
 }

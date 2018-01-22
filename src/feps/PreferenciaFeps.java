@@ -29,34 +29,34 @@ import javax.swing.border.MatteBorder;
 public class PreferenciaFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private static JLabel lblParametrosDoSistema = new JLabel("Parâmetros do Sistema");
-	private static JLabel lblMascArq = new JLabel("Máscara do arquivo:");
-	private static JLabel lblDirCarga = new JLabel("Diretório de carga:");
-	private static JLabel lblDirLido = new JLabel("Diretório lidos:");
-	private static JLabel lblRefresh = new JLabel("Tempo do refresh:");
-	private static JLabel lblQtdeGTM = new JLabel("Quantidade GTM:");
-	private static JLabel lblMascArqVazio = new JLabel("Mascara arquivo vazio:");
-	private static JLabel lblTemMax = new JLabel("Tempo máx. chamada:");
-	private static JLabel lblAtraso = new JLabel("Indicador de Atraso:");
-	private static JLabel lblUltimaChamada = new JLabel("Última chamada/hora:");
-	private static JLabel lblDataSistema = new JLabel("Data do sistema:");
-	private static JLabel lblStatus = new JLabel("Status:");
-	private static JLabel lblMilissegundos = new JLabel("milissegundo(s)");
-	private static JLabel lblMinutos = new JLabel("minuto(s)");
+	private static JLabel lblParametrosDoSistema;
+	private static JLabel lblMascArq;
+	private static JLabel lblDirCarga;
+	private static JLabel lblDirLido;
+	private static JLabel lblRefresh;
+	private static JLabel lblQtdeGTM;
+	private static JLabel lblMascArqVazio;
+	private static JLabel lblTemMax;
+	private static JLabel lblAtraso;
+	private static JLabel lblUltimaChamada;
+	private static JLabel lblDataSistema;
+	private static JLabel lblStatus;
+	private static JLabel lblMilissegundos;
+	private static JLabel lblMinutos;
 
-	private static JLabel btnNovo = new JLabel("novo");
-	private static JLabel btnEditar = new JLabel("editar");
-	private static JLabel btnSalvar = new JLabel("salvar");
-	private static JLabel btnCancelar = new JLabel("cancelar");
+	private static JLabel btnNovo;
+	private static JLabel btnEditar;
+	private static JLabel btnSalvar;
+	private static JLabel btnCancelar;
 
-	private static JLabel btnDirCarga = new JLabel("...");
-	private static JLabel btnDirLido = new JLabel("...");
+	private static JLabel btnDirCarga;
+	private static JLabel btnDirLido;
 
 	private static JTextField txtMascArq;
 	private static JTextField txtDirCarga;
 	private static JTextField txtDirLido;
 	private static JTextField txtRefresh;
-	private static JTextField txtQtdeGTM;
+ 	private static JTextField txtQtdeGTM;
 	private static JTextField txtMascArqVazio;
 	private static JTextField txtTemMax;
 	private static JTextField txtAtraso;
@@ -80,6 +80,30 @@ public class PreferenciaFeps extends JPanel {
 	}
 
 	private void initializeComponents() {
+		
+		lblParametrosDoSistema = new JLabel("Parâmetros do Sistema");
+		lblMascArq = new JLabel("Máscara do arquivo:");
+		lblDirCarga = new JLabel("Diretório de carga:");
+		lblDirLido = new JLabel("Diretório lidos:");
+		lblRefresh = new JLabel("Tempo do refresh:");
+		lblQtdeGTM = new JLabel("Quantidade GTM:");
+		lblMascArqVazio = new JLabel("Mascara arquivo vazio:");
+		lblTemMax = new JLabel("Tempo máx. chamada:");
+		lblAtraso = new JLabel("Indicador de Atraso:");
+		lblUltimaChamada = new JLabel("Última chamada/hora:");
+		lblDataSistema = new JLabel("Data do sistema:");
+		lblStatus = new JLabel("Status:");
+		lblMilissegundos = new JLabel("milissegundo(s)");
+		lblMinutos = new JLabel("minuto(s)");
+		
+		btnNovo = new JLabel("novo");
+		btnEditar = new JLabel("editar");
+		btnSalvar = new JLabel("salvar");
+		btnCancelar = new JLabel("cancelar");
+		
+		btnDirCarga = new JLabel("...");
+		btnDirLido = new JLabel("...");
+		
 		lblParametrosDoSistema.setBounds(393, 12, 550, 100);
 		lblParametrosDoSistema.setHorizontalAlignment(SwingConstants.CENTER);
 		lblParametrosDoSistema.setForeground(Color.BLACK);
@@ -406,7 +430,7 @@ public class PreferenciaFeps extends JPanel {
 		});
 	}
 
-	public static void novo() {
+	public void novo() {
 		btnSalvar.setVisible(true);
 		btnCancelar.setVisible(true);
 		btnDirCarga.setVisible(true);
@@ -491,14 +515,10 @@ public class PreferenciaFeps extends JPanel {
 				cancel();
 			}
 
-			p.close();
-			c.close();
-
-			p = null;
-			c = null;
+			ConnectionFeps.closeConnection(null, p, c);
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar");
+			JOptionPane.showMessageDialog(null, "Não foi possível gravar os parâmetros do sistema!");
 		}
 	}
 
@@ -526,6 +546,16 @@ public class PreferenciaFeps extends JPanel {
 			lblUltimaChamada.setVisible(true);
 
 			requestFocusInWindow();
+		} else {
+			Object[] options = { "Novo", "Padrão" };
+			int resposta = JOptionPane.showOptionDialog(null,
+					"Parâmetros ainda não definidos, gostaria de carregar preferências padrão ou criar um novo?",
+					null, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			if (resposta == 0)
+				novo();
+			else
+				carregaPadrao();
 		}
 	}
 
@@ -544,17 +574,13 @@ public class PreferenciaFeps extends JPanel {
 		}
 	}
 
-	public static boolean loadPreferences() {
+	public boolean loadPreferences() {
 		String consultaSQL = "SELECT * FROM parametros";
-		Connection c;
-		PreparedStatement p;
 		ResultSet rs;
 		boolean ok;
 
 		try {
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next()) {
 				if (rs.getString("masc_arq_gm") != null)
@@ -610,23 +636,18 @@ public class PreferenciaFeps extends JPanel {
 			} else
 				ok = false;
 
-			rs.close();
-			p.close();
-			c.close();
-
-			rs = null;
-			p = null;
-			c = null;
+			ConnectionFeps.closeConnection(rs, null, null);
 
 			return ok;
 		} catch (SQLException sql) {
 			sql.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível carregar os parâmetros do sistema!");
 			return false;
 		}
 
 	}
 
-	public static void carregaPadrao() {
+	public void carregaPadrao() {
 		String consultaSQL;
 		Connection c;
 		PreparedStatement p;
@@ -659,28 +680,20 @@ public class PreferenciaFeps extends JPanel {
 				JOptionPane.showMessageDialog(null, "Parâmetros carregados com sucesso!");
 			}
 			
-			p.close();
-			c.close();
-			
-			p = null;
-			c = null;
+			ConnectionFeps.closeConnection(null, p, c);
 
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+			JOptionPane.showMessageDialog(null, "Erro ao tentar carregar os parâmetros padrão do sistema!");
 		}
 	}
 
-	private static Object getParameter(String tmp) {
+	private Object getParameter(String tmp) {
 		String consultaSQL = "SELECT * FROM parametros";
 		String parametro = null;
-		Connection c;
-		PreparedStatement p;
 		ResultSet rs;
 		try {
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
+			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next())
 				if(rs.getString(tmp) == null)
@@ -688,81 +701,72 @@ public class PreferenciaFeps extends JPanel {
 				else
 					parametro = rs.getString(tmp).trim();
 
-			rs.close();
-			p.close();
-			c.close();
+			ConnectionFeps.closeConnection(rs, null, null);
 
-			rs = null;
-			p = null;
-			c = null;
-
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao buscar o parâmetro: " + tmp + "!");
 		}
 
 		return parametro;
 	}
 
-	public static String getMascArq() {
+	public String getMascArq() {
 		return (String) getParameter("masc_arq_gm");
 	}
 
-	public static String getDirCarga() {
+	public String getDirCarga() {
 		return (String) getParameter("diretorio_carga");
 	}
 
-	public static String getDirLido() {
+	public String getDirLido() {
 		return (String) getParameter("diretorio_lido");
 	}
 
-	public static int getTempoRefresh() {
+	public int getTempoRefresh() {
 		return Integer.parseInt((String) getParameter("tempo_refresh"));
 	}
 
-	public static int getQtdFechaGTM() {
+	public int getQtdFechaGTM() {
 		return Integer.parseInt((String) getParameter("qtde_fecha_gtm"));
 	}
 
-	public static String getMascArqVazio() {
+	public String getMascArqVazio() {
 		return (String) getParameter("mascara_vazio");
 	}
 
-	public static int getTemMax() {
+	public int getTemMax() {
 		return Integer.parseInt((String) getParameter("tempo_max_chamada"));
 	}
 
-	public static int getAtraso() {
+	public int getAtraso() {
 		return Integer.parseInt((String) getParameter("atraso_linha"));
 	}
 
-	public static String getHoraUltimaChamada() {
+	public String getHoraUltimaChamada() {
 		String ret = (String) getParameter("ultima_chamada_hora");
 		if(ret == null)
 			ret = "";
 		return ret;
 	}
 
-	public static String getDataSistema() {
+	public String getDataSistema() {
 		return (String) getParameter("data_sistema");
 	}
 
-	public static boolean getStatus() {
+	public boolean getStatus() {
 		String ret = ((String) getParameter("aberto"));
 		return ret != null && ret.equals("S");
 	}
 
 	public static String getTurno(LocalTime varHora) {
 		String consultaSQL;
-		Connection c;
-		PreparedStatement p;
 		ResultSet rs;
 
 		try {
 			consultaSQL = "SELECT * FROM turno";
-			c = ConnectionFeps.getConnection();
-			p = c.prepareStatement(consultaSQL);
-			rs = p.executeQuery();
-
+			rs = ConnectionFeps.query(consultaSQL);
+			
 			if (rs.next()) {
 				LocalTime horaAtual = varHora;
 				LocalTime horaInicioTurno = LocalTime.parse(rs.getString("horainicial"));
@@ -771,17 +775,11 @@ public class PreferenciaFeps extends JPanel {
 					return rs.getString("idturno");
 			}
 
-			rs.close();
-			p.close();
-			c.close();
-
-			rs = null;
-			p = null;
-			c = null;
+			ConnectionFeps.closeConnection(rs, null, null);
 
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
+			JOptionPane.showMessageDialog(null, "Erro ao buscar o turno da hora: " + varHora.getHour() + ":" + varHora.getMinute()+ " !");
 		}
 
 		return null;
