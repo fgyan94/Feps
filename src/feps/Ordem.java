@@ -5,7 +5,7 @@ public class Ordem {
 	private Boolean selected = false;
 
 	public Ordem(String partNumber, String apelido, String ordem_serie, String ordem_data, String ordem_entrada, String seq_dia, 
-			String qtde, String seq_gm, String status_cockpit) {
+			Integer qtde, String seq_gm, String status_cockpit) {
 		super();
 		this.partNumber = partNumber;
 		this.apelido = apelido;
@@ -13,15 +13,9 @@ public class Ordem {
 		this.ordem_data = ordem_data;
 		this.ordem_entrada = ordem_entrada;
 		this.seq_dia = seq_dia;
-		this.qtde = qtde;
-		this.seq_gm = MenuPrincipal.padding(Integer.parseInt(seq_gm), 4);
+		this.qtde = String.valueOf(qtde);
+		this.seq_gm = seq_gm == null ? null : MenuPrincipal.padding(Integer.parseInt(seq_gm), 4);
 		this.status_cockpit = status_cockpit;
-	}
-	
-	public Ordem(String partNumber, String apelido, int quantidade) {
-		this.partNumber = partNumber;
-		this.apelido = apelido;
-		this.qtde = Integer.toString(quantidade);
 	}
 
 	public String getPartNumber() {

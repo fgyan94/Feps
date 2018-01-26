@@ -45,8 +45,7 @@ import javax.swing.border.MatteBorder;
 public class MonitorCarga extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	// private static Dimension dimension =
-	// Toolkit.getDefaultToolkit().getScreenSize();
+	private GroupLayout groupLayout;
 
 	private JLabel lblMonitorDeCarga;
 	private JTextField txtArquivoEsperado;
@@ -65,16 +64,18 @@ public class MonitorCarga extends JPanel {
 	public MonitorCarga() {
 		buildPanel();
 		initializeComponents();
+		buildGroupLayout();
 		initializeListeners();
 	}
 
 	private void buildPanel() {
 		setSize(500, 410);
 		setBackground(Color.WHITE);
+
+		groupLayout = new GroupLayout(this);
 	}
 
 	private void initializeComponents() {
-
 		lblMonitorDeCarga = new JLabel("Monitor de carga");
 		lblGifLoader = new JLabel();
 		lblArquivoEsperado = new JLabel("Arquivo esperado:");
@@ -156,8 +157,15 @@ public class MonitorCarga extends JPanel {
 		txtArquivoEsperado.setEditable(false);
 
 		list.setEnabled(false);
+	}
 
-		GroupLayout groupLayout = new GroupLayout(this);
+	private void buildGroupLayout() {
+		buildHorizontalLayout();
+		buildVerticalLayout();
+		setLayout(groupLayout);
+	}
+
+	private void buildHorizontalLayout() {
 		groupLayout
 				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblMonitorDeCarga, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)
@@ -187,6 +195,9 @@ public class MonitorCarga extends JPanel {
 										.addComponent(txtArquivoEsperado, GroupLayout.PREFERRED_SIZE, 157,
 												GroupLayout.PREFERRED_SIZE))
 								.addGap(64)));
+	}
+
+	private void buildVerticalLayout() {
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
 				.createSequentialGroup().addGap(10)
 				.addComponent(lblMonitorDeCarga, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE).addGap(23)
@@ -213,7 +224,6 @@ public class MonitorCarga extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(lblTempo,
 								GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
 						.addComponent(lblNumTempo, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))));
-		setLayout(groupLayout);
 	}
 
 	private void initializeListeners() {
@@ -262,21 +272,22 @@ public class MonitorCarga extends JPanel {
 	}
 
 	public void start() {
-			cancelTask();
-			startTaskCountTempo();
-			lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
-			lblGifLoader.setVisible(true);
+		txtArquivoEsperado.setText(getExpectedNumDoc());
+		cancelTask();
+		startTaskCountTempo();
+		lblPlayPause.setIcon(new ImageIcon("icofeps\\pause_24.png"));
+		lblGifLoader.setVisible(true);
 
-			statusMonitor = true;
+		statusMonitor = true;
 
-			timer = new Timer();
-			task = new TimerTask() {
-				@Override
-				public void run() {
-					atualizaDir();
-				}
-			};
-			timer.schedule(task, 1000, getTempoRefresh());
+		timer = new Timer();
+		task = new TimerTask() {
+			@Override
+			public void run() {
+				atualizaDir();
+			}
+		};
+		timer.schedule(task, 1000, getTempoRefresh());
 	}
 
 	private void pause() {
@@ -299,7 +310,7 @@ public class MonitorCarga extends JPanel {
 
 	public void startTaskCountTempo() {
 		stopTaskCountTempo();
-		
+
 		timerCountTempo = new Timer();
 		taskCountTempo = new TimerTask() {
 			@Override
@@ -331,7 +342,6 @@ public class MonitorCarga extends JPanel {
 		ArrayList<File> fileDir = recebeFile();
 		itemList = new DefaultListModel<>();
 
-		txtArquivoEsperado.setText(getExpectedNumDoc());
 		lblNumTotalArq.setText(getTotalArqDia());
 
 		for (int i = 0; i < fileDir.size(); i++) {
@@ -339,19 +349,15 @@ public class MonitorCarga extends JPanel {
 		}
 
 		if (itemList.size() > 0) {
-			cancelTask();
 			lblNumTempo.setText("00:00:00");
 			if (itemList.get(0).getName().equals(txtArquivoEsperado.getText())) {
-				criaOrdem(itemList.remove(itemList.indexOf(itemList.firstElement())));
-				updateParametros();
-				txtArquivoEsperado.setText(getExpectedNumDoc());
+				criaOrdem(itemList.get(0));
 			} else if (itemList.get(0).getName().contains(getMascArqVazio())) {
-				gravaControleLeitura(itemList.remove(itemList.indexOf(itemList.firstElement())));
+				gravaControleLeitura(itemList.get(0));
 			} else {
 				gravaErro();
 				JOptionPane.showMessageDialog(null, "Arquivo diferente do esperado!");
 			}
-			start();
 		}
 		list.setModel(itemList);
 	}
@@ -374,7 +380,7 @@ public class MonitorCarga extends JPanel {
 	private String gravaControleLeitura(File file) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String sequencia, nomeArq, stringDoc, consultaSQL;
+			String sequencia, nomeArq, stringDoc, consultaSQL, docInterno, arqEsperado;
 			Date data;
 			Time hora;
 
@@ -384,10 +390,24 @@ public class MonitorCarga extends JPanel {
 			data = Date.valueOf(LocalDate.now());
 			hora = Time.valueOf(LocalTime.now());
 
-			if (stringDoc == null)
+			if (stringDoc == null) {
 				stringDoc = "";
+			} else {
+				docInterno = stringDoc.substring(0, 4);
+				arqEsperado = txtArquivoEsperado.getText().substring(0, 4);
+				if (!docInterno.equals(arqEsperado)) {
+					gravaErro();
+					JOptionPane.showMessageDialog(null, "Arquivo interno diferente do número do doc: DOC: "
+							+ arqEsperado + " Num. Interno: " + docInterno);
 
-			consultaSQL = "INSERT INTO Controle_Leitura (sequencia, doc, data, string_doc)" + "VALUES ('" + sequencia
+					reader.close();
+					
+					return null;
+				}
+
+			}
+
+			consultaSQL = "INSERT INTO Controle_Leitura (sequencia, doc, data, string_doc)" + " VALUES ('" + sequencia
 					+ "', '" + nomeArq + "', '" + new SimpleDateFormat("MM/dd/yyyy").format(data) + " "
 					+ new SimpleDateFormat("HH:mm:ss").format(hora) + "', '" + stringDoc + "')";
 
@@ -411,6 +431,9 @@ public class MonitorCarga extends JPanel {
 
 		doc = gravaControleLeitura(file);
 
+		if (doc == null)
+			return;
+
 		numDoc = doc.substring(0, 4);
 		dataHora = doc.substring(4, 18);
 		pvi = doc.substring(18, 28);
@@ -421,6 +444,9 @@ public class MonitorCarga extends JPanel {
 
 		gravaOrdem(numDoc, dataHora, ConstantsFEPS.PROD_INICIADA.getStringValue(), ordem_serie_conti, pvi, check, vin,
 				partNumberGM, ConstantsFEPS.ORDEM_AUTOMATICA.getStringValue(), ConnectionFeps.getValorSeq("ORDEM_GM"));
+		updateParametros();
+		txtArquivoEsperado.setText(getExpectedNumDoc());
+		itemList.remove(itemList.indexOf(itemList.firstElement()));
 	}
 
 	private String getApelido(String partNumberGM) {
@@ -464,23 +490,20 @@ public class MonitorCarga extends JPanel {
 		String consultaSQL = "INSERT INTO ORDEM_GM (ORDEM_GM_DOC, DATA_HORA, STATUS_CPROD_CODIGO, "
 				+ "USUARIO_CODIGO, ORDEM_CONTI_SERIE, PVI_CHECK, VIN, PART_NUMBER_GM, "
 				+ "ORDEM_GM_ORIGEM, DATA_GM, DATA_INCLUSAO, ORDEM_ENTRADA) VALUES (" + "'" + numDoc + "', " + "'"
-				+ dataHora + "', " + "'" + codProducao + "', " + "'" + Login.getUsuario()
-				+ "', '" + ordem_serie_conti + "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'"
-				+ partNumberGM + "', " + "'" + ordem_origem + "', " + "'" + data + " " + hora + "', " + "'" + data + " "
-				+ hora + "', " + "'" + numSeq + "')";
+				+ dataHora + "', " + "'" + codProducao + "', " + "'" + Login.getUsuario() + "', '" + ordem_serie_conti
+				+ "', '" + pvi.concat(check) + "', " + "'" + vin + "', " + "'" + partNumberGM + "', " + "'"
+				+ ordem_origem + "', " + "'" + data + " " + hora + "', " + "'" + data + " " + hora + "', " + "'"
+				+ numSeq + "')";
 		if (!ConnectionFeps.update(consultaSQL)) {
 			JOptionPane.showMessageDialog(null,
 					"Não foi possível criar a ordem de montagem " + ordem_serie_conti + "!");
 			return;
 		}
 
-		inclusaoGTM(ordem_serie_conti, ConstantsFEPS.COCKPIT_INICIADO.getStringValue(), "0",
-				Login.getUsuario(),
+		inclusaoGTM(ordem_serie_conti, ConstantsFEPS.COCKPIT_INICIADO.getStringValue(), "0", Login.getUsuario(),
 				new SimpleDateFormat("MM/dd/yyyy").format(data) + " " + new SimpleDateFormat("HH:mm:ss").format(hora),
-				partNumberGM, ConstantsFEPS.ORDEM_AUTOMATICA.getStringValue(), 
-				ConnectionFeps.getValorSeq("ORDEM_CONTI"),
-				ConnectionFeps.getValorSeq("SEQ_DIA"), 
-				numDoc);
+				partNumberGM, ConstantsFEPS.ORDEM_AUTOMATICA.getStringValue(),
+				ConnectionFeps.getValorSeq("ORDEM_CONTI"), ConnectionFeps.getValorSeq("SEQ_DIA"), numDoc);
 
 		updateParametros(MenuPrincipal.padding(Integer.parseInt(numDoc), 4));
 	}
@@ -561,38 +584,39 @@ public class MonitorCarga extends JPanel {
 
 	private void gravaErro() {
 		String consultaSQL = "UPDATE parametros SET erro_sequencia = 'S'";
-		if(!ConnectionFeps.update(consultaSQL))
+		if (!ConnectionFeps.update(consultaSQL))
 			JOptionPane.showMessageDialog(null, "Não foi possível gravar no banco o erro de sequência!");
 	}
 
 	private void updateParametros(String doc) {
 		String consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
-					+ "' " + ", ultima_chamada = '" + doc + "', " + "ultima_chamada_valida = '" + LocalDate.now() + " "
-					+ LocalTime.now() + "'";
-		if(!ConnectionFeps.update(consultaSQL))
+				+ "' " + ", ultima_chamada = '" + doc + "', " + "ultima_chamada_valida = '" + LocalDate.now() + " "
+				+ LocalTime.now() + "'";
+		if (!ConnectionFeps.update(consultaSQL))
 			JOptionPane.showMessageDialog(null, "Não foi possível atualizar oo último doc lido! Doc GM: " + doc);
 	}
 
 	private void updateParametros() {
 		String consultaSQL = "UPDATE parametros SET ultima_chamada_hora  = '" + LocalDate.now() + " " + LocalTime.now()
-					+ "' " + ", erro_sequencia = 'N'";
-		if(!ConnectionFeps.update(consultaSQL))
+				+ "' " + ", erro_sequencia = 'N'";
+		if (!ConnectionFeps.update(consultaSQL))
 			JOptionPane.showMessageDialog(null, "Não foi possível atualizar a data e hora da última chamada!");
 	}
 
 	private void inclusaoGTM(String ordem_conti_serie, String status_cockpit, String num_gtm, String usuario_cod,
-			String ordem_conti_data, String part_number_gm, String ordem_origem, int ordem_entrada,
-			int sequencia_dia, String numDoc) {
+			String ordem_conti_data, String part_number_gm, String ordem_origem, int ordem_entrada, int sequencia_dia,
+			String numDoc) {
 		String consultaSQL = "INSERT INTO ordem_conti (ordem_conti_serie, status_cockpit, num_gtm, usuario_cod, ordem_conti_data, part_number_gm,"
-					+ "ordem_conti_origem, ordem_entrada, sequencia_dia, numDoc) VALUES ('" + ordem_conti_serie + "', '"
-					+ status_cockpit + "', '" + num_gtm + "', '" + usuario_cod + "', '" + ordem_conti_data + "', '"
-					+ part_number_gm + "', '" + ordem_origem + "', '" + ordem_entrada + "', '" + sequencia_dia + "', '"
-					+ numDoc + "')";
+				+ "ordem_conti_origem, ordem_entrada, sequencia_dia, numDoc) VALUES ('" + ordem_conti_serie + "', '"
+				+ status_cockpit + "', '" + num_gtm + "', '" + usuario_cod + "', '" + ordem_conti_data + "', '"
+				+ part_number_gm + "', '" + ordem_origem + "', '" + ordem_entrada + "', '" + sequencia_dia + "', '"
+				+ numDoc + "')";
 
-		if(!ConnectionFeps.update(consultaSQL))
-			JOptionPane.showMessageDialog(null, "Erro ao tetnar incluir a ordem " + ordem_conti_serie + " ao banco de dados!");
+		if (!ConnectionFeps.update(consultaSQL))
+			JOptionPane.showMessageDialog(null,
+					"Erro ao tetnar incluir a ordem " + ordem_conti_serie + " ao banco de dados!");
 	}
-	
+
 	private Object getParameter(String tmp) {
 		String consultaSQL = "SELECT * FROM parametros";
 		String parametro = null;
@@ -601,7 +625,7 @@ public class MonitorCarga extends JPanel {
 			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next())
-				if(rs.getString(tmp) == null)
+				if (rs.getString(tmp) == null)
 					parametro = "";
 				else
 					parametro = rs.getString(tmp).trim();
@@ -615,27 +639,27 @@ public class MonitorCarga extends JPanel {
 
 		return parametro;
 	}
-	
+
 	public int getTempoRefresh() {
 		return Integer.parseInt((String) getParameter("tempo_refresh"));
 	}
-	
+
 	public String getDataSistema() {
 		return (String) getParameter("data_sistema");
 	}
-	
+
 	public String getMascArqVazio() {
 		return (String) getParameter("mascara_vazio");
 	}
-	
+
 	public String getDirCarga() {
 		return (String) getParameter("diretorio_carga");
 	}
-	
+
 	public String getMascArq() {
 		return (String) getParameter("masc_arq_gm");
 	}
-	
+
 	public String getDirLido() {
 		return (String) getParameter("diretorio_lido");
 	}

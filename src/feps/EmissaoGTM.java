@@ -2,6 +2,8 @@ package feps;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -20,9 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.awt.Cursor;
-import java.awt.Dimension;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,17 +40,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import sun.awt.CustomCursor;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
-
 public class EmissaoGTM extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private Dimension dimension = new Dimension(1366, 768);
-//	 private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	// private Dimension dimension = new Dimension(1366, 768);
+	private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+
 	private JTable tbSequencia, tbGTM;
 	private JLabel lblEmissao, lblSerie, lblEnviado, lblAEnviar, lblAtenderTotal, lblGTMCriada;
 	private JLabel btnConfirmaSaida, btnGeraGTM, btnAtualiza;
@@ -62,6 +60,8 @@ public class EmissaoGTM extends JPanel {
 
 	private FepsModelTable fmtSequencia, fmtGTM;
 
+	private GroupLayout groupLayout;
+
 	private Timer timer;
 	private TimerTask task;
 
@@ -70,9 +70,13 @@ public class EmissaoGTM extends JPanel {
 	private static final String COB_LE = "94759777";
 	private static final String COB_LD = "94759779";
 
+	private static final int MIN_WIDTH = 1366;
+	private static final int MIN_HEIGHT = 768;
+
 	public EmissaoGTM() {
 		buildPanel();
 		initializeComponents();
+		buildGroupLayout();
 		initializeListeners();
 		createSequenciaTable();
 		createSerieTable();
@@ -81,6 +85,8 @@ public class EmissaoGTM extends JPanel {
 	private void buildPanel() {
 		this.setPreferredSize(dimension);
 		setBackground(Color.WHITE);
+
+		groupLayout = new GroupLayout(this);
 	}
 
 	private void initializeComponents() {
@@ -176,100 +182,132 @@ public class EmissaoGTM extends JPanel {
 		dmtCockpit = new DefaultMutableTreeNode("Cockpits");
 		trModel = new DefaultTreeModel(dmtCockpit);
 		trCockpit.setModel(trModel);
+	}
 
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout
-				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(10).addComponent(lblEmissao,
-								GroupLayout.PREFERRED_SIZE, dimension.width - 20, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup().addGap((int) Math.floor(dimension.width * 0.204))
-								.addComponent(scrSequencia, GroupLayout.PREFERRED_SIZE,
-										(int) Math.floor(dimension.width * 0.593), GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup().addGap((int) Math.floor(dimension.width * 0.219))
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-										.createSequentialGroup().addGap((int) Math.round(dimension.width * 0.142))
-										.addComponent(txtSerie, GroupLayout.PREFERRED_SIZE,
-												(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE))
-										.addComponent(lblSerie, GroupLayout.PREFERRED_SIZE,
-												(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE))
-								.addGap((int) Math.round(dimension.width * 0.002))
-								.addComponent(btnConfirmaSaida, GroupLayout.PREFERRED_SIZE,
-										(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE)
-								.addGap((int) Math.round(dimension.width * 0.016)).addComponent(chkManual,
-										GroupLayout.PREFERRED_SIZE, (int) Math.floor(dimension.width * 0.125),
-										GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup().addGap((int) Math.round(dimension.width * 0.2))
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblAEnviar, GroupLayout.PREFERRED_SIZE,
-												(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE)
-										.addGroup(groupLayout.createSequentialGroup()
-												.addGap((int) Math.round(dimension.width * 0.141))
-												.addComponent(txtAEnviar, GroupLayout.PREFERRED_SIZE,
-														(int) Math.round(dimension.width * 0.0732),
-														GroupLayout.PREFERRED_SIZE)))
-								.addGap((int) Math.floor(dimension.width * 0.0015))
-								.addComponent(btnAtualiza, GroupLayout.PREFERRED_SIZE,
-										(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE)
-								.addGap((int) Math.floor(dimension.width * 0.0088))
-								.addComponent(lblAtenderTotal, GroupLayout.PREFERRED_SIZE,
-										(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE)
-								.addComponent(
-										txtAtenderTotal, GroupLayout.PREFERRED_SIZE,
-										(int) Math.floor(dimension.width * 0.0733), GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup().addGap((int) Math.round(dimension.width * 0.2))
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblEnviado, GroupLayout.PREFERRED_SIZE,
-												(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE)
-										.addGroup(groupLayout.createSequentialGroup()
-												.addGap((int) Math.round(dimension.width * 0.141))
-												.addComponent(txtEnviado, GroupLayout.PREFERRED_SIZE,
-														(int) Math.round(dimension.width * 0.0732),
-														GroupLayout.PREFERRED_SIZE)))
-								.addGap((int) Math.floor(dimension.width * 0.0015))
-								.addComponent(btnGeraGTM, GroupLayout.PREFERRED_SIZE,
-										(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE)
-								.addGap((int) Math.floor(dimension.width * 0.0088))
-								.addComponent(lblGTMCriada, GroupLayout.PREFERRED_SIZE,
-										(int) Math.floor(dimension.width * 0.147), GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtGTMCriada, GroupLayout.PREFERRED_SIZE,
-										(int) Math.round(dimension.width * 0.0732), GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup().addGap((int) Math.floor(dimension.width * 0.2548))
-								.addComponent(scrSerie, GroupLayout.PREFERRED_SIZE,
-										(int) Math.round(dimension.width * 0.245), GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrCockpit, GroupLayout.PREFERRED_SIZE,
-										(int) Math.round(dimension.width * 0.245), GroupLayout.PREFERRED_SIZE)));
-		
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap((int) Math.round((dimension.height - 80) * 0.014))
-				.addComponent(lblEmissao, GroupLayout.PREFERRED_SIZE, (int) Math.round((dimension.height - 80) * 0.13), 
-						GroupLayout.PREFERRED_SIZE).addGap((int) Math.round((dimension.height - 80) * 0.002))
-				.addComponent(scrSequencia, GroupLayout.PREFERRED_SIZE, (int) Math.round((dimension.height - 80) * 0.305), 
-						GroupLayout.PREFERRED_SIZE).addGap((int) Math.round((dimension.height - 80) * 0.005))
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtSerie, GroupLayout.PREFERRED_SIZE, (int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSerie, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnConfirmaSaida, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup().addGap((int) Math.round((dimension.height - 80) * 0.007))
-								.addComponent(chkManual, GroupLayout.PREFERRED_SIZE, (int) Math.floor((dimension.height - 80) * 0.03), GroupLayout.PREFERRED_SIZE)))
-				.addGap((int) Math.round((dimension.height - 80) * 0.052))
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblAEnviar, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtAEnviar, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnAtualiza, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblAtenderTotal, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtAtenderTotal, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE))
-				.addGap((int) Math.round((dimension.height - 80) * 0.007))
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblEnviado, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtEnviado, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnGeraGTM, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblGTMCriada, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtGTMCriada, GroupLayout.PREFERRED_SIZE,(int) Math.floor((dimension.height - 80) * 0.044), GroupLayout.PREFERRED_SIZE))
-				.addGap((int) Math.round((dimension.height - 80) * 0.017))
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrSerie, GroupLayout.PREFERRED_SIZE, (int) Math.round((dimension.height - 80) * 0.315), GroupLayout.PREFERRED_SIZE)
-						.addComponent(scrCockpit, GroupLayout.PREFERRED_SIZE, (int) Math.round((dimension.height - 80) * 0.315), GroupLayout.PREFERRED_SIZE))));
+	private void buildGroupLayout() {
+		buildHorizontalLayout();
+		buildVerticalLayout();
 		setLayout(groupLayout);
+	}
+
+	private void buildHorizontalLayout() {
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(calculate(10, MIN_WIDTH, dimension.width))
+						.addComponent(lblEmissao, GroupLayout.PREFERRED_SIZE,
+								calculate(MIN_WIDTH - 20, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup().addGap(calculate(278, MIN_WIDTH, dimension.width))
+						.addComponent(scrSequencia, GroupLayout.PREFERRED_SIZE,
+								calculate(810, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+				.addGroup(
+						groupLayout.createSequentialGroup().addGap(calculate(299, MIN_WIDTH, dimension.width))
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+										.createSequentialGroup().addGap(calculate(194, MIN_WIDTH, dimension.width))
+										.addComponent(txtSerie, GroupLayout.PREFERRED_SIZE,
+												calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+										.addComponent(lblSerie, GroupLayout.PREFERRED_SIZE,
+												calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+								.addGap(calculate(3, MIN_WIDTH, dimension.width))
+								.addComponent(btnConfirmaSaida, GroupLayout.PREFERRED_SIZE,
+										calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+								.addGap(calculate(22, MIN_WIDTH, dimension.width)).addComponent(chkManual,
+										GroupLayout.PREFERRED_SIZE, calculate(170, MIN_WIDTH, dimension.width),
+										GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup().addGap(calculate(274, MIN_WIDTH, dimension.width))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblAEnviar, GroupLayout.PREFERRED_SIZE,
+										calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+										.addGap(calculate(193, MIN_WIDTH, dimension.width)).addComponent(txtAEnviar,
+												GroupLayout.PREFERRED_SIZE, calculate(100, MIN_WIDTH, dimension.width),
+												GroupLayout.PREFERRED_SIZE)))
+						.addGap(calculate(2, MIN_WIDTH, dimension.width))
+						.addComponent(btnAtualiza, GroupLayout.PREFERRED_SIZE,
+								calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(lblAtenderTotal, GroupLayout.PREFERRED_SIZE,
+								calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtAtenderTotal, GroupLayout.PREFERRED_SIZE,
+								calculate(100, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup().addGap(calculate(274, MIN_WIDTH, dimension.width))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblEnviado, GroupLayout.PREFERRED_SIZE,
+										calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+										.addGap(calculate(193, MIN_WIDTH, dimension.width)).addComponent(txtEnviado,
+												GroupLayout.PREFERRED_SIZE, calculate(100, MIN_WIDTH, dimension.width),
+												GroupLayout.PREFERRED_SIZE)))
+						.addGap(calculate(2, MIN_WIDTH, dimension.width))
+						.addComponent(btnGeraGTM, GroupLayout.PREFERRED_SIZE,
+								calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(lblGTMCriada, GroupLayout.PREFERRED_SIZE,
+								calculate(200, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtGTMCriada, GroupLayout.PREFERRED_SIZE,
+								calculate(100, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup().addGap(calculate(348, MIN_WIDTH, dimension.width))
+						.addComponent(scrSerie, GroupLayout.PREFERRED_SIZE, calculate(335, MIN_WIDTH, dimension.width),
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(scrCockpit, GroupLayout.PREFERRED_SIZE,
+								calculate(335, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)));
+	}
+
+	private void buildVerticalLayout() {
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+				.addComponent(lblEmissao, GroupLayout.PREFERRED_SIZE,
+						calculate(90, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+				.addGap(calculate(2, MIN_HEIGHT - 80, dimension.height - 80))
+				.addComponent(scrSequencia, GroupLayout.PREFERRED_SIZE,
+						calculate(210, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+				.addGap(calculate(4, MIN_HEIGHT - 80, dimension.height - 80))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtSerie, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSerie, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnConfirmaSaida, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(5, MIN_HEIGHT - 80, dimension.height - 80)).addComponent(chkManual,
+										GroupLayout.PREFERRED_SIZE,
+										calculate(20, MIN_HEIGHT - 80, dimension.height - 80),
+										GroupLayout.PREFERRED_SIZE)))
+				.addGap(calculate(36, MIN_HEIGHT - 80, dimension.height - 80))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblAEnviar, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtAEnviar, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAtualiza, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAtenderTotal, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtAtenderTotal, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+				.addGap(calculate(5, MIN_HEIGHT - 80, dimension.height - 80))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblEnviado, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtEnviado, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnGeraGTM, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblGTMCriada, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtGTMCriada, GroupLayout.PREFERRED_SIZE,
+								calculate(30, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+				.addGap(calculate(12, MIN_HEIGHT - 80, dimension.height - 80))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrSerie, GroupLayout.PREFERRED_SIZE,
+								calculate(217, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(scrCockpit, GroupLayout.PREFERRED_SIZE,
+								calculate(217, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))));
+	}
+
+	private int calculate(double value, double min, double size) {
+		value = (value / min) * size;
+
+		return (int) value;
 	}
 
 	private void initializeListeners() {
@@ -286,7 +324,7 @@ public class EmissaoGTM extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (chkManual.isSelected()) {
-					cancelTask();
+					stop();
 					btnGeraGTM.setCursor(Cursor.getDefaultCursor());
 					btnGeraGTM.setForeground(Color.BLACK);
 					btnGeraGTM.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
@@ -304,7 +342,6 @@ public class EmissaoGTM extends JPanel {
 					btnAtualiza.setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
 					fmtGTM.setCheckBoxEditable(false);
 				}
-				super.mouseClicked(e);
 			}
 		});
 	}
@@ -316,14 +353,12 @@ public class EmissaoGTM extends JPanel {
 				if (label == btnConfirmaSaida)
 					saidaGTM();
 				else if (label == btnAtualiza) {
-					if (chkManual.isSelected()) {
-						fillTableSequencia();
-						fillTableSerie();
-						fillTree();
-					}
+					if (chkManual.isSelected())
+						atualiza();
+			
 				} else if (label == btnGeraGTM) {
 					if (chkManual.isSelected())
-						geraGTM();
+						forcaSaidaGTM();
 				}
 				super.mouseClicked(e);
 			}
@@ -366,7 +401,7 @@ public class EmissaoGTM extends JPanel {
 	}
 
 	protected void start() {
-		cancelTask();
+		stop();
 		timer = new Timer();
 		task = new TimerTask() {
 
@@ -379,13 +414,14 @@ public class EmissaoGTM extends JPanel {
 				getTotalDia();
 				getTotalEnviado();
 				getTotalAtender();
-				geraGTM();
+				if (fmtGTM.getRowCount() == getNumFechaGTM())
+					geraGTM();
 			}
 		};
 		timer.schedule(task, 0, 10000);
 	}
 
-	protected void cancelTask() {
+	protected void stop() {
 		if (timer != null && task != null) {
 			timer.cancel();
 			task.cancel();
@@ -395,6 +431,16 @@ public class EmissaoGTM extends JPanel {
 		}
 	}
 
+	private int calculateSizeTable(int columnMinWidth, int tableMinWidth, int tableWidth) {
+		return (tableWidth * columnMinWidth) / tableMinWidth;
+	}
+
+	private void atualiza() {
+		fillTableSequencia();
+		fillTableSerie();
+		fillTree();
+	}
+	
 	private void createSequenciaTable() {
 
 		ArrayList<String> coluna = new ArrayList<>();
@@ -417,7 +463,8 @@ public class EmissaoGTM extends JPanel {
 			tbSequencia.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			if (!fmtSequencia.getColumnName(i).contains(FepsModelTable.STATUS_COCKPIT)
 					&& !fmtSequencia.getColumnName(i).contains(FepsModelTable.ORDEM_ENTRADA))
-				tbSequencia.getColumnModel().getColumn(i).setPreferredWidth(157);
+				tbSequencia.getColumnModel().getColumn(i)
+						.setPreferredWidth(calculateSizeTable(157, 810, calculate(810, MIN_WIDTH, dimension.width)));
 			else {
 				tbSequencia.getColumnModel().getColumn(i).setWidth(0);
 				tbSequencia.getColumnModel().getColumn(i).setMinWidth(0);
@@ -513,11 +560,14 @@ public class EmissaoGTM extends JPanel {
 				tbGTM.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 
 			if (tbGTM.getColumnName(i).contains(FepsModelTable.GERA))
-				tbGTM.getColumnModel().getColumn(i).setPreferredWidth(50);
+				tbGTM.getColumnModel().getColumn(i)
+						.setPreferredWidth(calculateSizeTable(50, 335, calculate(335, MIN_WIDTH, dimension.width)));
 			else if (tbGTM.getColumnName(i).contains(FepsModelTable.ORDEM_CONTI_SERIE))
-				tbGTM.getColumnModel().getColumn(i).setPreferredWidth(185);
+				tbGTM.getColumnModel().getColumn(i)
+						.setPreferredWidth(calculateSizeTable(185, 335, calculate(335, MIN_WIDTH, dimension.width)));
 			else
-				tbGTM.getColumnModel().getColumn(i).setPreferredWidth(91);
+				tbGTM.getColumnModel().getColumn(i)
+						.setPreferredWidth(calculateSizeTable(91, 335, calculate(335, MIN_WIDTH, dimension.width)));
 		}
 
 		tbGTM.getTableHeader().setReorderingAllowed(false);
@@ -576,9 +626,9 @@ public class EmissaoGTM extends JPanel {
 	private void fillTree() {
 		String consultaSQL;
 		ResultSet rs;
-
+		
 		dmtCockpit.removeAllChildren();
-
+		
 		try {
 			consultaSQL = "SELECT ordem_conti.*, ordem_gm.ordem_gm_doc, gm_conti.apelido FROM gm_conti, ordem_conti, ordem_gm "
 					+ "WHERE ordem_conti.ordem_conti_serie = ordem_gm.ordem_conti_serie AND status_cockpit = '"
@@ -613,8 +663,9 @@ public class EmissaoGTM extends JPanel {
 
 					dmtCockpit.add(pai);
 				}
-				trCockpit.repaint();
 			}
+			
+			trModel.reload();
 
 			ConnectionFeps.closeConnection(rs, null, null);
 
@@ -850,75 +901,79 @@ public class EmissaoGTM extends JPanel {
 					"Não foi possível alterar a série: " + serieConti_old + " para a série: " + serieConti);
 	}
 
-	private void geraGTM() {
-		if (chkManual.isSelected()) {
-			if (fmtGTM.getCountSelected() < getNumFechaGTM()) {
-				Object[] options = { "Sim", "Não" };
-				int resposta = JOptionPane.showOptionDialog(null,
-						"Número não atingidos de cockpit, emitir mesmo assim?", null, JOptionPane.DEFAULT_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+	private void forcaSaidaGTM() {
+		if (fmtGTM.getCountSelected() < getNumFechaGTM()) {
+			Object[] options = { "Sim", "Não" };
+			int resposta = JOptionPane.showOptionDialog(null, "Número não atingidos de cockpit, emitir mesmo assim?",
+					null, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-				if (resposta == 1)
-					return;
-			}
+			if (resposta == 1)
+				return;
+			else
+				geraGTM();
 		}
+	}
 
-		if (fmtGTM.getRowCount() == getNumFechaGTM()) {
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));
+	private void geraGTM() {
+		setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		txtSerie.setEnabled(false);
+		
+		List<Ordem> ordemGTM = fmtGTM.getSelected();
+		String dataSistema = getDataSistema();
+		int lote = ConnectionFeps.getValorSeq("LOTEGM");
+		int numGTM = 0;
+		int quantidade = 0;
+		int qtdeLote = 0;
+		String sGTM = null;
+		String partNumber, serieConti;
 
-			List<Ordem> ordemGTM = fmtGTM.getSelected();
-			String dataSistema = getDataSistema();
-			int lote = ConnectionFeps.getValorSeq("LOTEGM");
-			int numGTM = 0;
-			int quantidade = 0;
-			int qtdeLote = 0;
-			String sGTM = "";
-			String partNumber, serieConti;
 
-			fillTableSequencia();
-			fillTableSerie();
-			fillTree();
+		int i = 0;
+		while (i < ordemGTM.size()) {
+			partNumber = ordemGTM.get(i).getPartNumber();
 
-			int i = 0;
-			while (i < ordemGTM.size()) {
-				partNumber = ordemGTM.get(i).getPartNumber();
-
-				numGTM = ConnectionFeps.getValorSeq("GTM");
+			numGTM = ConnectionFeps.getValorSeq("GTM");
+			if(sGTM == null)
+				sGTM = String.valueOf(numGTM);
+			else
 				sGTM = sGTM + " - " + numGTM;
 
-				while (i < ordemGTM.size()
-						&& Integer.parseInt(partNumber) == Integer.parseInt(ordemGTM.get(i).getPartNumber())) {
-					serieConti = ordemGTM.get(i).getOrdem_serie();
-					updateOrdemConti(numGTM, serieConti);
-					updateOrdemGM(serieConti);
-					quantidade += 1;
-					i += 1;
-				}
 
-				insertGTM(numGTM, partNumber, quantidade, LocalDate.now(), LocalTime.now(), "N", dataSistema, lote,
-						getApelido(partNumber));
-
-				quantidade = 0;
+			while (i < ordemGTM.size()
+					&& Integer.parseInt(partNumber) == Integer.parseInt(ordemGTM.get(i).getPartNumber())) {
+				serieConti = ordemGTM.get(i).getOrdem_serie();
+				updateOrdemConti(numGTM, serieConti);
+				updateOrdemGM(serieConti);
+				quantidade += 1;
+				i += 1;
 			}
-			qtdeLote = getQuantidadeLote(lote);
 
-			numGTM = ConnectionFeps.getValorSeq("GTM");
-			sGTM = sGTM + " - " + numGTM;
-			insertGTM(numGTM, COB_LE, qtdeLote, LocalDate.now(), LocalTime.now(), "N", dataSistema, lote,
-					getApelido(COB_LE));
+			insertGTM(numGTM, partNumber, quantidade, LocalDate.now(), LocalTime.now(), "N", dataSistema, lote,
+					getApelido(partNumber));
 
-			numGTM = ConnectionFeps.getValorSeq("GTM");
-			sGTM = sGTM + " - " + numGTM;
-			insertGTM(numGTM, COB_LD, qtdeLote, LocalDate.now(), LocalTime.now(), "N", dataSistema, lote,
-					getApelido(COB_LD));
-
-			relatorio.imprimeGTM(lote, dataSistema);
-			relatorio.imprimeExtrato(lote);
-
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
-			JOptionPane.showMessageDialog(null, "A(s) GTM(s) de número(s) " + sGTM + " foram criadas com sucesso!");
+			quantidade = 0;
 		}
+		qtdeLote = getQuantidadeLote(lote);
+
+		numGTM = ConnectionFeps.getValorSeq("GTM");
+		sGTM = sGTM + " - " + numGTM;
+		insertGTM(numGTM, COB_LE, qtdeLote, LocalDate.now(), LocalTime.now(), "N", dataSistema, lote,
+				getApelido(COB_LE));
+
+		numGTM = ConnectionFeps.getValorSeq("GTM");
+		sGTM = sGTM + " - " + numGTM;
+		insertGTM(numGTM, COB_LD, qtdeLote, LocalDate.now(), LocalTime.now(), "N", dataSistema, lote,
+				getApelido(COB_LD));
+
+		relatorio.imprimeGTM(lote, dataSistema);
+		relatorio.imprimeExtrato(lote);
+		
+		
+		txtSerie.setEnabled(true);
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		atualiza();
+		if(chkManual.isSelected())
+			JOptionPane.showMessageDialog(null, "A(s) GTM(s) de número(s) " + sGTM + " foram criadas com sucesso!");
 	}
 
 	private int getNumFechaGTM() {
@@ -997,7 +1052,7 @@ public class EmissaoGTM extends JPanel {
 			JOptionPane.showMessageDialog(null, "Não foi possível retornar o apelido do material: " + partNumber);
 		}
 
-		return ret;
+		return ret.trim();
 	}
 
 	private void updateOrdemConti(int num_gtm, String contiSerie) {
@@ -1022,9 +1077,10 @@ public class EmissaoGTM extends JPanel {
 			String dataSistema, int lote, String apelido) {
 		String consultaSQL = "INSERT INTO gtm (num_gtm, part_number, quantidade, data_hora, export, data_sistema, lote, historico) VALUES ("
 				+ "'" + numGTM + "', " + "'" + partNumber + "', " + "'" + quantidade + "', " + "'"
-				+ data.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) + " "
-				+ hora.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "', " + "'" + export + "', " + "'"
+				+ data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " "
+				+ hora.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS")) + "', " + "'" + export + "', " + "'"
 				+ dataSistema + "', " + "'" + lote + "', " + "'" + apelido + "')";
+
 		if (!ConnectionFeps.update(consultaSQL))
 			JOptionPane.showMessageDialog(null, "Não foi possível inserir no banco a GTM: " + numGTM);
 	}

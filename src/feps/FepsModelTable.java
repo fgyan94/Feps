@@ -63,33 +63,37 @@ public class FepsModelTable extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Ordem ordem = linhas.get(rowIndex);
+		if (linhas.isEmpty())
+			return null;
+		else {
+			Ordem ordem = linhas.get(rowIndex);
 
-		switch (getColumnName(columnIndex)) {
-		case (PART_NUMBER_GM):
-			return ordem.getPartNumber();
-		case (APELIDO):
-			return ordem.getApelido();
-		case (ORDEM_CONTI_SERIE):
-			return ordem.getOrdem_serie();
-		case (SEQ_DIA):
-			return ordem.getSeq_dia();
-		case (ORDEM_ENTRADA):
-			return ordem.getOrdem_entrada();
-		case (ORDEM_CONTI_DATA):
-			return ordem.getOrdem_data();
-		case (QUANTIDADE):
-			return ordem.getQtde();
-		case (SEQ_GM):
-			return ordem.getSeqGM();
-		case (STATUS_COCKPIT):
-			return ordem.getStatusCockpit();
-		case (GERA):
-			return ordem.isSelected();
-		case (DOC_GM):
-			return ordem.getSeqGM();
-		default:
-			throw new IndexOutOfBoundsException("columnIndex out of bounds");
+			switch (getColumnName(columnIndex)) {
+			case (PART_NUMBER_GM):
+				return ordem.getPartNumber();
+			case (APELIDO):
+				return ordem.getApelido();
+			case (ORDEM_CONTI_SERIE):
+				return ordem.getOrdem_serie();
+			case (SEQ_DIA):
+				return ordem.getSeq_dia();
+			case (ORDEM_ENTRADA):
+				return ordem.getOrdem_entrada();
+			case (ORDEM_CONTI_DATA):
+				return ordem.getOrdem_data();
+			case (QUANTIDADE):
+				return ordem.getQtde();
+			case (SEQ_GM):
+				return ordem.getSeqGM();
+			case (STATUS_COCKPIT):
+				return ordem.getStatusCockpit();
+			case (GERA):
+				return ordem.isSelected();
+			case (DOC_GM):
+				return ordem.getSeqGM();
+			default:
+				throw new IndexOutOfBoundsException("columnIndex out of bounds");
+			}
 		}
 	}
 

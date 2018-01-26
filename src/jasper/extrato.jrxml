@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="extrato" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="52534516-f309-44ca-9d3e-638e30f6a17e">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="extrato" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="52534516-f309-44ca-9d3e-638e30f6a17e">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -36,7 +36,7 @@
 	<parameter name="PARTNUMBER3" class="java.lang.String"/>
 	<parameter name="PARTNUMBER4" class="java.lang.String"/>
 	<parameter name="PARTNUMBER5" class="java.lang.String"/>
-	<parameter name="PARNTUMBER6" class="java.lang.String"/>
+	<parameter name="PARTNUMBER6" class="java.lang.String"/>
 	<parameter name="PARTNUMBER7" class="java.lang.String"/>
 	<parameter name="PARTNUMBER8" class="java.lang.String"/>
 	<parameter name="GTM1" class="java.lang.String"/>
@@ -47,6 +47,8 @@
 	<parameter name="GTM6" class="java.lang.String"/>
 	<parameter name="GTM7" class="java.lang.String"/>
 	<parameter name="GTM8" class="java.lang.String"/>
+	<parameter name="GTMLE" class="java.lang.String"/>
+	<parameter name="GTMLD" class="java.lang.String"/>
 	<detail>
 		<band height="802" splitType="Stretch">
 			<rectangle>
@@ -76,48 +78,6 @@
 			<line>
 				<reportElement x="445" y="575" width="110" height="1" uuid="6e0fac15-97bc-457f-b821-2531b90d6cef"/>
 			</line>
-			<staticText>
-				<reportElement x="101" y="0" width="45" height="24" uuid="2f10e3dd-1475-480a-a35e-b8a65cefd098"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SEQ.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="106" y="276" width="40" height="24" uuid="fa22d65b-30f2-40ac-aa1f-bb88e9110f7c"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SEQ.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="106" y="552" width="40" height="24" uuid="3a9e23dc-8660-425f-837f-63adb436b723"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SEQ.]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="210" y="0" width="25" height="24" uuid="9504081a-f74d-48c7-bb89-3070f9e20e34"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[a]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="210" y="276" width="25" height="24" uuid="1c152653-be5b-4a6c-8955-ad056285ba71"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[a]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="210" y="552" width="25" height="24" uuid="ba376ff8-6c4d-47b7-8b64-f4a4978ca0f7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[a]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="146" y="0" width="64" height="24" uuid="89ca418f-156a-4c5b-9604-f8ab9568642d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -203,950 +163,1202 @@
 				<textFieldExpression><![CDATA[$P{HORASISTEMA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="35" width="30" height="20" uuid="a53df493-e8c0-4564-9b83-9e1f264af6e9"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[SEQ]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="10" y="317" width="30" height="20" uuid="88cadf56-5237-4b1e-9da0-bf5954a4fe7a"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[SEQ]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="10" y="595" width="30" height="20" uuid="5c702415-d546-4e0c-bf17-22710698e5b1"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[SEQ]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="101" y="35" width="30" height="20" uuid="398eaa62-3de7-4558-bfba-7cc82337ec67"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[VIN]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="101" y="317" width="30" height="20" uuid="ae0787c8-b0e4-4064-bd8c-af5818b49816"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[VIN]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="101" y="595" width="30" height="20" uuid="98ac247c-3bcd-4eba-9e77-a52914ad1e1e"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[VIN]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="235" y="35" width="90" height="20" uuid="da6bd696-dde6-471d-9451-8a6bd21343fb"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[CONTI SÉRIE]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="235" y="317" width="90" height="20" uuid="4bcd5a46-a9ad-4ca6-ac35-d76e746a8139"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[CONTI SÉRIE]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="235" y="595" width="90" height="20" uuid="f8012aa3-1977-4fea-bbc8-3398969f1479"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[CONTI SÉRIE]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="353" y="35" width="96" height="20" uuid="f99db759-7512-40ed-b071-9261962b4fa7"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[PART NUMBER]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="353" y="317" width="96" height="20" uuid="c8542c51-e8ed-48ae-8f55-0c7fe1c6c972"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[PART NUMBER]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="353" y="595" width="96" height="20" uuid="3c8dae5b-0851-4dce-a88e-8a5c091c970f"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[PART NUMBER]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="477" y="35" width="30" height="20" uuid="40a0075e-baa6-4cba-b4e1-798fd3215cf8"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[GTM]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="477" y="317" width="30" height="20" uuid="5f647342-2bba-45b2-8008-e752c6cd8aaa"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[GTM]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="477" y="595" width="30" height="20" uuid="4fcbee11-9dc6-4bc4-864a-a902793b9694"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[GTM]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="10" y="55" width="70" height="20" uuid="aeb40709-b0a2-4fe0-8a12-14f32a135692"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="337" width="70" height="20" uuid="1ed21658-e1ba-4465-a1ba-2ac9a18d5e5a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="332" width="70" height="20" uuid="1ed21658-e1ba-4465-a1ba-2ac9a18d5e5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="615" width="70" height="20" uuid="b2a8ef3a-e522-499d-9929-be6115e222c8"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="608" width="70" height="20" uuid="b2a8ef3a-e522-499d-9929-be6115e222c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="75" width="70" height="20" uuid="392a4c60-9cf3-4803-bd7c-8d6a2c308088"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="356" width="70" height="20" uuid="e9de95b0-b753-4457-8523-32d51a5779a8"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="351" width="70" height="20" uuid="e9de95b0-b753-4457-8523-32d51a5779a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="634" width="70" height="20" uuid="4a32d2f5-4b57-4d89-83a6-ed2036d464df"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="627" width="70" height="20" uuid="4a32d2f5-4b57-4d89-83a6-ed2036d464df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="95" width="70" height="20" uuid="26459490-7510-431a-ab2f-c1f4343af5ff"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="376" width="70" height="20" uuid="044a9514-4aad-45bb-bcac-c2538d313f72"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="371" width="70" height="20" uuid="044a9514-4aad-45bb-bcac-c2538d313f72"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="654" width="70" height="20" uuid="be730341-2090-45fe-9511-aa0a26b0a194"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="647" width="70" height="20" uuid="be730341-2090-45fe-9511-aa0a26b0a194"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ3}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="113" width="70" height="20" uuid="7d3f1269-528d-4200-92b8-c4e79a6a1b1b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="394" width="70" height="20" uuid="80b56383-9f29-49dd-a6b9-e0f6f399fe36"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="389" width="70" height="20" uuid="80b56383-9f29-49dd-a6b9-e0f6f399fe36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="672" width="70" height="20" uuid="356fc700-add3-45fc-aa27-11407cb901b0"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="665" width="70" height="20" uuid="356fc700-add3-45fc-aa27-11407cb901b0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ4}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="133" width="70" height="20" uuid="3b0c0c43-7729-4ae2-a87c-e264e2482b06"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="414" width="70" height="20" uuid="e1cf63ed-db42-48ac-8ee8-e6bea14431f1"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="409" width="70" height="20" uuid="e1cf63ed-db42-48ac-8ee8-e6bea14431f1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="692" width="70" height="20" uuid="c7c611f0-0bb1-40f2-ab20-8b0b94173110"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="685" width="70" height="20" uuid="c7c611f0-0bb1-40f2-ab20-8b0b94173110"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ5}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="153" width="70" height="20" uuid="764edbc6-163b-4cf7-ac94-05f15b9ff817"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="434" width="70" height="20" uuid="16891d63-c8ae-4591-9bc7-3f7f85028ee4"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="429" width="70" height="20" uuid="16891d63-c8ae-4591-9bc7-3f7f85028ee4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="712" width="70" height="20" uuid="92dd9a8f-3187-4f0f-9db7-d2197f52cadf"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="705" width="70" height="20" uuid="92dd9a8f-3187-4f0f-9db7-d2197f52cadf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ6}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="173" width="70" height="20" uuid="02ca5f66-8b0a-412f-bcae-1a3d3d2c40d6"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="454" width="70" height="20" uuid="dbd44c34-7a4f-46e5-9c84-2e94d581aea7"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="449" width="70" height="20" uuid="dbd44c34-7a4f-46e5-9c84-2e94d581aea7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="732" width="70" height="20" uuid="1242aa7c-7180-44ee-a16b-9ebc62a4e2e6"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="725" width="70" height="20" uuid="1242aa7c-7180-44ee-a16b-9ebc62a4e2e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ7}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="193" width="70" height="20" uuid="4e848bf5-eebf-4a51-8faa-509189f476b5"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="474" width="70" height="20" uuid="506aff3f-cf9f-49f1-b9bf-54a4c0d8255e"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="469" width="70" height="20" uuid="506aff3f-cf9f-49f1-b9bf-54a4c0d8255e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="752" width="70" height="20" uuid="a1f6b184-f6b3-4f45-8f99-0118e1f87514"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="10" y="745" width="70" height="20" uuid="a1f6b184-f6b3-4f45-8f99-0118e1f87514"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SEQ8}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="55" width="125" height="20" uuid="0a385ced-bd57-42b2-985d-5f3473410c1c"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="337" width="125" height="20" uuid="16d01e75-eb05-4062-8681-eb5ca74db904"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="332" width="125" height="20" uuid="16d01e75-eb05-4062-8681-eb5ca74db904"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="615" width="125" height="20" uuid="dff7f9ac-2819-4115-bb10-f20bc2a385ab"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="608" width="125" height="20" uuid="dff7f9ac-2819-4115-bb10-f20bc2a385ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="75" width="125" height="20" uuid="04b72eb0-ffbd-43ef-b6c5-7e6efc669594"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="356" width="125" height="20" uuid="abfab5a2-a029-471f-936e-73dfc7e86ea7"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="351" width="125" height="20" uuid="abfab5a2-a029-471f-936e-73dfc7e86ea7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="634" width="125" height="20" uuid="a6fe3e49-457f-4f2b-883d-d66bdbe2f750"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="627" width="125" height="20" uuid="a6fe3e49-457f-4f2b-883d-d66bdbe2f750"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="95" width="125" height="20" uuid="4eaab9e5-a4b6-4783-8c13-f95ae718ca49"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="376" width="125" height="20" uuid="883afd3c-68f4-4006-89ed-88aa86b7c45f"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="371" width="125" height="20" uuid="883afd3c-68f4-4006-89ed-88aa86b7c45f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="654" width="125" height="20" uuid="3cd79c4b-ef0c-4849-bd4d-998bf9f22124"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="647" width="125" height="20" uuid="3cd79c4b-ef0c-4849-bd4d-998bf9f22124"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN3}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="113" width="125" height="20" uuid="b7a4c61f-6627-4406-b194-79e52da78dcc"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="394" width="125" height="20" uuid="47c0e291-36b3-44c3-86ce-cf9b8a0963db"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="389" width="125" height="20" uuid="47c0e291-36b3-44c3-86ce-cf9b8a0963db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="672" width="125" height="20" uuid="341358af-d7ac-4817-9bf7-08ed8c09af79"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="665" width="125" height="20" uuid="341358af-d7ac-4817-9bf7-08ed8c09af79"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN4}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="133" width="125" height="20" uuid="2263cdc8-e258-4a4d-b292-c99a8c5a3fbf"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="414" width="125" height="20" uuid="a9613bb8-aa55-4e73-8d0c-a61711ad70f9"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="409" width="125" height="20" uuid="a9613bb8-aa55-4e73-8d0c-a61711ad70f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="692" width="125" height="20" uuid="1b573a69-3990-463f-9127-12963aef3569"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="685" width="125" height="20" uuid="1b573a69-3990-463f-9127-12963aef3569"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN5}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="153" width="125" height="20" uuid="7f8166d3-1b88-4d86-ad83-020390e8affe"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="434" width="125" height="20" uuid="7e38ca98-beef-4872-b590-fa65d2a9f186"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="429" width="125" height="20" uuid="7e38ca98-beef-4872-b590-fa65d2a9f186"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="712" width="125" height="20" uuid="a8f08446-72fd-4ee8-9806-8dec59a732d7"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="705" width="125" height="20" uuid="a8f08446-72fd-4ee8-9806-8dec59a732d7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN6}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="173" width="125" height="20" uuid="80e43619-c756-422c-b5b4-69d5dd945755"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="454" width="125" height="20" uuid="f580c92c-8e0c-420b-b056-b3a5ee16099a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="449" width="125" height="20" uuid="f580c92c-8e0c-420b-b056-b3a5ee16099a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="732" width="125" height="20" uuid="2607592e-0136-4aee-9092-a850abc75626"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="725" width="125" height="20" uuid="2607592e-0136-4aee-9092-a850abc75626"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN7}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="101" y="193" width="125" height="20" uuid="55afa283-8b75-4808-9aff-3bc8bccbe95a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="474" width="125" height="20" uuid="ddc354bd-212c-483b-acd3-e4efdcce5bdf"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="469" width="125" height="20" uuid="ddc354bd-212c-483b-acd3-e4efdcce5bdf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="752" width="125" height="20" uuid="1a5c6662-6067-4682-86c5-f8409899ebc7"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="101" y="745" width="125" height="20" uuid="1a5c6662-6067-4682-86c5-f8409899ebc7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VIN8}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="55" width="90" height="20" uuid="516ca8ed-c25f-4e35-9f7c-a72675413d74"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="337" width="90" height="20" uuid="d1630dd1-1187-43f2-9925-6cf25d0aa735"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="332" width="90" height="20" uuid="d1630dd1-1187-43f2-9925-6cf25d0aa735"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="615" width="90" height="20" uuid="49565944-43a7-4b81-a773-dcf14c95d9e4"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="608" width="90" height="20" uuid="49565944-43a7-4b81-a773-dcf14c95d9e4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="75" width="90" height="20" uuid="9bd59c23-b0b2-4086-8426-20fb298d3965"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="356" width="90" height="20" uuid="e5d2e258-0dff-404e-aa5f-03e1bb138854"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="351" width="90" height="20" uuid="e5d2e258-0dff-404e-aa5f-03e1bb138854"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="634" width="90" height="20" uuid="71c02af7-9b8a-40be-bfb0-d14085686bb7"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="627" width="90" height="20" uuid="71c02af7-9b8a-40be-bfb0-d14085686bb7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="95" width="90" height="20" uuid="ad3b194a-dcc2-42cd-88b2-5a7abab96697"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="376" width="90" height="20" uuid="da08eabf-b672-4d6e-b3a9-9a62d62aad74"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="371" width="90" height="20" uuid="da08eabf-b672-4d6e-b3a9-9a62d62aad74"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="654" width="90" height="20" uuid="37046762-341f-4f85-8f06-f7c07e34f494"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="647" width="90" height="20" uuid="37046762-341f-4f85-8f06-f7c07e34f494"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE3}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="113" width="90" height="20" uuid="b114f34d-622b-4d20-8b6c-8e0a14d8939e"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="394" width="90" height="20" uuid="089a6b23-e9f6-479f-b18a-3d954da14879"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="389" width="90" height="20" uuid="089a6b23-e9f6-479f-b18a-3d954da14879"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="672" width="90" height="20" uuid="293f37d0-12a5-4d14-94fe-612eece3a32c"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="665" width="90" height="20" uuid="293f37d0-12a5-4d14-94fe-612eece3a32c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE4}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="133" width="90" height="20" uuid="1b872327-a94b-4cae-be7f-06fb8b003558"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="414" width="90" height="20" uuid="b6761470-c6c4-4e3b-b3c3-e48643e53a7b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="409" width="90" height="20" uuid="b6761470-c6c4-4e3b-b3c3-e48643e53a7b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="692" width="90" height="20" uuid="99f516d8-23e2-44b1-bd46-84afa7c152da"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="685" width="90" height="20" uuid="99f516d8-23e2-44b1-bd46-84afa7c152da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE5}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="153" width="90" height="20" uuid="b3d23a8d-abb3-4861-bd85-24f5d1ceffac"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="434" width="90" height="20" uuid="5474f0b8-4989-488a-bfe1-0bfdc18c095a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="429" width="90" height="20" uuid="5474f0b8-4989-488a-bfe1-0bfdc18c095a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="712" width="90" height="20" uuid="577ed209-97ab-4781-9a5b-7a6e33cfbd8b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="705" width="90" height="20" uuid="577ed209-97ab-4781-9a5b-7a6e33cfbd8b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE6}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="173" width="90" height="20" uuid="8b5b3862-245d-4395-9654-a87eef78bd4c"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="454" width="90" height="20" uuid="9383ffdb-6daa-4f28-b902-d14c735679d9"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="449" width="90" height="20" uuid="9383ffdb-6daa-4f28-b902-d14c735679d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="732" width="90" height="20" uuid="d1bf0274-ebcd-44dd-8e43-60a1f238e939"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="725" width="90" height="20" uuid="d1bf0274-ebcd-44dd-8e43-60a1f238e939"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE7}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="235" y="193" width="90" height="20" uuid="f21226f3-5336-4b69-833d-b88f275719bf"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="474" width="90" height="20" uuid="73f72e48-7ea1-4fee-a3b8-5214ebb34b7c"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="469" width="90" height="20" uuid="73f72e48-7ea1-4fee-a3b8-5214ebb34b7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="235" y="752" width="90" height="20" uuid="14682222-5263-4800-bff2-c23818f8a439"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="235" y="745" width="90" height="20" uuid="14682222-5263-4800-bff2-c23818f8a439"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{SERIE8}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="55" width="96" height="20" uuid="7ace1e11-207e-402c-a537-a08105f321ba"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="337" width="96" height="20" uuid="07ce63e5-9f5c-4539-80a3-bf86214571fb"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="332" width="96" height="20" uuid="07ce63e5-9f5c-4539-80a3-bf86214571fb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="615" width="96" height="20" uuid="74a75a76-f1a5-4618-be16-05ae8a0a888d"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="608" width="96" height="20" uuid="74a75a76-f1a5-4618-be16-05ae8a0a888d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="75" width="96" height="20" uuid="15b211d9-2a22-4138-9b42-79408fe1f30a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="634" width="96" height="20" uuid="59e8f15f-e4ff-48a3-8f36-02a5e969b2e2"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="627" width="96" height="20" uuid="59e8f15f-e4ff-48a3-8f36-02a5e969b2e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="356" width="96" height="20" uuid="4472c4c9-9807-4410-9afd-94a44756802e"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="351" width="96" height="20" uuid="4472c4c9-9807-4410-9afd-94a44756802e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="95" width="96" height="20" uuid="1d0c97d7-85b5-49cb-9b10-9950b7da1e61"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="376" width="96" height="20" uuid="310ef3a2-7cba-4e53-a407-2d5ad6870a30"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="371" width="96" height="20" uuid="310ef3a2-7cba-4e53-a407-2d5ad6870a30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="654" width="96" height="20" uuid="d1a84d75-f2da-4eaa-8e32-a671e27bffe5"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="647" width="96" height="20" uuid="d1a84d75-f2da-4eaa-8e32-a671e27bffe5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER3}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="113" width="96" height="20" uuid="00f374ab-678a-439a-81ec-e93335445425"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="394" width="96" height="20" uuid="68b9d966-13ef-4b79-96d6-e8e49c4ef023"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="389" width="96" height="20" uuid="68b9d966-13ef-4b79-96d6-e8e49c4ef023"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="672" width="96" height="20" uuid="3695a506-9a21-4cb1-9c4d-5b5514adae7b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="665" width="96" height="20" uuid="3695a506-9a21-4cb1-9c4d-5b5514adae7b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER4}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="133" width="96" height="20" uuid="2239cbe1-2f30-4289-9f20-fb88df3501ca"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="414" width="96" height="20" uuid="68c8f8cb-8e99-40da-bfb4-4e35a49a8a73"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="409" width="96" height="20" uuid="68c8f8cb-8e99-40da-bfb4-4e35a49a8a73"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="692" width="96" height="20" uuid="a3fbcbeb-8c2b-4dfd-bff5-90073cbd9b5b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="685" width="96" height="20" uuid="a3fbcbeb-8c2b-4dfd-bff5-90073cbd9b5b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER5}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="153" width="96" height="20" uuid="0fa2ae32-fd00-4116-8ee4-8a2d08c5f99a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="434" width="96" height="20" uuid="8a86209c-6453-429f-a30b-526d43a8c7b0"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="429" width="96" height="20" uuid="8a86209c-6453-429f-a30b-526d43a8c7b0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="712" width="96" height="20" uuid="821ef842-1b35-441e-b4a5-fe5fffe1ea59"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="705" width="96" height="20" uuid="821ef842-1b35-441e-b4a5-fe5fffe1ea59"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER6}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="173" width="96" height="20" uuid="6827bf04-73bc-40a7-8c18-903635ea0433"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="454" width="96" height="20" uuid="c3d8b829-1382-425a-8c7b-fcc409d21927"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="449" width="96" height="20" uuid="c3d8b829-1382-425a-8c7b-fcc409d21927"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="732" width="96" height="20" uuid="d6a8a845-2732-49b5-8bb0-d71ea6f378a8"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="725" width="96" height="20" uuid="d6a8a845-2732-49b5-8bb0-d71ea6f378a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER7}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="353" y="193" width="96" height="20" uuid="2996eeb4-96dd-416c-88b3-7bb6025ee63b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="474" width="96" height="20" uuid="71d818c2-6369-4381-bdd2-a3ab397b0626"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="469" width="96" height="20" uuid="71d818c2-6369-4381-bdd2-a3ab397b0626"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="752" width="96" height="20" uuid="22b96752-ebb4-4ef5-95f8-f9b86b1d1cc0"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="353" y="745" width="96" height="20" uuid="22b96752-ebb4-4ef5-95f8-f9b86b1d1cc0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARTNUMBER8}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="55" width="70" height="20" uuid="e53b80ba-a621-4e0a-af91-086fb81c3078"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="337" width="70" height="20" uuid="73510448-b0fd-462a-8c06-cfd6a30a89f3"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="332" width="70" height="20" uuid="73510448-b0fd-462a-8c06-cfd6a30a89f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="615" width="70" height="20" uuid="79bead54-38c3-425d-a7ed-f2efd20023c8"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="608" width="70" height="20" uuid="79bead54-38c3-425d-a7ed-f2efd20023c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="75" width="70" height="20" uuid="d979bd77-47a0-4658-85de-8e9f7edfdf93"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="356" width="70" height="20" uuid="ba35c86c-6d40-4db2-a9cf-9586d8367e22"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="351" width="70" height="20" uuid="ba35c86c-6d40-4db2-a9cf-9586d8367e22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="634" width="70" height="20" uuid="08ce8ef9-0b2a-4c3a-9cc9-c31ae3a56d75"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="627" width="70" height="20" uuid="08ce8ef9-0b2a-4c3a-9cc9-c31ae3a56d75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="95" width="70" height="20" uuid="f64b709c-34cc-4f67-9a8e-6f29a6819e5a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="376" width="70" height="20" uuid="fca2133d-a120-4889-aac2-468dc46e3b2a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="371" width="70" height="20" uuid="fca2133d-a120-4889-aac2-468dc46e3b2a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="654" width="70" height="20" uuid="5571b510-3600-4d3a-ae0a-0ff5dc903180"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="647" width="70" height="20" uuid="5571b510-3600-4d3a-ae0a-0ff5dc903180"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM3}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="113" width="70" height="20" uuid="755e35a7-57e2-4eec-a487-a22149f20b98"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="394" width="70" height="20" uuid="409d1ace-85ae-4304-8192-700c09cfbb20"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="389" width="70" height="20" uuid="409d1ace-85ae-4304-8192-700c09cfbb20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="672" width="70" height="20" uuid="236f9c70-01c2-4a02-b069-5bc737b87ce4"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="665" width="70" height="20" uuid="236f9c70-01c2-4a02-b069-5bc737b87ce4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM4}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="133" width="70" height="20" uuid="0d132981-6338-4abe-b6df-a0430f25008f"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="414" width="70" height="20" uuid="7a758a37-d058-427a-a5d1-b69cc2bdb25a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="409" width="70" height="20" uuid="7a758a37-d058-427a-a5d1-b69cc2bdb25a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="692" width="70" height="20" uuid="551c51ed-f17e-44ac-aaec-2e9e6265b9e6"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="685" width="70" height="20" uuid="551c51ed-f17e-44ac-aaec-2e9e6265b9e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM5}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="153" width="70" height="20" uuid="89b79a34-4d68-4d64-9637-e516d1458cb2"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="434" width="70" height="20" uuid="03f691fa-a3b0-43c6-a7dc-194506d41ec7"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="429" width="70" height="20" uuid="03f691fa-a3b0-43c6-a7dc-194506d41ec7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="712" width="70" height="20" uuid="12e39ed3-5809-4107-ba83-299ea55ef6ec"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="705" width="70" height="20" uuid="12e39ed3-5809-4107-ba83-299ea55ef6ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM6}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="173" width="70" height="20" uuid="7c519103-e45c-4bb6-8d94-e78f36dfe9e1"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="454" width="70" height="20" uuid="387e2048-02d4-4ef4-b3eb-eefe6c847ce0"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="449" width="70" height="20" uuid="387e2048-02d4-4ef4-b3eb-eefe6c847ce0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="732" width="70" height="20" uuid="50a591eb-5224-4cc9-a0e8-130283138405"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="725" width="70" height="20" uuid="50a591eb-5224-4cc9-a0e8-130283138405"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM7}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="477" y="193" width="70" height="20" uuid="02fcc584-8433-41cd-b5e0-4abd788a9be7"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="474" width="70" height="20" uuid="604bb963-1de0-4e84-b328-5a0a9bf8290d"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="469" width="70" height="20" uuid="604bb963-1de0-4e84-b328-5a0a9bf8290d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="752" width="70" height="20" uuid="7bf7de04-c8af-4184-9edf-6e6132885ba3"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="477" y="745" width="70" height="20" uuid="7bf7de04-c8af-4184-9edf-6e6132885ba3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{GTM8}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="10" y="35" width="70" height="20" uuid="fbe7907f-5322-4ab8-b90c-d99261256643"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEQ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="312" width="70" height="20" uuid="4758851d-61da-44a7-b43d-725e5f917a73"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEQ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="588" width="70" height="20" uuid="1fa5983b-a001-424a-970b-9a17bd81dbff"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEQ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="35" width="125" height="20" uuid="3a2f8e1a-5807-47e3-825d-81431c7b47f4"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VIN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="312" width="125" height="20" uuid="b3b2ff7d-d591-4076-9d1b-48fa132b93d2"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VIN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="588" width="125" height="20" uuid="ecf3e77a-7d33-4d8e-8598-30173b3591fb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VIN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="35" width="90" height="20" uuid="c8930fdc-0b91-41ef-979d-3475758f6bd4"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SÉRIE CONTI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="35" width="94" height="20" uuid="dd262940-3359-4902-9f8a-6977a98b8bc3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PART NUMBER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="35" width="70" height="20" uuid="80a8c783-5ff7-4022-9c17-1606de88a3ae"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GTM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="312" width="90" height="20" uuid="9c5567f9-61fe-4e6a-9aca-a0ee34879bc6"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SÉRIE CONTI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="312" width="94" height="20" uuid="aee9c4fd-2192-4cac-8666-c449855b828e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PART NUMBER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="312" width="70" height="20" uuid="0ff947f5-68b1-408c-8dc0-04ca19bacec9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GTM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="588" width="90" height="20" uuid="7243c732-3959-4df1-ba4a-67d2a5b8b4cf"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SÉRIE CONTI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="588" width="94" height="20" uuid="220798ec-aa91-4084-87c0-f06a2d2fe04d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PART NUMBER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="588" width="70" height="20" uuid="e5846238-094c-47b2-8a2e-a7fe12b671e2"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GTM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="276" width="45" height="24" uuid="c9cd54a6-e682-4e0c-b794-40588164c2e0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEQ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="25" height="24" uuid="aa40c8e9-51dc-4df5-9827-857b3a9c673e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="276" width="25" height="24" uuid="94c2fe63-dcfd-41a3-b6b2-9d05fb84911b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="552" width="25" height="24" uuid="d566fec1-870d-4195-94f3-9bd39a1916df"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="1" width="45" height="24" uuid="de32488f-8de6-417f-8c18-240ca3b5f6ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEQ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="553" width="45" height="24" uuid="ba0e14d7-ea6d-47da-89a0-6c57144e772a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEQ.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="477" y="230" width="70" height="20" uuid="90ec4a23-1006-4d03-9788-5d76ff5d09b0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GTMLD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="213" width="70" height="20" uuid="380aa077-16b1-4e31-a076-314d5bdde0f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GTMLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="489" width="70" height="20" uuid="9fdfecc1-7b94-4a20-83d5-5c312be51641"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GTMLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="506" width="70" height="20" uuid="30852214-1fe7-428b-bc18-65791f59a598"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GTMLD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="762" width="70" height="20" uuid="25033027-2236-447d-82d5-f507d394f004"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GTMLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="782" width="70" height="20" uuid="8506b0b3-a90b-42d7-95a8-b70c08ae47aa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GTMLD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="213" width="70" height="18" uuid="bdc00c68-32e3-4665-b947-55a023791b99"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="230" width="70" height="18" uuid="6b59f8e2-e2eb-4fb7-bed6-a646a5f94444"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="230" width="125" height="18" uuid="d621f850-a1c7-4db3-a9ff-02f96aa86f01"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="213" width="125" height="18" uuid="bd5a057d-c30b-48e2-9788-162292f673bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="230" width="90" height="18" uuid="2bd79649-9298-4e7f-96b2-6c70e089bdc3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="213" width="90" height="18" uuid="82080dc9-bb60-40c6-a4d3-f02fa09d6205"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="230" width="96" height="18" uuid="40985afe-1826-4839-9002-999899ebc387"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[94759779]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="213" width="96" height="18" uuid="da4f2a35-0075-4620-8d36-4b385eb5560e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[94759777]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="506" width="125" height="18" uuid="783abdb3-46f3-4e67-a4e6-bb22f9e1f5ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="506" width="90" height="18" uuid="7cffeca0-94fe-444e-80d5-1651f8f83045"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="489" width="96" height="18" uuid="1a8eb2f7-bba5-4b1f-bd0f-e8a7b8bd6134"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[94759777]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="506" width="70" height="18" uuid="3149369d-9593-4d34-b1a6-ada0a82a72b6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="489" width="90" height="18" uuid="3cf51e6c-d853-4043-bcd8-43b9cdc9b06b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="489" width="125" height="18" uuid="ce9f4d18-4a1b-4740-99d4-b0174d00dd5c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="507" width="96" height="18" uuid="eb13ef20-1dc9-48c2-90b7-6bf7904cf57a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[94759779]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="489" width="70" height="18" uuid="80616f63-6f47-4c04-95b2-ddc9d064f591"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="782" width="125" height="18" uuid="1e15c42b-2673-41b1-9260-725f86531691"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="765" width="96" height="18" uuid="24fb880e-935d-4d05-a5ff-9a9336630360"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[94759777]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="765" width="125" height="18" uuid="f8654ca7-badc-43a8-91ad-4ac09800a037"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="782" width="70" height="18" uuid="68dc2c1b-d8d3-4d48-b124-3722614c05fc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="783" width="96" height="18" uuid="a5a7b58c-da6d-4b63-8569-58aac8740856"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[94759779]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="765" width="70" height="18" uuid="a3a6a0d6-87d8-4dfc-8a23-e99ee190e415"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="765" width="90" height="18" uuid="6c86d3f0-6422-4ba8-b818-af4f2994ac68"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="782" width="90" height="18" uuid="ba4ef28c-3bef-491f-a38b-548a1f90eb9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[COB LD]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

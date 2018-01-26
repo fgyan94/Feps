@@ -1,12 +1,16 @@
 package feps;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -15,6 +19,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -24,6 +29,8 @@ public class Relatorio {
 	private static final String BOLHAPN = "00000000";
 	private static final String SIGLA = "CON";
 	private static final String UNIDADE = "PC";
+	private static final String COBLE = "94759777";
+	private static final String COBLD = "94759779";
 
 	public void imprimeBolha(String seqBolha) {
 		HashMap<String, Object> param = new HashMap<>();
@@ -242,6 +249,7 @@ public class Relatorio {
 
 			JasperViewer.viewReport(print, false);
 			// JasperPrintManager.printReport(print, false);
+
 		} catch (JRException | SQLException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Erro ao consultar!");
@@ -264,11 +272,12 @@ public class Relatorio {
 						ret = "Inserido Buffer";
 					else
 						ret = "Inserido Manual";
-			
+
 			ConnectionFeps.closeConnection(rs, null, null);
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Erro ao tentar buscar a ordem: " + ordemOrigem + " se é buffer ou manual!");
+			JOptionPane.showMessageDialog(null,
+					"Erro ao tentar buscar a ordem: " + ordemOrigem + " se é buffer ou manual!");
 		}
 
 		return ret;
@@ -296,27 +305,29 @@ public class Relatorio {
 
 		return ret;
 	}
-	
+
 	public void imprimeGTM(int lote, String dataSistema) {
 		String consultaSQL, numGTM, partNumber, sQuantidade, descricao;
 		int quantidade;
 		ResultSet rs;
 		HashMap<String, Object> param = new HashMap<>();
-		
+
 		try {
 			consultaSQL = "SELECT num_gtm, part_number, quantidade, historico FROM gtm WHERE lote = '" + lote + "'";
 			rs = ConnectionFeps.query(consultaSQL);
-			
-			while(rs.next()) {
+			dataSistema = dataSistema.substring(8) + "/" + dataSistema.substring(5, 7) + "/"
+					+ dataSistema.substring(0, 4);
+
+			while (rs.next()) {
 				numGTM = SIGLA + MenuPrincipal.padding(rs.getInt("num_gtm"), 6);
 				partNumber = rs.getString("part_number").trim();
 				quantidade = rs.getInt("quantidade");
 				sQuantidade = MenuPrincipal.padding(rs.getInt("quantidade") * 1000, 9) + UNIDADE;
 				descricao = rs.getString("historico").trim();
-				
+
 				param.put("GTM", numGTM);
 				param.put("PARTNUMBER", partNumber);
-				param.put("QUANTIDADE",quantidade);
+				param.put("QUANTIDADE", quantidade);
 				param.put("SQUANTIDADE", sQuantidade);
 				param.put("DESCR", descricao);
 				param.put("DATASISTEMA", dataSistema);
@@ -326,17 +337,112 @@ public class Relatorio {
 				JasperPrint print = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
 
 				JasperViewer.viewReport(print, false);
+				// JasperPrintManager.printReport(print, false);
 			}
-			
+
 			ConnectionFeps.closeConnection(rs, null, null);
-		} catch(SQLException | JRException sqlE) {
+		} catch (SQLException | JRException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Não foi possível imprimir a(s) GTM(s) do lote: " + lote);
 		}
-		
+
 	}
-	
+
 	public void imprimeExtrato(int lote) {
+		String consultaSQL, dataSistema, horaSistema;
+		ResultSet rs;
+		List<GTM> gtmList;
+		HashMap<String, Object> param = new HashMap<>();
 		
+		try {
+			consultaSQL = "SELECT gtm.* , ordem_conti.ordem_conti_serie, ordem_conti.part_number_gm, ordem_gm.ordem_gm_doc, ordem_gm.vin " +
+							"FROM gtm, ordem_gm RIGHT OUTER JOIN ordem_conti ON ordem_gm.ordem_conti_serie = ordem_conti.ordem_conti_serie " + 
+							"WHERE gtm.lote = '" + lote + "' AND gtm.num_gtm = ordem_conti.num_gtm " + 
+							"ORDER BY ordem_gm.ordem_gm_doc, ordem_gm.data_hora";
+			
+			rs = ConnectionFeps.query(consultaSQL);
+			gtmList = new ArrayList<>();
+			dataSistema = new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(getDataSistema()));
+			horaSistema = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+			
+			while(rs.next()) {
+				int seq = rs.getInt("ordem_gm_doc");
+				String vin = rs.getString("vin").trim();
+				String serieConti = rs.getString("ordem_conti_serie").trim();
+				int partNumber = rs.getInt("part_number_gm");
+				int numGtm = rs.getInt("num_gtm");
+				
+				GTM gtm = new GTM(seq, vin, serieConti, partNumber, numGtm);
+				gtmList.add(gtm);
+			}
+			
+			param.put("SEQINICIO", String.valueOf(gtmList.get(0).getSeq()));
+			param.put("SEQFIM", String.valueOf(gtmList.get(gtmList.size() - 1).getSeq()));
+			param.put("DATASISTEMA", dataSistema);
+			param.put("HORASISTEMA", horaSistema);
+			
+			for(int i = 0; i < gtmList.size(); i++) {
+				param.put("SEQ" + (i + 1), String.valueOf(gtmList.get(i).getSeq()));
+				param.put("VIN" + (i + 1), gtmList.get(i).getVin());
+				param.put("SERIE" + (i + 1), gtmList.get(i).getSerieConti());
+				param.put("PARTNUMBER" + (i + 1), String.valueOf(gtmList.get(i).getPartNumber()));
+				param.put("GTM" + (i + 1), String.valueOf(gtmList.get(i).getNumGtm()));
+			}
+
+			if(gtmList.size() < getNumFechaGTM())
+				for(int i = gtmList.size() + 1; i <= getNumFechaGTM(); i++) {
+					param.put("SEQ" + i, "");
+					param.put("VIN" + i, "");
+					param.put("SERIE" + i, "");
+					param.put("PARTNUMBER" + i, "");
+					param.put("GTM" + i, "");
+				}
+			
+			consultaSQL = "SELECT num_gtm, part_number FROM gtm WHERE (part_number = '" + COBLE + "' OR " + 
+														"part_number = '" + COBLD + "') AND " + 
+														"lote = '" + lote + "'";
+			
+			rs = ConnectionFeps.query(consultaSQL);
+			
+			while(rs.next()) {
+				if(rs.getString("part_number").trim().equals(COBLE))
+					param.put("GTMLE", rs.getString("num_gtm"));
+				else
+					param.put("GTMLD", rs.getString("num_gtm"));
+			}
+			
+			JasperReport report = JasperCompileManager.compileReport(pathToReportPackage + "/extrato.jrxml");
+			JasperPrint print = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
+
+			JasperViewer.viewReport(print, false);
+//			JasperPrintManager.printReport(print, false);
+			
+		} catch (SQLException | JRException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível imprimir o extrato da GTM: ");
+		}
+	}
+
+	private int getNumFechaGTM() {
+		String consultaSQL;
+		ResultSet rs;
+		int ret = -1;
+
+		consultaSQL = "SELECT qtde_fecha_gtm FROM parametros";
+		rs = ConnectionFeps.query(consultaSQL);
+		try {
+			if (rs.next())
+				ret = rs.getInt("qtde_fecha_gtm");
+
+			ConnectionFeps.closeConnection(rs, null, null);
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao buscar o número de fechamento de GTM!");
+			;
+		}
+		ConnectionFeps.closeConnection(rs, null, null);
+
+		return ret;
+
 	}
 }

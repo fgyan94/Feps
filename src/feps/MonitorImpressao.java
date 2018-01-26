@@ -3,6 +3,7 @@ package feps;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -23,6 +24,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TooManyListenersException;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -45,9 +48,6 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class MonitorImpressao extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -117,7 +117,19 @@ public class MonitorImpressao extends JPanel {
 
 		InputStream inputStream; // O InputStream fica fora porque é utilizado depois
 		OutputStream outputStream;
-
+		
+		public void close() {
+			try {
+				if(serialPort != null) {
+					serialPort.close();
+					serialPort = null;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Erro ao tentar fechar a porta serial:" + serialPort.getName() + "!");
+			}
+		}
+		
 		public void execute() {
 			// Pega a porta pelo S.O.
 			String portName = "COM1";
@@ -129,7 +141,7 @@ public class MonitorImpressao extends JPanel {
 				try {
 					// Abre a porta serial solicitada
 					serialPort = (SerialPort) portId.open(this.getClass().getName(), 0);
-
+					
 					// Pega o InputStream da Porta Serial
 					inputStream = serialPort.getInputStream();
 					outputStream = serialPort.getOutputStream();
@@ -253,24 +265,31 @@ public class MonitorImpressao extends JPanel {
 			};
 		}
 	}
-	
-	private Dimension dimension = new Dimension(1366, 768);
-//	private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	
+
+//	private Dimension dimension = new Dimension(1366, 768);
+	 private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+
 	static final String S = "S";
 	static final String I = "I";
 
+	private static final int MIN_WIDTH = 1366;
+	private static final int MIN_HEIGHT = 768;
+
 	private SerialComm serialPort;
 
-	private JLabel lblImpressao, lblOrdensParaMontagem, lblListaModelosProduzidos, lblComunicaoFepsRast, lblDesc, lblSeqDia, lblNumMont, btnManualPrint;
+	private JLabel lblImpressao, lblOrdensParaMontagem, lblListaModelosProduzidos, lblComunicaoFepsRast, lblDesc,
+			lblSeqDia, lblNumMont, btnManualPrint;
 	private JTable tblOrdemMontagem, tblModeloProd;
 	private FepsModelTable fmtMontagem, fmtProduzido;
 	private JScrollPane scrOrdemMontagem, scrModeloProd, scrComunicaFepsRast;
 	private JEditorPane edtComunicaFepsRast;
 	private MonitorCarga monitor;
 	private JCheckBox cbBolha;
-	
+	private GroupLayout groupLayout;
 	private Relatorio relatorio;
+
+	private JButton btnEnviaS;
+	private JButton btnEnviaI;
 
 	private Timer timer;
 	private TimerTask task;
@@ -281,33 +300,10 @@ public class MonitorImpressao extends JPanel {
 	public MonitorImpressao() {
 		buildPanel();
 		initializeComponents();
+		buildGroupLayout();
 		initializeListener();
-		configureSerialPort();
 		initializeTables();
 		start();
-	}
-
-	protected void start() {
-		cancelTask();
-		timer = new Timer();
-		task = new TimerTask() {
-
-			@Override
-			public void run() {
-				fillTables();
-			}
-		};
-		timer.schedule(task, 1000, 10000);
-	}
-
-	protected void cancelTask() {
-		if (timer != null && task != null) {
-			timer.cancel();
-			task.cancel();
-
-			timer = null;
-			task = null;
-		}
 	}
 
 	private void buildPanel() {
@@ -318,9 +314,10 @@ public class MonitorImpressao extends JPanel {
 	}
 
 	private void initializeComponents() {
-		serialPort = new SerialComm();
+		groupLayout = new GroupLayout(this);
+
 		relatorio = new Relatorio();
-		
+
 		lblImpressao = new JLabel("Impressão");
 		lblOrdensParaMontagem = new JLabel("Ordens para montagem:");
 		lblListaModelosProduzidos = new JLabel("Lista de modelos para montagem:");
@@ -383,114 +380,155 @@ public class MonitorImpressao extends JPanel {
 		scrComunicaFepsRast.setBorder(new LineBorder(Color.BLACK));
 
 		btnManualPrint.setToolTipText("Impressão manual");
-		
-		JButton btnEnviaS = new JButton("envia \"S\"");
+
+		btnEnviaS = new JButton("envia \"S\"");
 		btnEnviaS.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				imprimeOrdem(S);
 			}
 		});
-		
-		JButton btnEnviaI = new JButton("envia \"I\"");
+
+		btnEnviaI = new JButton("envia \"I\"");
 		btnEnviaI.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				imprimeOrdem(I);
 			}
 		});
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(60)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(monitor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblDesc, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSeqDia, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE))
-					.addGap(0)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(570)
-							.addComponent(btnManualPrint, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(281)
-							.addComponent(cbBolha, GroupLayout.PREFERRED_SIZE, 277, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(16)
-							.addComponent(btnEnviaI, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(84)
-							.addComponent(lblImpressao, GroupLayout.PREFERRED_SIZE, 683, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblOrdensParaMontagem, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(16)
-							.addComponent(btnEnviaS, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(219)
-							.addComponent(lblNumMont, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(612)
-							.addComponent(lblComunicaoFepsRast, GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrOrdemMontagem, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrModeloProd, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblListaModelosProduzidos, GroupLayout.PREFERRED_SIZE, 570, GroupLayout.PREFERRED_SIZE))
-							.addGap(12)
-							.addComponent(scrComunicaFepsRast))))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(monitor, GroupLayout.PREFERRED_SIZE, 410, GroupLayout.PREFERRED_SIZE)
-							.addGap(20)
-							.addComponent(lblDesc, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblSeqDia, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(89)
-									.addComponent(btnManualPrint, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(89)
-									.addComponent(cbBolha, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(46)
-									.addComponent(btnEnviaI))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(118)
-									.addComponent(scrOrdemMontagem, GroupLayout.PREFERRED_SIZE, 315, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(89)
-									.addComponent(lblOrdensParaMontagem, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(12)
-									.addComponent(btnEnviaS)))
-							.addGap(43)
-							.addComponent(scrModeloProd, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(89)
-							.addComponent(lblNumMont, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(447)
-							.addComponent(lblListaModelosProduzidos, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblImpressao, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(89)
-									.addComponent(lblComunicaoFepsRast, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
-							.addComponent(scrComunicaFepsRast, GroupLayout.PREFERRED_SIZE, 558, GroupLayout.PREFERRED_SIZE)))
-					.addGap(92))
-		);
-		setLayout(groupLayout);
-		
+
 		ckpEnviado = false;
 		imprimeBolha = false;
 		numBolha = MenuPrincipal.padding(1, 4);
+	}
+
+	private void buildGroupLayout() {
+		buildHorizontalLayout();
+		buildVerticalLayout();
+		this.setLayout(groupLayout);
+	}
+
+	private void buildHorizontalLayout() {
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGap(0).addGroup(groupLayout
+				.createSequentialGroup().addGap(calculate(60, MIN_WIDTH, dimension.width))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(monitor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblDesc, GroupLayout.PREFERRED_SIZE, calculate(500, MIN_WIDTH, dimension.width),
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSeqDia, GroupLayout.PREFERRED_SIZE, calculate(500, MIN_WIDTH, dimension.width),
+								GroupLayout.PREFERRED_SIZE))
+				.addGap(0)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(groupLayout.createSequentialGroup().addGap(calculate(570, MIN_WIDTH, dimension.width))
+								.addComponent(btnManualPrint, GroupLayout.PREFERRED_SIZE,
+										calculate(30, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(calculate(281, MIN_WIDTH, dimension.width))
+								.addComponent(cbBolha, GroupLayout.PREFERRED_SIZE,
+										calculate(277, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(calculate(16, MIN_WIDTH, dimension.width))
+								.addComponent(btnEnviaI, GroupLayout.PREFERRED_SIZE,
+										calculate(85, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(calculate(84, MIN_WIDTH, dimension.width))
+								.addComponent(lblImpressao, GroupLayout.PREFERRED_SIZE,
+										calculate(683, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblOrdensParaMontagem, GroupLayout.PREFERRED_SIZE,
+								calculate(229, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup().addGap(calculate(16, MIN_WIDTH, dimension.width))
+								.addComponent(btnEnviaS, GroupLayout.PREFERRED_SIZE,
+										calculate(84, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(calculate(219, MIN_WIDTH, dimension.width))
+								.addComponent(lblNumMont, GroupLayout.PREFERRED_SIZE,
+										calculate(42, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(calculate(612, MIN_WIDTH, dimension.width))
+								.addComponent(lblComunicaoFepsRast, GroupLayout.PREFERRED_SIZE,
+										calculate(190, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(scrOrdemMontagem, GroupLayout.PREFERRED_SIZE,
+												calculate(600, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+										.addComponent(scrModeloProd, GroupLayout.PREFERRED_SIZE,
+												calculate(600, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblListaModelosProduzidos, GroupLayout.PREFERRED_SIZE,
+												calculate(570, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+								.addGap(calculate(12, MIN_WIDTH, dimension.width))
+								.addComponent(scrComunicaFepsRast)))));
+	}
+
+	private void buildVerticalLayout() {
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+						.createSequentialGroup()
+						.addComponent(monitor, GroupLayout.PREFERRED_SIZE,
+								calculate(410, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(20, MIN_HEIGHT - 80, dimension.height))
+						.addComponent(lblDesc, GroupLayout.PREFERRED_SIZE,
+								calculate(100, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSeqDia, GroupLayout.PREFERRED_SIZE,
+								calculate(47, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup()
+												.addGap(calculate(89, MIN_HEIGHT - 80, dimension.height - 80))
+												.addComponent(btnManualPrint, GroupLayout.PREFERRED_SIZE,
+														calculate(30, MIN_HEIGHT - 80, dimension.height - 80),
+														GroupLayout.PREFERRED_SIZE))
+										.addGroup(groupLayout.createSequentialGroup()
+												.addGap(calculate(89, MIN_HEIGHT - 80, dimension.height - 80))
+												.addComponent(cbBolha, GroupLayout.PREFERRED_SIZE,
+														calculate(30, MIN_HEIGHT - 80, dimension.height - 80),
+														GroupLayout.PREFERRED_SIZE))
+										.addGroup(groupLayout.createSequentialGroup()
+												.addGap(calculate(46, MIN_HEIGHT - 80, dimension.height - 80))
+												.addComponent(btnEnviaI))
+										.addGroup(groupLayout.createSequentialGroup()
+												.addGap(calculate(118, MIN_HEIGHT - 80, dimension.height - 80))
+												.addComponent(scrOrdemMontagem, GroupLayout.PREFERRED_SIZE,
+														calculate(315, MIN_HEIGHT - 80, dimension.height - 80),
+														GroupLayout.PREFERRED_SIZE))
+										.addGroup(groupLayout.createSequentialGroup()
+												.addGap(calculate(89, MIN_HEIGHT - 80, dimension.height - 80))
+												.addComponent(lblOrdensParaMontagem, GroupLayout.PREFERRED_SIZE,
+														calculate(30, MIN_HEIGHT - 80, dimension.height - 80),
+														GroupLayout.PREFERRED_SIZE))
+										.addGroup(groupLayout.createSequentialGroup()
+												.addGap(calculate(12, MIN_HEIGHT - 80, dimension.height - 80))
+												.addComponent(btnEnviaS)))
+								.addGap(calculate(43, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(scrModeloProd, GroupLayout.PREFERRED_SIZE,
+										calculate(200, MIN_HEIGHT - 80, dimension.height - 80),
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(89, MIN_HEIGHT - 80, dimension.height - 80)).addComponent(lblNumMont,
+										GroupLayout.PREFERRED_SIZE,
+										calculate(30, MIN_HEIGHT - 80, dimension.height - 80),
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(447, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(lblListaModelosProduzidos, GroupLayout.PREFERRED_SIZE,
+										calculate(30, MIN_HEIGHT - 80, dimension.height - 80),
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblImpressao, GroupLayout.PREFERRED_SIZE,
+												calculate(98, MIN_HEIGHT - 80, dimension.height - 80),
+												GroupLayout.PREFERRED_SIZE)
+										.addGroup(groupLayout.createSequentialGroup()
+												.addGap(calculate(89, MIN_HEIGHT - 80, dimension.height - 80))
+												.addComponent(lblComunicaoFepsRast, GroupLayout.PREFERRED_SIZE,
+														calculate(30, MIN_HEIGHT - 80, dimension.height - 80),
+														GroupLayout.PREFERRED_SIZE)))
+								.addComponent(scrComunicaFepsRast, GroupLayout.PREFERRED_SIZE,
+										calculate(558, MIN_HEIGHT - 80, dimension.height - 80),
+										GroupLayout.PREFERRED_SIZE)))
+				.addGap(calculate(92, MIN_HEIGHT - 80, dimension.height - 80))));
+	}
+
+	private int calculate(double value, double min, double size) {
+		value = (value / min) * size;
+
+		return (int) value;
 	}
 
 	private void initializeListener() {
@@ -523,13 +561,36 @@ public class MonitorImpressao extends JPanel {
 		});
 	}
 
-	private void configureSerialPort() {
-		serialPort.execute();
+	protected void start() {
+		cancelTask();
+		timer = new Timer();
+		task = new TimerTask() {
+
+			@Override
+			public void run() {
+				fillTables();
+			}
+		};
+		timer.schedule(task, 1000, 10000);
+	}
+
+	protected void cancelTask() {
+		if (timer != null && task != null) {
+			timer.cancel();
+			task.cancel();
+
+			timer = null;
+			task = null;
+		}
 	}
 
 	private void initializeTables() {
 		createMontagemTable();
 		createProduzidosTable();
+	}
+	
+	private int calculateSizeTable(int columnMinWidth, int tableMinWidth, int tableWidth) {
+		return (tableWidth * columnMinWidth) / tableMinWidth;
 	}
 
 	private void createMontagemTable() {
@@ -550,11 +611,11 @@ public class MonitorImpressao extends JPanel {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			tblOrdemMontagem.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-			tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth(106);
+			tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth(calculateSizeTable(106, 600, calculate(600, MIN_WIDTH, dimension.width)));
 			if (fmtMontagem.getColumnName(i).contains("Data") || fmtMontagem.getColumnName(i).contains("Série"))
-				tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth(136);
+				tblOrdemMontagem.getColumnModel().getColumn(i).setPreferredWidth(calculateSizeTable(136, 600, calculate(600, MIN_WIDTH, dimension.width)));
 		}
-		
+
 		tblOrdemMontagem.getTableHeader().setReorderingAllowed(false);
 		tblOrdemMontagem.getTableHeader().setResizingAllowed(false);
 		fmtMontagem.fireTableDataChanged();
@@ -577,20 +638,33 @@ public class MonitorImpressao extends JPanel {
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 			tblModeloProd.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
-		
+
 		tblModeloProd.getTableHeader().setReorderingAllowed(false);
 		tblModeloProd.getTableHeader().setResizingAllowed(false);
 		fmtMontagem.fireTableDataChanged();
 	}
 
 	public void monitorStart() {
+		configureSerialPort();
 		monitor.start();
+		start();
 	}
 
-	public void monitorStop() {
-		monitor.stopTaskCountTempo();
+	private void configureSerialPort() {
+		serialPort = new SerialComm();
+		serialPort.execute();
+	}
+	
+	public void closeSerial() {
+		if(serialPort != null)
+			serialPort.close();
+	}
+
+	public void stop() {
 		monitor.cancelTask();
+		closeSerial();
 		cancelTask();
+		clearValues();
 	}
 
 	private void fillTables() {
@@ -606,7 +680,7 @@ public class MonitorImpressao extends JPanel {
 		try {
 			consultaSQL = "SELECT Ordem_Conti.*, Status_Cockpit.descricao, GM_Conti.apelido, GM_Conti.Codigo_GM FROM Status_cockpit, "
 					+ "Ordem_Conti, GM_Conti WHERE Ordem_Conti.PART_NUMBER_GM = GM_Conti.CODIGO_GM "
-					+ "AND Ordem_Conti.Status_cockpit = '" + ConstantsFEPS.COCKPIT_INICIADO.getStringValue() 
+					+ "AND Ordem_Conti.Status_cockpit = '" + ConstantsFEPS.COCKPIT_INICIADO.getStringValue()
 					+ "' AND Ordem_Conti.Status_cockpit = STATUS_COCKPIT.codigo ORDER BY Ordem_Conti.Ordem_Entrada";
 
 			rs = ConnectionFeps.query(consultaSQL);
@@ -618,14 +692,16 @@ public class MonitorImpressao extends JPanel {
 					String ordem_serie = rs.getString("ordem_conti_serie").trim();
 					LocalDate data = LocalDate.parse(rs.getString("ordem_conti_data").trim().substring(0, 10));
 					LocalTime time = LocalTime.parse(rs.getString("ordem_conti_data").trim().substring(11));
-					String ordem_data = LocalDateTime.of(data, time).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+					String ordem_data = LocalDateTime.of(data, time)
+							.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 					String ordem_entrada = rs.getString("ordem_entrada").trim();
 					String seq_dia = rs.getString("sequencia_dia").trim();
-					String qtde = String.valueOf(1).trim();
 					String seq_gm = rs.getString("numDoc").trim();
 					String statusCockpit = rs.getString("status_cockpit").trim();
+
+					Ordem ordem = new Ordem(partNumber, apelido, ordem_serie, ordem_data, ordem_entrada, seq_dia, null,
+							seq_gm, statusCockpit);
 					
-					Ordem ordem = new Ordem(partNumber, apelido, ordem_serie, ordem_data, ordem_entrada, seq_dia, qtde, seq_gm, statusCockpit);
 					lista.add(ordem);
 
 					rs.next();
@@ -633,13 +709,13 @@ public class MonitorImpressao extends JPanel {
 
 				fmtMontagem.clear();
 				fmtMontagem.addOrdemList(lista);
-				
+
 				lblNumMont.setText(Integer.toString(lista.size()));
-				
-				if(lista.size() > getAtraso()) {
+
+				if (lista.size() > getAtraso()) {
 					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(255, 0, 0)));
 					lblNumMont.setForeground(new Color(255, 0, 0));
-				} else if(lista.size() <= getAtraso() && lista.size() > (getAtraso() / 2)) {
+				} else if (lista.size() <= getAtraso() && lista.size() > (getAtraso() / 2)) {
 					scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(255, 210, 0)));
 					lblNumMont.setForeground(new Color(255, 210, 0));
 				} else {
@@ -652,7 +728,7 @@ public class MonitorImpressao extends JPanel {
 				scrOrdemMontagem.setBorder(new MatteBorder(5, 5, 5, 5, new Color(0, 210, 0)));
 				lblNumMont.setForeground(new Color(0, 210, 0));
 			}
-			
+
 			ConnectionFeps.closeConnection(rs, null, null);
 
 		} catch (SQLException sqlE) {
@@ -669,7 +745,7 @@ public class MonitorImpressao extends JPanel {
 			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next())
-				if(rs.getString("atraso_linha") == null)
+				if (rs.getString("atraso_linha") == null)
 					parametro = -1;
 				else
 					parametro = Integer.parseInt(rs.getString("atraso_linha").trim());
@@ -689,10 +765,11 @@ public class MonitorImpressao extends JPanel {
 		List<Ordem> lista = new ArrayList<Ordem>();
 		String consultaSQL;
 		ResultSet rs;
-		
+
 		try {
 			consultaSQL = "SELECT gm_conti.*, qtde = (SELECT COUNT(*) FROM ordem_conti WHERE part_number_gm = codigo_gm"
-					+ "   AND status_cockpit = '" + ConstantsFEPS.COCKPIT_INICIADO.getStringValue() + "') FROM gm_conti ORDER BY qtde DESC";
+					+ "   AND status_cockpit = '" + ConstantsFEPS.COCKPIT_INICIADO.getStringValue()
+					+ "') FROM gm_conti ORDER BY qtde DESC";
 			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next()) {
@@ -700,9 +777,9 @@ public class MonitorImpressao extends JPanel {
 					if (Integer.parseInt(rs.getString("qtde")) > 0) {
 						String partNumber = rs.getString("codigo_gm");
 						String apelido = rs.getString("apelido");
-						String quantidade = rs.getString("qtde");
+						int quantidade = rs.getInt("qtde");
 
-						Ordem ordem = new Ordem(partNumber, apelido, Integer.parseInt(quantidade));
+						Ordem ordem = new Ordem(partNumber, apelido, null, null, null, null, quantidade, null, null);
 						lista.add(ordem);
 					}
 
@@ -758,21 +835,21 @@ public class MonitorImpressao extends JPanel {
 					rs = ConnectionFeps.query(consultaSQL);
 
 					if (rs.next()) {
-						idCKP = MenuPrincipal.padding(rs.getInt("id"), 3);
+						idCKP = MenuPrincipal.padding(rs.getInt("id"), 3); 
 						descr = rs.getString("historico");
 					}
 
 					String msg = (char) 2 + seqGM + idCKP + (char) 3;
 					serialPort.write(msg);
 
-					edtComunicaFepsRast
-							.setText("Enviado-" + modelo + "-" + seqGM + "-" + idCKP + "\r\n" + edtComunicaFepsRast.getText());
-					
+					edtComunicaFepsRast.setText(
+							"Enviado-" + modelo + "-" + seqGM + "-" + idCKP + "\r\n" + edtComunicaFepsRast.getText());
+
 					ckpEnviado = true;
 					imprimeBolha = false;
 
 					ConnectionFeps.closeConnection(rs, null, null);
-					
+
 				} catch (SQLException sqlE) {
 					sqlE.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Erro ao receber os dados de entrada da porta serial!");
@@ -780,22 +857,22 @@ public class MonitorImpressao extends JPanel {
 
 			}
 		} else if (bufferSerial.equals(I)) {
-			if(ckpEnviado && imprimeBolha) {
+			if (ckpEnviado && imprimeBolha) {
 				lblDesc.setText("<html> Carro com bolha - " + numBolha + "<br>");
 				lblSeqDia.setVisible(false);
 				ckpEnviado = false;
 				imprimeBolha = false;
-				
+
 				relatorio.imprimeBolha(numBolha);
-				
+
 				numBolha = MenuPrincipal.padding(Integer.parseInt(numBolha) + 1, 4);
-				
+
 			} else if (ckpEnviado && !imprimeBolha) {
 				edtComunicaFepsRast.setText("Comando de impressão recebido \r\n" + edtComunicaFepsRast.getText());
 				lblDesc.setText("<html>" + descr + "<br>");
 				lblSeqDia.setText("Sequência dia - " + seqDia);
 				ckpEnviado = false;
-				
+
 				relatorio.setStatusImpressao(serieAtual, apelidoGM);
 				relatorio.imprimeOrdem(serieAtual, modelo);
 			}
@@ -804,10 +881,13 @@ public class MonitorImpressao extends JPanel {
 	}
 
 	private void imprimeOrdem(String bufferSerial) {
+		monitor.cancelTask();
 		receiveComm(bufferSerial);
+		monitor.start();
 	}
 
 	public void clearValues() {
-		monitor.clearValues();		
+		monitor.clearValues();
 	}
+	
 }

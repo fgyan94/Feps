@@ -22,24 +22,34 @@ public class ConnectionFeps {
 			return null;
 		}
 	}
-	
-	public static boolean update(String consultaSQL){
+
+	public static boolean update(String consultaSQL) {
 		try {
 			Connection c = getConnection();
 			PreparedStatement p = c.prepareStatement(consultaSQL);
-			p.executeUpdate();
+
+			c.setAutoCommit(false);
 			
+			if (p.executeUpdate() > 0) {
+				c.commit();
+				System.out.println("Commit..." + consultaSQL);
+			} else {
+				c.rollback();
+				System.out.println("Rollback..." + consultaSQL);
+			}
+			
+
 			closeConnection(null, p, c);
-			
+
 			return true;
 		} catch (SQLException sqlE) {
 			sqlE.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Não foi possível fazer o update!");
-		}		
+		}
 		return false;
-}
+	}
 
-	public static ResultSet query(String consultaSQL){
+	public static ResultSet query(String consultaSQL) {
 		try {
 			return getConnection().prepareStatement(consultaSQL).executeQuery();
 		} catch (SQLException sqlE) {
@@ -48,7 +58,7 @@ public class ConnectionFeps {
 		}
 		return null;
 	}
-	
+
 	public static int getValorSeq(String nome) {
 		try {
 			ResultSet rs;
@@ -60,12 +70,13 @@ public class ConnectionFeps {
 				int valor = rs.getInt("valor") + 1;
 				consultaSQL = "UPDATE Controle_geral SET valor = '" + valor + "'" + " WHERE nome = '" + nome + "'";
 				update(consultaSQL);
-				
+
 				closeConnection(rs, null, null);
 
 				return valor;
 			} else {
-				consultaSQL = "INSERT INTO Controle_geral(nome, valor) VALUES (" + "'" + nome + "', '" + 1 + "')";
+				consultaSQL = "INSERT INTO Controle_geral(nome, valor) VALUES (" + "'" + nome.trim() + "', '" + 1
+						+ "')";
 				update(consultaSQL);
 				closeConnection(rs, null, null);
 				return 1;

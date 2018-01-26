@@ -2,8 +2,10 @@ package feps;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -15,8 +17,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,7 +31,9 @@ import javax.swing.border.MatteBorder;
 
 public class PreferenciaFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
-
+	
+	private GroupLayout groupLayout;
+	
 	private static JLabel lblParametrosDoSistema;
 	private static JLabel lblMascArq;
 	private static JLabel lblDirCarga;
@@ -64,23 +69,197 @@ public class PreferenciaFeps extends JPanel {
 	private static JTextField txtHora;
 	private static JTextField txtDataSistema;
 	private static JTextField txtStatus;
-
-	private static ArrayList<JTextField> listTXT = new ArrayList<JTextField>();
+	
+	private static final int MIN_WIDTH = 1366;
+	private static final int MIN_HEIGHT = 768;
+	
+//	private Dimension dimension = new Dimension(1366, 768);
+	 private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public PreferenciaFeps() {
 		buildPanel();
 		initializeComponents();
+		buildGroupLayout();
 		initializeListeners();
 	}
 
 	private void buildPanel() {
-		setLayout(null);
 		setBounds(0, 0, 1366, 688);
 		setBackground(Color.WHITE);
+
+		groupLayout = new GroupLayout(this);
+	}
+	
+	private void buildGroupLayout() {
+		buildHorizontalLayout();
+		buildVerticalLayout();
+		setLayout(groupLayout);
 	}
 
-	private void initializeComponents() {
+	private void buildHorizontalLayout() {
 		
+		groupLayout.setHorizontalGroup(
+				groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(393, MIN_WIDTH, dimension.width))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(10, MIN_WIDTH, dimension.width))
+								.addComponent(lblMascArq, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+								.addGap(calculate(12, MIN_WIDTH, dimension.width))
+								.addComponent(txtMascArq, GroupLayout.PREFERRED_SIZE, calculate(327, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblParametrosDoSistema, GroupLayout.PREFERRED_SIZE, calculate(550, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblDirCarga, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtDirCarga, GroupLayout.PREFERRED_SIZE, calculate(327, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(2, MIN_WIDTH, dimension.width))
+						.addComponent(btnDirCarga, GroupLayout.PREFERRED_SIZE, calculate(25, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblDirLido, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtDirLido, GroupLayout.PREFERRED_SIZE, calculate(327, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(2, MIN_WIDTH, dimension.width))
+						.addComponent(btnDirLido, GroupLayout.PREFERRED_SIZE, calculate(25, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblRefresh, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtRefresh, GroupLayout.PREFERRED_SIZE, calculate(120, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(lblMilissegundos, GroupLayout.PREFERRED_SIZE, calculate(195, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblQtdeGTM, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtQtdeGTM, GroupLayout.PREFERRED_SIZE, calculate(120, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblMascArqVazio, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtMascArqVazio, GroupLayout.PREFERRED_SIZE, calculate(120, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblTemMax, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtTemMax, GroupLayout.PREFERRED_SIZE, calculate(120, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(lblMinutos, GroupLayout.PREFERRED_SIZE, calculate(166, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblAtraso, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtAtraso, GroupLayout.PREFERRED_SIZE, calculate(120, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblUltimaChamada, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtUltimoArq, GroupLayout.PREFERRED_SIZE, calculate(120, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(10, MIN_WIDTH, dimension.width))
+						.addComponent(txtHora, GroupLayout.PREFERRED_SIZE, calculate(197, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(403, MIN_WIDTH, dimension.width))
+						.addComponent(lblDataSistema, GroupLayout.PREFERRED_SIZE, calculate(250, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtDataSistema, GroupLayout.PREFERRED_SIZE, calculate(120, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(18, MIN_WIDTH, dimension.width))
+						.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, calculate(60, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(12, MIN_WIDTH, dimension.width))
+						.addComponent(txtStatus, GroupLayout.PREFERRED_SIZE, calculate(117, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(530, MIN_WIDTH, dimension.width))
+						.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, calculate(110, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(3, MIN_WIDTH, dimension.width))
+						.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, calculate(110, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(223, MIN_WIDTH, dimension.width))
+						.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, calculate(110, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(3, MIN_WIDTH, dimension.width))
+						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, calculate(110, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
+			);
+	}
+
+	private void buildVerticalLayout() {
+		groupLayout.setVerticalGroup(
+				groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createSequentialGroup()
+						.addGap(calculate(0, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(79, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(lblMascArq, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(79, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(txtMascArq, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblParametrosDoSistema, GroupLayout.PREFERRED_SIZE, calculate(80, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblDirCarga, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtDirCarga, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(12, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(btnDirCarga)))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblDirLido, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtDirLido, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(12, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(btnDirLido)))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblRefresh, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtRefresh, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblMilissegundos, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblQtdeGTM, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtQtdeGTM, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblMascArqVazio, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtMascArqVazio, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblTemMax, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtTemMax, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblMinutos, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblAtraso, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtAtraso, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblUltimaChamada, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtUltimoArq, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtHora, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+						.addGap(calculate(10, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblDataSistema, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(1, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(txtDataSistema, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(calculate(1, MIN_HEIGHT - 80, dimension.height - 80))
+								.addComponent(txtStatus, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)))
+						.addGap(calculate(18, MIN_HEIGHT - 80, dimension.height - 80))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, calculate(40, MIN_HEIGHT - 80, dimension.height - 80), GroupLayout.PREFERRED_SIZE)))
+			);
+	}
+	
+	private int calculate(double value, double min, double size) {
+		value = (value / min) * size;
+
+		return (int) value;
+	}
+
+	private void initializeComponents() {		
 		lblParametrosDoSistema = new JLabel("Parâmetros do Sistema");
 		lblMascArq = new JLabel("Máscara do arquivo:");
 		lblDirCarga = new JLabel("Diretório de carga:");
@@ -103,97 +282,61 @@ public class PreferenciaFeps extends JPanel {
 		
 		btnDirCarga = new JLabel("...");
 		btnDirLido = new JLabel("...");
-		
-		lblParametrosDoSistema.setBounds(393, 12, 550, 100);
 		lblParametrosDoSistema.setHorizontalAlignment(SwingConstants.CENTER);
 		lblParametrosDoSistema.setForeground(Color.BLACK);
 		lblParametrosDoSistema.setFont(new Font("Stencil", Font.PLAIN, 40));
-
-		lblMascArq.setBounds(403, 91, 250, 40);
 		lblMascArq.setForeground(Color.BLACK);
 		lblMascArq.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMascArq.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		lblDirCarga.setBounds(403, 141, 250, 40);
 		lblDirCarga.setForeground(Color.BLACK);
 		lblDirCarga.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblDirCarga.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		lblDirLido.setBounds(403, 191, 250, 40);
 		lblDirLido.setForeground(Color.BLACK);
 		lblDirLido.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblDirLido.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		lblRefresh.setBounds(403, 241, 250, 40);
 		lblRefresh.setForeground(Color.BLACK);
 		lblRefresh.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblRefresh.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		lblQtdeGTM.setBounds(403, 291, 250, 40);
 		lblQtdeGTM.setForeground(Color.BLACK);
 		lblQtdeGTM.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblQtdeGTM.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		lblMascArqVazio.setBounds(403, 341, 250, 40);
 		lblMascArqVazio.setForeground(Color.BLACK);
 		lblMascArqVazio.setFont(new Font("Stencil", Font.PLAIN, 14));
 		lblMascArqVazio.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		lblTemMax.setBounds(403, 391, 250, 40);
 		lblTemMax.setForeground(Color.BLACK);
 		lblTemMax.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTemMax.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		lblAtraso.setBounds(403, 441, 250, 40);
 		lblAtraso.setForeground(Color.BLACK);
 		lblAtraso.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAtraso.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		lblUltimaChamada.setBounds(403, 491, 250, 40);
 		lblUltimaChamada.setForeground(Color.BLACK);
 		lblUltimaChamada.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUltimaChamada.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		lblDataSistema.setBounds(403, 541, 250, 40);
 		lblDataSistema.setForeground(Color.BLACK);
 		lblDataSistema.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDataSistema.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		lblStatus.setBounds(803, 541, 60, 40);
 		lblStatus.setForeground(Color.BLACK);
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatus.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		lblMilissegundos.setBounds(797, 241, 195, 40);
 		lblMilissegundos.setForeground(Color.BLACK);
 		lblMilissegundos.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMilissegundos.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		lblMinutos.setBounds(797, 391, 166, 40);
 		lblMinutos.setForeground(Color.BLACK);
 		lblMinutos.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMinutos.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		btnNovo.setBounds(530, 600, 110, 40);
 		btnNovo.setForeground(Color.BLACK);
 		btnNovo.setHorizontalAlignment(SwingConstants.CENTER);
 		btnNovo.setBorder(new LineBorder(Color.BLACK));
 		btnNovo.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		btnEditar.setBounds(646, 600, 110, 40);
 		btnEditar.setForeground(Color.BLACK);
 		btnEditar.setHorizontalAlignment(SwingConstants.CENTER);
 		btnEditar.setBorder(new LineBorder(Color.BLACK));
 		btnEditar.setFont(new Font("Stencil", Font.PLAIN, 14));
-
-		btnSalvar.setBounds(762, 600, 110, 40);
 		btnSalvar.setForeground(Color.BLACK);
 		btnSalvar.setHorizontalAlignment(SwingConstants.CENTER);
 		btnSalvar.setBorder(new LineBorder(Color.BLACK));
 		btnSalvar.setFont(new Font("Stencil", Font.PLAIN, 14));
 		btnSalvar.setVisible(false);
-
-		btnCancelar.setBounds(882, 600, 110, 40);
 		btnCancelar.setForeground(Color.BLACK);
 		btnCancelar.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCancelar.setBorder(new LineBorder(Color.BLACK));
@@ -202,18 +345,15 @@ public class PreferenciaFeps extends JPanel {
 
 		btnDirCarga.setVisible(false);
 		btnDirCarga.setFont(new Font("Stencil", Font.PLAIN, 14));
-		btnDirCarga.setBounds(994, 153, 25, 15);
 		btnDirCarga.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnDirCarga.setHorizontalAlignment(SwingConstants.CENTER);
 
 		btnDirLido.setVisible(false);
 		btnDirLido.setFont(new Font("Stencil", Font.PLAIN, 14));
-		btnDirLido.setBounds(994, 203, 25, 15);
 		btnDirLido.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnDirLido.setHorizontalAlignment(SwingConstants.CENTER);
 
 		txtMascArq = new JTextField();
-		txtMascArq.setBounds(665, 91, 327, 40);
 		txtMascArq.setBorder(new LineBorder(Color.BLACK));
 		txtMascArq.setForeground(Color.BLACK);
 		txtMascArq.setMargin(new Insets(0, 10, 0, 0));
@@ -222,7 +362,6 @@ public class PreferenciaFeps extends JPanel {
 		txtMascArq.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtDirCarga = new JTextField();
-		txtDirCarga.setBounds(665, 141, 327, 40);
 		txtDirCarga.setBorder(new LineBorder(Color.BLACK));
 		txtDirCarga.setForeground(Color.BLACK);
 		txtDirCarga.setMargin(new Insets(0, 10, 0, 0));
@@ -231,7 +370,6 @@ public class PreferenciaFeps extends JPanel {
 		txtDirCarga.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtDirLido = new JTextField();
-		txtDirLido.setBounds(665, 191, 327, 40);
 		txtDirLido.setBorder(new LineBorder(Color.BLACK));
 		txtDirLido.setForeground(Color.BLACK);
 		txtDirLido.setMargin(new Insets(0, 10, 0, 0));
@@ -240,7 +378,6 @@ public class PreferenciaFeps extends JPanel {
 		txtDirLido.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtRefresh = new JTextField();
-		txtRefresh.setBounds(665, 241, 120, 40);
 		txtRefresh.setBorder(new LineBorder(Color.BLACK));
 		txtRefresh.setForeground(Color.BLACK);
 		txtRefresh.setMargin(new Insets(0, 10, 0, 0));
@@ -249,7 +386,6 @@ public class PreferenciaFeps extends JPanel {
 		txtRefresh.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtQtdeGTM = new JTextField();
-		txtQtdeGTM.setBounds(665, 291, 120, 40);
 		txtQtdeGTM.setBorder(new LineBorder(Color.BLACK));
 		txtQtdeGTM.setForeground(Color.BLACK);
 		txtQtdeGTM.setMargin(new Insets(0, 10, 0, 0));
@@ -258,7 +394,6 @@ public class PreferenciaFeps extends JPanel {
 		txtQtdeGTM.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtMascArqVazio = new JTextField();
-		txtMascArqVazio.setBounds(665, 341, 120, 40);
 		txtMascArqVazio.setBorder(new LineBorder(Color.BLACK));
 		txtMascArqVazio.setForeground(Color.BLACK);
 		txtMascArqVazio.setMargin(new Insets(0, 10, 0, 0));
@@ -267,7 +402,6 @@ public class PreferenciaFeps extends JPanel {
 		txtMascArqVazio.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtTemMax = new JTextField();
-		txtTemMax.setBounds(665, 391, 120, 40);
 		txtTemMax.setBorder(new LineBorder(new Color(0, 0, 0)));
 		txtTemMax.setForeground(Color.BLACK);
 		txtTemMax.setMargin(new Insets(0, 10, 0, 0));
@@ -276,7 +410,6 @@ public class PreferenciaFeps extends JPanel {
 		txtTemMax.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtAtraso = new JTextField();
-		txtAtraso.setBounds(665, 441, 120, 40);
 		txtAtraso.setBorder(new LineBorder(Color.BLACK));
 		txtAtraso.setForeground(Color.BLACK);
 		txtAtraso.setMargin(new Insets(0, 10, 0, 0));
@@ -285,7 +418,6 @@ public class PreferenciaFeps extends JPanel {
 		txtAtraso.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtUltimoArq = new JTextField();
-		txtUltimoArq.setBounds(665, 491, 120, 40);
 		txtUltimoArq.setBorder(new LineBorder(Color.BLACK));
 		txtUltimoArq.setForeground(Color.BLACK);
 		txtUltimoArq.setMargin(new Insets(0, 10, 0, 0));
@@ -294,7 +426,6 @@ public class PreferenciaFeps extends JPanel {
 		txtUltimoArq.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtHora = new JTextField();
-		txtHora.setBounds(795, 491, 197, 40);
 		txtHora.setBorder(new LineBorder(Color.BLACK));
 		txtHora.setForeground(Color.BLACK);
 		txtHora.setMargin(new Insets(0, 10, 0, 0));
@@ -303,7 +434,6 @@ public class PreferenciaFeps extends JPanel {
 		txtHora.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtDataSistema = new JTextField();
-		txtDataSistema.setBounds(665, 542, 120, 40);
 		txtDataSistema.setBorder(new LineBorder(Color.BLACK));
 		txtDataSistema.setForeground(Color.BLACK);
 		txtDataSistema.setMargin(new Insets(0, 10, 0, 0));
@@ -312,53 +442,12 @@ public class PreferenciaFeps extends JPanel {
 		txtDataSistema.setHorizontalAlignment(SwingConstants.LEFT);
 
 		txtStatus = new JTextField();
-		txtStatus.setBounds(875, 542, 117, 40);
 		txtStatus.setBorder(new LineBorder(Color.BLACK));
 		txtStatus.setForeground(Color.BLACK);
 		txtStatus.setMargin(new Insets(0, 10, 0, 0));
 		txtStatus.setEditable(false);
 		txtStatus.setFont(new Font("Stencil", Font.PLAIN, 14));
 		txtStatus.setHorizontalAlignment(SwingConstants.LEFT);
-
-		add(btnNovo);
-		add(btnEditar);
-		add(btnSalvar);
-		add(btnCancelar);
-		add(btnDirCarga);
-		add(btnDirLido);
-
-		add(lblParametrosDoSistema);
-		add(lblMascArq);
-		add(lblDirCarga);
-		add(lblDirLido);
-		add(lblRefresh);
-		add(lblQtdeGTM);
-		add(lblMilissegundos);
-		add(lblMascArqVazio);
-		add(lblTemMax);
-		add(lblMinutos);
-		add(lblAtraso);
-		add(lblUltimaChamada);
-		add(lblDataSistema);
-		add(lblStatus);
-
-		add(txtMascArq);
-		add(txtDirCarga);
-		add(txtDirLido);
-		add(txtRefresh);
-		add(txtQtdeGTM);
-		add(txtMascArqVazio);
-		add(txtTemMax);
-		add(txtAtraso);
-		add(txtUltimoArq);
-		add(txtHora);
-		add(txtDataSistema);
-		add(txtStatus);
-
-		for (int i = 0; i < getComponentCount(); i++) {
-			if (getComponent(i) instanceof JTextField)
-				listTXT.add((JTextField) getComponent(i));
-		}
 	}
 
 	private void initializeListeners() {
@@ -369,8 +458,9 @@ public class PreferenciaFeps extends JPanel {
 		mouseListenerLabel(btnDirCarga);
 		mouseListenerLabel(btnDirLido);
 
-		for (int i = 0; i < listTXT.size(); i++) {
-			keyListenerTXT(listTXT.get(i));
+		for (int i = 0; i < getComponentCount(); i++) {
+			if (getComponent(i) instanceof JTextField)
+				keyListenerTXT((JTextField) getComponent(i));
 		}
 
 	}
@@ -453,17 +543,19 @@ public class PreferenciaFeps extends JPanel {
 		txtMascArq.requestFocusInWindow();
 	}
 
-	private static void limpaCampos() {
-		for (int i = 0; i < listTXT.size(); i++) {
-			listTXT.get(i).setText("");
+	private void limpaCampos() {
+		for (int i = 0; i < getComponentCount(); i++) {
+			if (getComponent(i) instanceof JTextField)
+				((JTextField) getComponent(i)).setText("");
 		}
 	}
 
-	private static void ativaCampos() {
-		for (int i = 0; i < listTXT.size(); i++) {
-			if (listTXT.get(i) != txtDirCarga && listTXT.get(i) != txtDirLido && listTXT.get(i) != txtDataSistema
-					&& listTXT.get(i) != txtHora && listTXT.get(i) != txtStatus && listTXT.get(i) != txtUltimoArq)
-				listTXT.get(i).setEditable(true);
+	private void ativaCampos() {
+		for (int i = 0; i < getComponentCount(); i++) {
+			if (getComponent(i) instanceof JTextField)
+				if (getComponent(i) != txtDirCarga && getComponent(i) != txtDirLido && getComponent(i) != txtDataSistema
+					&& getComponent(i) != txtHora && getComponent(i) != txtStatus && getComponent(i) != txtUltimoArq)
+						((JTextField) getComponent(i)).setEditable(true);
 		}
 	}
 
@@ -480,10 +572,12 @@ public class PreferenciaFeps extends JPanel {
 
 	private void save() {
 		boolean ok = true;
-		for (int i = 0; i < listTXT.size(); i++) {
-			if (listTXT.get(i).getText().equals("") && listTXT.get(i).isVisible() && listTXT.get(i).isEditable()) {
-				Alerta.ativaPopup(listTXT.get(i), "Preencha o campo vazio acima", 14, 30);
-				listTXT.get(i).setMargin(new Insets(0, 10, 0, 0));
+		for (int i = 0; i < getComponentCount(); i++) {
+			if (getComponent(i) instanceof JTextField)
+			if (((JTextField) getComponent(i)).getText().equals("") &&((JTextField) getComponent(i)).isVisible() 
+					&& ((JTextField) getComponent(i)).isEditable()) {
+				Alerta.ativaPopup(((JTextField) getComponent(i)), "Preencha o campo vazio acima", 14, 30);
+				((JTextField) getComponent(i)).setMargin(new Insets(0, 10, 0, 0));
 				ok = false;
 				break;
 			}
@@ -523,8 +617,9 @@ public class PreferenciaFeps extends JPanel {
 	}
 
 	private void cancel() {
-		for (int i = 0; i < listTXT.size(); i++) {
-			Alerta.desativaPopup(listTXT.get(i));
+		for (int i = 0; i < getComponentCount(); i++) {
+			if(getComponent(i) instanceof JTextField)
+				Alerta.desativaPopup(((JTextField) getComponent(i)));
 		}
 
 		if (loadPreferences()) {
@@ -559,9 +654,10 @@ public class PreferenciaFeps extends JPanel {
 		}
 	}
 
-	private static void desativaCampos() {
-		for (int i = 0; i < listTXT.size(); i++) {
-			listTXT.get(i).setEditable(false);
+	private void desativaCampos() {
+		for (int i = 0; i < getComponentCount(); i++) {
+			if(getComponent(i) instanceof JTextField)
+				((JTextField) getComponent(i)).setEditable(false);
 		}
 	}
 
@@ -655,7 +751,7 @@ public class PreferenciaFeps extends JPanel {
 		try {
 			consultaSQL = "INSERT INTO parametros (masc_arq_gm, diretorio_carga, diretorio_lido, tempo_refresh, qtde_fecha_gtm, mascara_vazio,"
 					+ "tempo_max_chamada, atraso_linha, ultima_chamada, ultima_chamada_hora, data_sistema, aberto, ultima_chamada_valida, erro_sequencia) VALUES ("
-					+ "'.TXT', 'C:/SVDO', 'C:/SVDO/LIDOS', '2000', '8', '.EDS', '2', '12', '0', " + null + ", "
+					+ "'.TXT', 'C:/SVDO', 'C:/SVDO/LIDOS', '2000', '8', '.EDS', '2', '12', '9999', " + null + ", "
 					+ null + ", " + "'N'" + ", " + null + ", " + "'N')";
 			
 			c = ConnectionFeps.getConnection();
