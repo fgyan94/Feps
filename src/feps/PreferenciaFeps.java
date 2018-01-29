@@ -84,7 +84,7 @@ public class PreferenciaFeps extends JPanel {
 	}
 
 	private void buildPanel() {
-		setBounds(0, 0, 1366, 688);
+		setSize(dimension);
 		setBackground(Color.WHITE);
 
 		groupLayout = new GroupLayout(this);

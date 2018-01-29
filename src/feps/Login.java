@@ -86,7 +86,7 @@ public class Login extends JFrame {
 		txtSenhaNova2 = new JPasswordField();
 		btnOk2 = new JButton(new ImageIcon("C:\\Users\\uid38129\\Desktop\\forward_12.png"));
 		btnCancel2 = new JButton("Cancelar");
-
+		
 		txtUser.setBounds(109, 46, 86, 25);
 		txtSenha.setBounds(109, 97, 86, 25);
 		lblUsuario.setBounds(66, 25, 129, 20);
@@ -350,7 +350,7 @@ public class Login extends JFrame {
 		try {
 			rs = ConnectionFeps.query(consultaSQL);
 			b = rs.next();
-
+			
 			ConnectionFeps.closeConnection(rs, null, null);
 
 			return b;

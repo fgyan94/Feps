@@ -395,7 +395,6 @@ public class MenuPrincipal extends JFrame {
 	private JLabel lblMinimizar = new JLabel("-");
 	private JLabel lblFechar = new JLabel("X");
 
-	// Aba "SISTEMA"
 	private JLabel lblSistema = new JLabel("SISTEMA");
 	private JLabel lblStatusProd = new JLabel(getIconSystemStatus());
 	private JLabel lblUsuarios = new JLabel(new ImageIcon("icofeps\\menu\\user.png"));
@@ -404,7 +403,7 @@ public class MenuPrincipal extends JFrame {
 
 	// Aba "PRODUÇÃO"
 	private JLabel lblProducao = new JLabel("PRODUÇÃO");
-	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
+//	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
 	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu\\reprint.png"));
 	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
 
@@ -490,7 +489,9 @@ public class MenuPrincipal extends JFrame {
 				.addGroup(groupLayout.createSequentialGroup()
 						.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
+//						.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
+//								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
@@ -499,7 +500,7 @@ public class MenuPrincipal extends JFrame {
 				.addGroup(groupLayout.createSequentialGroup()
 						.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
+						.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
@@ -508,9 +509,7 @@ public class MenuPrincipal extends JFrame {
 				.addGroup(groupLayout.createSequentialGroup()
 						.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(dimension.width / 4).addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE,
+						.addGap(dimension.width / 2).addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE,
 								dimension.width / 4, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
 						.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
@@ -540,8 +539,10 @@ public class MenuPrincipal extends JFrame {
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE,
+								.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+//								.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE,
+//										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE,
@@ -549,7 +550,7 @@ public class MenuPrincipal extends JFrame {
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE,
+								.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
@@ -557,8 +558,6 @@ public class MenuPrincipal extends JFrame {
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE,
 										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
@@ -604,14 +603,14 @@ public class MenuPrincipal extends JFrame {
 		lblStatusProd.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatusProd.setToolTipText("Iniciar/Encerrar Sistema");
 
-		lblImpressaoOrdem.setForeground(Color.BLACK);
-		lblImpressaoOrdem.setFont(new Font("Stencil", Font.PLAIN, 14));
-		lblImpressaoOrdem.setText("Impressão");
-		lblImpressaoOrdem.setVerticalAlignment(SwingConstants.CENTER);
-		lblImpressaoOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
-		lblImpressaoOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImpressaoOrdem.setToolTipText("Impressão");
+//		lblImpressaoOrdem.setForeground(Color.BLACK);
+//		lblImpressaoOrdem.setFont(new Font("Stencil", Font.PLAIN, 14));
+//		lblImpressaoOrdem.setText("Impressão");
+//		lblImpressaoOrdem.setVerticalAlignment(SwingConstants.CENTER);
+//		lblImpressaoOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
+//		lblImpressaoOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
+//		lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblImpressaoOrdem.setToolTipText("Impressão");
 
 		lblSaidaGTM.setForeground(Color.BLACK);
 		lblSaidaGTM.setFont(new Font("Stencil", Font.PLAIN, 14));
@@ -715,7 +714,6 @@ public class MenuPrincipal extends JFrame {
 		cardPanel.add(card, "card");
 
 		getContentPane().add(cardPanel);
-
 	}
 
 	private void initializeListeners() {
@@ -729,7 +727,7 @@ public class MenuPrincipal extends JFrame {
 		lblPropriedades.addMouseListener(mouseListenerLabel(lblPropriedades));
 
 		// PRODUÇÃO
-		lblImpressaoOrdem.addMouseListener(mouseListenerLabel(lblImpressaoOrdem));
+//		lblImpressaoOrdem.addMouseListener(mouseListenerLabel(lblImpressaoOrdem));
 		lblReimpressao.addMouseListener(mouseListenerLabel(lblReimpressao));
 		lblApagarOrdem.addMouseListener(mouseListenerLabel(lblApagarOrdem));
 
@@ -773,8 +771,8 @@ public class MenuPrincipal extends JFrame {
 						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
 					}
 					// PRODUÇÃO
-					else if (label == lblImpressaoOrdem)
-						;
+//					else if (label == lblImpressaoOrdem)
+//						;
 					else if (label == lblReimpressao)
 						;
 					else if (label == lblApagarOrdem)
@@ -826,8 +824,8 @@ public class MenuPrincipal extends JFrame {
 						lblPropriedades.setIcon(new ImageIcon("icofeps\\menu\\toolsClicked.png"));
 
 					// PRODUÇÃO
-					else if (label == lblImpressaoOrdem)
-						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrderClicked.png"));
+//					else if (label == lblImpressaoOrdem)
+//						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrderClicked.png"));
 					else if (label == lblReimpressao)
 						lblReimpressao.setIcon(new ImageIcon("icofeps\\menu\\reprintClicked.png"));
 					else if (label == lblApagarOrdem)
@@ -880,8 +878,8 @@ public class MenuPrincipal extends JFrame {
 						lblPropriedades.setIcon(new ImageIcon("icofeps\\menu\\tools.png"));
 
 					// PRODUÇÃO
-					else if (label == lblImpressaoOrdem)
-						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrder.png"));
+//					else if (label == lblImpressaoOrdem)
+//						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrder.png"));
 					else if (label == lblReimpressao)
 						lblReimpressao.setIcon(new ImageIcon("icofeps\\menu\\reprint.png"));
 					else if (label == lblApagarOrdem)
@@ -928,14 +926,14 @@ public class MenuPrincipal extends JFrame {
 			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\play.png"));
 		}
 	}
-
+	
 	public static void getMain() {
 		((CardLayout) cardPanel.getLayout()).show(cardPanel, "main");
 	}
 
 	private void sistemaAberto(boolean aberto) {
 		lblManTable.setVisible(aberto);
-		lblImpressaoOrdem.setVisible(aberto);
+//		lblImpressaoOrdem.setVisible(aberto);
 		lblReimpressao.setVisible(aberto);
 		lblApagarOrdem.setVisible(aberto);
 		lblSaidaGTM.setVisible(aberto);

@@ -411,15 +411,17 @@ public class Relatorio {
 					param.put("GTMLD", rs.getString("num_gtm"));
 			}
 			
+			
 			JasperReport report = JasperCompileManager.compileReport(pathToReportPackage + "/extrato.jrxml");
 			JasperPrint print = JasperFillManager.fillReport(report, param, new JREmptyDataSource());
 
 			JasperViewer.viewReport(print, false);
 //			JasperPrintManager.printReport(print, false);
-			
+
+			ConnectionFeps.closeConnection(rs, null, null);
 		} catch (SQLException | JRException sqlE) {
 			sqlE.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Não foi possível imprimir o extrato da GTM: ");
+			JOptionPane.showMessageDialog(null, "Não foi possível imprimir o extrato da GTM do lote: " + lote);
 		}
 	}
 
