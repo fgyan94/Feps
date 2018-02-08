@@ -1,15 +1,19 @@
 package feps;
 
 public class GTM {
-	private String vin, serieConti;
-	private int seq, partNumber, numGtm;
+	private String vin, serieConti, dataHora, dataSistema;
+	private Integer seq, partNumber, numGtm, qtde, lote;
 	
-	public GTM (int seq, String vin, String serieConti, int partNumber, int numGtm) {
+	public GTM (int seq, String vin, String serieConti, Integer partNumber, Integer numGtm, Integer qtde, String dataHora, String dataSistema, Integer lote) {
 		this.seq = seq;
 		this.vin = vin;
 		this.serieConti = serieConti;
 		this.partNumber = partNumber;
 		this.numGtm = numGtm;
+		this.qtde = qtde;
+		this.dataHora = dataHora;
+		this.dataSistema = dataSistema;
+		this.lote = lote;
 	}
 
 	public String getVin() {
@@ -50,6 +54,38 @@ public class GTM {
 
 	public void setNumGtm(int numGtm) {
 		this.numGtm = numGtm;
+	}
+
+	public String getDataHora() {
+		return dataHora;
+	}
+
+	public void setDataHora(String dataHora) {
+		this.dataHora = dataHora;
+	}
+
+	public String getDataSistema() {
+		return dataSistema;
+	}
+
+	public void setDataSistema(String dataSistema) {
+		this.dataSistema = dataSistema;
+	}
+
+	public Integer getQtde() {
+		return qtde;
+	}
+
+	public void setQtde(Integer qtde) {
+		this.qtde = qtde;
+	}
+
+	public Integer getLote() {
+		return lote;
+	}
+
+	public void setLote(Integer lote) {
+		this.lote = lote;
 	}
 	
 	

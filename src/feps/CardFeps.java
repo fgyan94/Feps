@@ -13,6 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -26,18 +28,21 @@ import javax.swing.GroupLayout.Alignment;
 
 public class CardFeps extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-//	private Dimension dimension = new Dimension(1366, 768);
-	
+	// private Dimension dimension = new Dimension(1366, 768);
+
 	private GroupLayout groupLayout;
-	
+
 	private static final int MIN_WIDTH = 1366;
 	private static final int HEIGHT = 80;
-	
+
 	public final String MONITOR = "monitor";
 	public final String PREFERENCES = "preferences";
 	public final String EMISSAOGTM = "emissaogtm";
+	public final String USUARIO = "usuario";
+	public final String ESTORNA = "estorna";
+	public final String MANUT = "manut";
 
 	private JPanel path = new JPanel();
 	private JPanel cardPanel = new JPanel(new CardLayout());
@@ -45,15 +50,17 @@ public class CardFeps extends JPanel {
 	private MonitorImpressao monitorImpressao;
 	private PreferenciaFeps preferenciaFeps;
 	private EmissaoGTM emissaogtm;
-
+	private Usuario usuario;
+	private EstornaGTM estorna;
+	private MaintenenceTable manut;
+	
 	private JLabel lblMinimizar = new JLabel("-");
 	private JLabel lblFechar = new JLabel("X");
 
 	private JLabel lblHome = new JLabel(new ImageIcon("icofeps\\menu_barra\\home\\home1.png"));
-	private JLabel lblUsuario = new JLabel(new ImageIcon("icofeps\\menu_barra\\user\\user1.png"));
+	private JLabel lblUsuarios = new JLabel(new ImageIcon("icofeps\\menu_barra\\user\\user1.png"));
 	private JLabel lblManTable = new JLabel(new ImageIcon("icofeps\\menu_barra\\manut\\manut1.png"));
-	private JLabel lblPropriedade = new JLabel(new ImageIcon("icofeps\\menu_barra\\tools\\tools1.png"));
-	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu_barra\\imp\\imp1.png"));
+	private JLabel lblPropriedades = new JLabel(new ImageIcon("icofeps\\menu_barra\\tools\\tools1.png"));
 	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu_barra\\reimp\\reimp1.png"));
 	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu_barra\\erase\\erase1.png"));
 	private JLabel lblSaidaGTM = new JLabel(new ImageIcon("icofeps\\menu_barra\\gtm\\gtm1.png"));
@@ -69,7 +76,6 @@ public class CardFeps extends JPanel {
 	private final String S_USER = "user";
 	private final String S_MANUT = "manut";
 	private final String S_TOOLS = "tools";
-	private final String S_IMP = "imp";
 	private final String S_REIMP = "reimp";
 	private final String S_ERASE = "erase";
 	private final String S_GTM = "gtm";
@@ -79,13 +85,15 @@ public class CardFeps extends JPanel {
 	private final String S_INBUFFER = "inbuffer";
 	private final String S_OUTBUFFER = "outbuffer";
 
+	private List<Boolean> privilegio = new ArrayList<>();
+	private List<JLabel> listLabel = new ArrayList<>();
+
 	public CardFeps() {
 		buildPanel();
 		buildGroupLayout();
 		initializeComponents();
 		initializeListeners();
 	}
-
 
 	private void buildPanel() {
 		this.setSize(dimension);
@@ -101,59 +109,80 @@ public class CardFeps extends JPanel {
 		cardPanel.setBackground(Color.WHITE);
 
 		groupLayout = new GroupLayout(path);
-		
+
 		add(path);
 	}
-	
+
 	private void buildGroupLayout() {
 		buildHorizontalLayout();
-		buildVerticalLayout();	
-		path.setLayout(groupLayout);	
+		buildVerticalLayout();
+		path.setLayout(groupLayout);
 	}
 
 	private void buildHorizontalLayout() {
-		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-					.addGroup(groupLayout.createSequentialGroup()
-						.addGap(calculate(228, MIN_WIDTH, dimension.width))
-							.addComponent(lblHome, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblUsuario, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblPropriedade, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-						.addGap(calculate(125, MIN_WIDTH, dimension.width))
-						.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE, calculate(50, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, calculate(50, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE))
-			);
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(calculate(228, MIN_WIDTH, dimension.width))
+						.addComponent(lblHome, GroupLayout.PREFERRED_SIZE, calculate(70, MIN_WIDTH, dimension.width),
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE,
+								calculate(70, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addGap(calculate(210, MIN_WIDTH, dimension.width))
+						.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE,
+								calculate(50, MIN_WIDTH, dimension.width), GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, calculate(50, MIN_WIDTH, dimension.width),
+								GroupLayout.PREFERRED_SIZE)));
 	}
 
 	private void buildVerticalLayout() {
-		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-					.addComponent(lblHome, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblUsuario, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblPropriedade, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE, calculate(30, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, calculate(30, HEIGHT, HEIGHT), GroupLayout.PREFERRED_SIZE)
-			);
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(lblHome, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, calculate(70, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE, calculate(30, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, calculate(30, HEIGHT, HEIGHT),
+						GroupLayout.PREFERRED_SIZE));
 	}
 
 	public Container getCardPanel() {
@@ -161,7 +190,7 @@ public class CardFeps extends JPanel {
 	}
 
 	private void initializeComponents() {
-		
+
 		lblFechar.setForeground(Color.BLACK);
 		lblFechar.setFont(new Font("Stencil", Font.PLAIN, 20));
 		lblFechar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -174,21 +203,17 @@ public class CardFeps extends JPanel {
 		lblHome.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		lblUsuario.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsuario.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblUsuarios.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		lblManTable.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblManTable.setHorizontalAlignment(SwingConstants.CENTER);
 		lblManTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		lblPropriedade.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblPropriedade.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPropriedade.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-		lblImpressaoOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImpressaoOrdem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblPropriedades.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblPropriedades.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPropriedades.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		lblReimpressao.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblReimpressao.setHorizontalAlignment(SwingConstants.CENTER);
@@ -221,15 +246,33 @@ public class CardFeps extends JPanel {
 		lblSaidaBuffer.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblSaidaBuffer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSaidaBuffer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		monitorImpressao = new MonitorImpressao();
 		preferenciaFeps = new PreferenciaFeps();
 		emissaogtm = new EmissaoGTM();
-		
+		usuario = new Usuario();
+		estorna = new EstornaGTM();
+		manut = new MaintenenceTable();
+
+		listLabel.add(lblUsuarios);
+		listLabel.add(lblManTable);
+		listLabel.add(lblPropriedades);
+		listLabel.add(lblReimpressao);
+		listLabel.add(lblApagarOrdem);
+		listLabel.add(lblSaidaGTM);
+		listLabel.add(lblReverseGTM);
+		listLabel.add(lblMonitorCarga);
+		listLabel.add(lblOrdemManual);
+		listLabel.add(lblOrdemBuffer);
+		listLabel.add(lblSaidaBuffer);
+
 		cardPanel.add(monitorImpressao, MONITOR);
 		cardPanel.add(preferenciaFeps, PREFERENCES);
 		cardPanel.add(emissaogtm, EMISSAOGTM);
-		
+		cardPanel.add(usuario, USUARIO);
+		cardPanel.add(estorna, ESTORNA);
+		cardPanel.add(manut, MANUT);
+
 		add(cardPanel);
 	}
 
@@ -237,10 +280,9 @@ public class CardFeps extends JPanel {
 		mouseListenerLabel(lblFechar, FECHAR);
 		mouseListenerLabel(lblMinimizar, MINIMIZAR);
 		mouseListenerLabel(lblHome, S_HOME);
-		mouseListenerLabel(lblUsuario, S_USER);
+		mouseListenerLabel(lblUsuarios, S_USER);
 		mouseListenerLabel(lblManTable, S_MANUT);
-		mouseListenerLabel(lblPropriedade, S_TOOLS);
-		mouseListenerLabel(lblImpressaoOrdem, S_IMP);
+		mouseListenerLabel(lblPropriedades, S_TOOLS);
 		mouseListenerLabel(lblReimpressao, S_REIMP);
 		mouseListenerLabel(lblApagarOrdem, S_ERASE);
 		mouseListenerLabel(lblSaidaGTM, S_GTM);
@@ -321,26 +363,36 @@ public class CardFeps extends JPanel {
 				else if (nome.equals(MINIMIZAR))
 					Login.menu.minimizar();
 				else {
-					stop();
-					if (label == lblHome)
-						MenuPrincipal.getMain();
-					else if(loadPreferences()) {
-						if (preferenciaFeps.getStatus()) {
-							if (label == lblPropriedade) {
-								((CardLayout) cardPanel.getLayout()).show(cardPanel, PREFERENCES);
-								loadPreferences();
-							}
-							else if (label == lblMonitorCarga) {
-								((CardLayout) cardPanel.getLayout()).show(cardPanel, MONITOR);
-								monitorStart();
-							} else if (label == lblSaidaGTM) {
-								((CardLayout) cardPanel.getLayout()).show(cardPanel, EMISSAOGTM);
-								emissaoStart();
-							}
+					if (temPermissao(label)) {
+						stop();
+						if (label == lblHome)
+							MenuPrincipal.getMain();
+						else if (loadPreferences()) {
+							if (preferenciaFeps.getStatus()) {
+								if (label == lblUsuarios) {
+									((CardLayout) cardPanel.getLayout()).show(cardPanel, USUARIO);
+								} else if (label == lblPropriedades) {
+									((CardLayout) cardPanel.getLayout()).show(cardPanel, PREFERENCES);
+									loadPreferences();
+								} else if (label == lblMonitorCarga) {
+									((CardLayout) cardPanel.getLayout()).show(cardPanel, MONITOR);
+									monitorStart();
+								} else if (label == lblSaidaGTM) {
+									((CardLayout) cardPanel.getLayout()).show(cardPanel, EMISSAOGTM);
+									defineEmissaoGTM();
+								} else if (label == lblReverseGTM) {
+									((CardLayout) cardPanel.getLayout()).show(cardPanel, ESTORNA);
+									estornaStart();
+								} else if (label == lblManTable) {
+									((CardLayout) cardPanel.getLayout()).show(cardPanel, MANUT);
+								}
+								
+							} else
+								JOptionPane.showMessageDialog(null, "O dia está fechado!");
 						} else
-							JOptionPane.showMessageDialog(null, "O dia está fechado!");
+							definePreferencias();
 					} else
-						definePreferencias();
+						JOptionPane.showMessageDialog(null, "Você não tem permissão de acesso nessa área!");
 				}
 				super.mouseClicked(e);
 			}
@@ -388,12 +440,12 @@ public class CardFeps extends JPanel {
 		emissaogtm.start();
 		emissaogtm.requestFocusTextSequencia();
 	}
-	
+
 	public void stop() {
 		emissaogtm.stop();
 		monitorImpressao.stop();
 	}
-	
+
 	public boolean loadPreferences() {
 		String consultaSQL;
 		ResultSet rs;
@@ -407,23 +459,35 @@ public class CardFeps extends JPanel {
 				ok = true;
 				preferenciaFeps.loadPreferences();
 			}
-			
+
 			ConnectionFeps.closeConnection(rs, null, null);
 
 		} catch (SQLException sql) {
 			sql.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Não foi possível carregar os parâmetros do sistema!");
 		}
-		
+
 		return ok;
+	}
+
+	public void defineEmissaoGTM() {
+			Object[] options = { "Automático", "Manual" };
+			int resposta = JOptionPane.showOptionDialog(null,
+					"Qual modo você quer iniciar a sessão de emissão de GTM?", null,
+					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			if (resposta == 0)
+				emissaoStart();
+			else
+				emissaogtm.selectManualTrue();
 	}
 	
 	public void definePreferencias() {
 		if (!loadPreferences()) {
 			Object[] options = { "Novo", "Padrão" };
 			int resposta = JOptionPane.showOptionDialog(null,
-					"Parâmetros ainda não definidos, gostaria de carregar preferências padrão ou criar um novo?",
-					null, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					"Parâmetros ainda não definidos, gostaria de carregar preferências padrão ou criar um novo?", null,
+					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 			if (resposta == 0)
 				preferencesNovo();
@@ -433,10 +497,33 @@ public class CardFeps extends JPanel {
 		}
 	}
 
+	private boolean temPermissao(JLabel label) {
+		String consultaSQL = "SELECT * FROM Usuario WHERE usuario_codigo = '" + Login.getUsuario() + "'";
+		ResultSet rs = ConnectionFeps.query(consultaSQL);
+
+		try {
+			if (rs.next()) {
+				String[] tmpPrivilegio = rs.getString("privilegio").split("");
+				privilegio.clear();
+				for (int i = 1; i < tmpPrivilegio.length; i++) {
+					if (tmpPrivilegio[i].equals(String.valueOf(1)))
+						privilegio.add(new Boolean(true));
+					else
+						privilegio.add(new Boolean(false));
+				}
+			}
+		} catch (SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível retornar se o usuário tem permissão a esta área!");
+		}
+
+		return label == lblHome ? true : privilegio.get(listLabel.indexOf(label));
+	}
+
 	public void preferencesCarregaPadrao() {
 		preferenciaFeps.carregaPadrao();
 	}
-	
+
 	public void preferencesNovo() {
 		preferenciaFeps.novo();
 	}
@@ -444,7 +531,7 @@ public class CardFeps extends JPanel {
 	public void clearValues() {
 		monitorImpressao.clearValues();
 	}
-	
+
 	private int calculate(double value, double min, double size) {
 		value = (value / min) * size;
 
@@ -453,5 +540,9 @@ public class CardFeps extends JPanel {
 
 	public void closeSerial() {
 		monitorImpressao.closeSerial();
+	}
+	
+	public void estornaStart() {
+		estorna.start();
 	}
 }

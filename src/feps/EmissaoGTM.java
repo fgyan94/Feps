@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -323,25 +324,10 @@ public class EmissaoGTM extends JPanel {
 		chkManual.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (chkManual.isSelected()) {
+				if (chkManual.isSelected())
 					stop();
-					btnGeraGTM.setCursor(Cursor.getDefaultCursor());
-					btnGeraGTM.setForeground(Color.BLACK);
-					btnGeraGTM.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
-					btnAtualiza.setCursor(Cursor.getDefaultCursor());
-					btnAtualiza.setForeground(Color.BLACK);
-					btnAtualiza.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
-					fmtGTM.setCheckBoxEditable(true);
-				} else {
+				else 
 					start();
-					btnGeraGTM.setCursor(cursor);
-					btnGeraGTM.setForeground(Color.DARK_GRAY);
-					btnGeraGTM.setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
-					btnAtualiza.setCursor(cursor);
-					btnAtualiza.setForeground(Color.DARK_GRAY);
-					btnAtualiza.setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
-					fmtGTM.setCheckBoxEditable(false);
-				}
 			}
 		});
 	}
@@ -402,6 +388,15 @@ public class EmissaoGTM extends JPanel {
 
 	protected void start() {
 		stop();
+		chkManual.setSelected(false);
+		fmtGTM.setCheckBoxEditable(false);
+		btnGeraGTM.setCursor(cursor);
+		btnGeraGTM.setForeground(Color.DARK_GRAY);
+		btnGeraGTM.setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
+		btnAtualiza.setCursor(cursor);
+		btnAtualiza.setForeground(Color.DARK_GRAY);
+		btnAtualiza.setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
+		fmtGTM.setCheckBoxEditable(false);
 		timer = new Timer();
 		task = new TimerTask() {
 
@@ -422,6 +417,13 @@ public class EmissaoGTM extends JPanel {
 	}
 
 	protected void stop() {
+		btnGeraGTM.setCursor(Cursor.getDefaultCursor());
+		btnGeraGTM.setForeground(Color.BLACK);
+		btnGeraGTM.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+		btnAtualiza.setCursor(Cursor.getDefaultCursor());
+		btnAtualiza.setForeground(Color.BLACK);
+		btnAtualiza.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+		fmtGTM.setCheckBoxEditable(true);
 		if (timer != null && task != null) {
 			timer.cancel();
 			task.cancel();
@@ -457,6 +459,8 @@ public class EmissaoGTM extends JPanel {
 
 		tbSequencia.setModel(fmtSequencia);
 		tbSequencia.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tbSequencia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		for (int i = 0; i < tbSequencia.getColumnCount(); i++) {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -970,8 +974,12 @@ public class EmissaoGTM extends JPanel {
 		
 		
 		txtSerie.setEnabled(true);
-		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		atualiza();
+		getEnviar();
+		getTotalDia();
+		getTotalEnviado();
+		getTotalAtender();
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		if(chkManual.isSelected())
 			JOptionPane.showMessageDialog(null, "A(s) GTM(s) de número(s) " + sGTM + " foram criadas com sucesso!");
 	}
@@ -1083,5 +1091,15 @@ public class EmissaoGTM extends JPanel {
 
 		if (!ConnectionFeps.update(consultaSQL))
 			JOptionPane.showMessageDialog(null, "Não foi possível inserir no banco a GTM: " + numGTM);
+	}
+	
+	public void selectManualTrue() {
+		stop();
+		atualiza();
+		getEnviar();
+		getTotalDia();
+		getTotalEnviado();
+		getTotalAtender();
+		chkManual.setSelected(true);
 	}
 }

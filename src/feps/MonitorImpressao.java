@@ -243,6 +243,7 @@ public class MonitorImpressao extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					if (label == btnSim) {
 						imprimeOrdem(MonitorImpressao.S);
+						imprimeOrdem(MonitorImpressao.I);
 						dispose();
 					} else
 						dispose();

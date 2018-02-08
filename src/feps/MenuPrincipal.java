@@ -38,7 +38,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
-
 public class MenuPrincipal extends JFrame {
 
 	private class InicializaSistema extends JDialog {
@@ -242,7 +241,7 @@ public class MenuPrincipal extends JFrame {
 			};
 		}
 	}
-	
+
 	private class EncerraSistema extends JDialog {
 		private static final long serialVersionUID = 1L;
 
@@ -274,14 +273,14 @@ public class MenuPrincipal extends JFrame {
 			lblEncerraDia.setForeground(Color.LIGHT_GRAY);
 			lblEncerraDia.setBounds(10, 10, 280, 90);
 			getContentPane().add(lblEncerraDia);
-			
+
 			btnSim.setHorizontalAlignment(SwingConstants.CENTER);
 			btnSim.setFont(new Font("Stencil", Font.PLAIN, 14));
 			btnSim.setBounds(105, 100, 90, 30);
 			btnSim.setForeground(Color.LIGHT_GRAY);
 			btnSim.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			getContentPane().add(btnSim);
-			
+
 			btnNao.setHorizontalAlignment(SwingConstants.CENTER);
 			btnNao.setFont(new Font("Stencil", Font.PLAIN, 14));
 			btnNao.setBounds(200, 100, 90, 30);
@@ -310,43 +309,45 @@ public class MenuPrincipal extends JFrame {
 				consultaSQL = "SELECT * FROM gm_conti";
 				rs = ConnectionFeps.query(consultaSQL);
 				serie = new ArrayList<>();
-				
+
 				if (rs.next()) {
 					while (!rs.isAfterLast()) {
-						if(!serie.contains("SERIE_" + rs.getString("apelido_serie")))
-								serie.add("SERIE_" + rs.getString("apelido_serie"));
+						if (!serie.contains("SERIE_" + rs.getString("apelido_serie")))
+							serie.add("SERIE_" + rs.getString("apelido_serie"));
 						rs.next();
-					}					
-					
-					for(int i = 0; i < serie.size(); i++) {
-						consultaSQL = "UPDATE controle_geral SET valor = '0' WHERE nome = '" + serie.get(i).trim() + "'";
+					}
+
+					for (int i = 0; i < serie.size(); i++) {
+						consultaSQL = "UPDATE controle_geral SET valor = '0' WHERE nome = '" + serie.get(i).trim()
+								+ "'";
 						if (!ConnectionFeps.update(consultaSQL)) {
-							JOptionPane.showMessageDialog(null, "Não foi possível zerar o controle da série: " + serie.get(i).trim() + "!");
+							JOptionPane.showMessageDialog(null,
+									"Não foi possível zerar o controle da série: " + serie.get(i).trim() + "!");
 							return;
 						}
 					}
 				}
-				
+
 				ConnectionFeps.closeConnection(rs, null, null);
-				
+
 				consultaSQL = "UPDATE controle_geral SET valor = '0' WHERE nome = 'SEQ_DIA'";
 				if (!ConnectionFeps.update(consultaSQL)) {
 					JOptionPane.showMessageDialog(null, "Não foi possível zerar o controle das sequências dia!");
 					return;
 				}
-				
 
 			} catch (SQLException sqlE) {
 				sqlE.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Não foi possível buscar os dados para zerar os valores de controle!");
+				JOptionPane.showMessageDialog(null,
+						"Não foi possível buscar os dados para zerar os valores de controle!");
 			}
 		}
-		
+
 		private MouseAdapter mouseListenerLabel(JLabel label) {
 			return new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if(label == btnSim) {
+					if (label == btnSim) {
 						setCursor(new Cursor(Cursor.WAIT_CURSOR));
 						end();
 						clearValues();
@@ -357,6 +358,7 @@ public class MenuPrincipal extends JFrame {
 					} else
 						dispose();
 				}
+
 				@Override
 				public void mousePressed(MouseEvent e) {
 					label.setBorder(new MatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY));
@@ -373,22 +375,25 @@ public class MenuPrincipal extends JFrame {
 				}
 			};
 		}
-		
+
 		private void close() {
 			card.stop();
 			card.clearValues();
 		}
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 
-//	private Dimension dimension = new Dimension(1366, 768);
+	// private Dimension dimension = new Dimension(1366, 768);
 	private Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	
+
 	private static JPanel cardPanel = new JPanel(new CardLayout());
 
 	private GroupLayout groupLayout;
-	
+
+	private List<Boolean> privilegio = new ArrayList<>();
+	private List<JLabel> listLabel = new ArrayList<>();
+
 	private JPanel main = new JPanel();
 	private CardFeps card = new CardFeps();
 
@@ -403,7 +408,8 @@ public class MenuPrincipal extends JFrame {
 
 	// Aba "PRODUÇÃO"
 	private JLabel lblProducao = new JLabel("PRODUÇÃO");
-//	private JLabel lblImpressaoOrdem = new JLabel(new ImageIcon("icofeps\\menu\\printOrder.png"));
+	// private JLabel lblImpressaoOrdem = new JLabel(new
+	// ImageIcon("icofeps\\menu\\printOrder.png"));
 	private JLabel lblReimpressao = new JLabel(new ImageIcon("icofeps\\menu\\reprint.png"));
 	private JLabel lblApagarOrdem = new JLabel(new ImageIcon("icofeps\\menu\\eraseOrder.png"));
 
@@ -432,7 +438,7 @@ public class MenuPrincipal extends JFrame {
 		this.setUndecorated(true);
 		this.setOpacity(0.9f);
 		this.setLocationRelativeTo(null);
-//		this.setExtendedState(MAXIMIZED_BOTH);
+		// this.setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		this.setPreferredSize(dimension);
@@ -450,9 +456,9 @@ public class MenuPrincipal extends JFrame {
 		this.setBounds(new Rectangle(new Point(0, 0), dimension));
 		main.setBounds(new Rectangle(new Point(0, 0), dimension));
 		cardPanel.setBounds(new Rectangle(new Point(0, 0), dimension));
-		
+
 		groupLayout = new GroupLayout(main);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
@@ -489,8 +495,9 @@ public class MenuPrincipal extends JFrame {
 				.addGroup(groupLayout.createSequentialGroup()
 						.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
-//						.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
-//								GroupLayout.PREFERRED_SIZE)
+						// .addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE, dimension.width
+						// / 4,
+						// GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
 								GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, dimension.width / 4,
@@ -523,51 +530,52 @@ public class MenuPrincipal extends JFrame {
 		int alturaMenu = (int) ((dimension.height - altura) * 0.5);
 		int alturaItem = (int) ((dimension.height - alturaMenu) / 4);
 
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblMinimizar, GroupLayout.PREFERRED_SIZE, altura, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblFechar, GroupLayout.PREFERRED_SIZE, altura, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblSistema, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblProducao, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblExpedicao, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblContingencia, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaMenu) / 5, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-//								.addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE,
-//										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE,
-										(dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE))));
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblSistema, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblProducao, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblExpedicao, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblContingencia, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaMenu) / 5,
+								GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblStatusProd, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblReimpressao, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						// .addComponent(lblImpressaoOrdem, GroupLayout.PREFERRED_SIZE,
+						// (dimension.height - alturaItem) / 4, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSaidaGTM, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblMonitorCarga, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblUsuarios, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblApagarOrdem, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblReverseGTM, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblOrdemManual, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblManTable, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblOrdemBuffer, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblPropriedades, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSaidaBuffer, GroupLayout.PREFERRED_SIZE, (dimension.height - alturaItem) / 4,
+								GroupLayout.PREFERRED_SIZE))));
 	}
-	
+
 	private void initializeComponents() {
 
 		lblFechar.setForeground(Color.BLACK);
@@ -603,14 +611,14 @@ public class MenuPrincipal extends JFrame {
 		lblStatusProd.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatusProd.setToolTipText("Iniciar/Encerrar Sistema");
 
-//		lblImpressaoOrdem.setForeground(Color.BLACK);
-//		lblImpressaoOrdem.setFont(new Font("Stencil", Font.PLAIN, 14));
-//		lblImpressaoOrdem.setText("Impressão");
-//		lblImpressaoOrdem.setVerticalAlignment(SwingConstants.CENTER);
-//		lblImpressaoOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
-//		lblImpressaoOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
-//		lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblImpressaoOrdem.setToolTipText("Impressão");
+		// lblImpressaoOrdem.setForeground(Color.BLACK);
+		// lblImpressaoOrdem.setFont(new Font("Stencil", Font.PLAIN, 14));
+		// lblImpressaoOrdem.setText("Impressão");
+		// lblImpressaoOrdem.setVerticalAlignment(SwingConstants.CENTER);
+		// lblImpressaoOrdem.setVerticalTextPosition(SwingConstants.BOTTOM);
+		// lblImpressaoOrdem.setHorizontalTextPosition(SwingConstants.CENTER);
+		// lblImpressaoOrdem.setHorizontalAlignment(SwingConstants.CENTER);
+		// lblImpressaoOrdem.setToolTipText("Impressão");
 
 		lblSaidaGTM.setForeground(Color.BLACK);
 		lblSaidaGTM.setFont(new Font("Stencil", Font.PLAIN, 14));
@@ -710,6 +718,19 @@ public class MenuPrincipal extends JFrame {
 		lblSaidaBuffer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSaidaBuffer.setToolTipText("Saída Buffer");
 
+		listLabel.add(lblStatusProd);
+		listLabel.add(lblUsuarios);
+		listLabel.add(lblManTable);
+		listLabel.add(lblPropriedades);
+		listLabel.add(lblReimpressao);
+		listLabel.add(lblApagarOrdem);
+		listLabel.add(lblSaidaGTM);
+		listLabel.add(lblReverseGTM);
+		listLabel.add(lblMonitorCarga);
+		listLabel.add(lblOrdemManual);
+		listLabel.add(lblOrdemBuffer);
+		listLabel.add(lblSaidaBuffer);
+
 		cardPanel.add(main, "main");
 		cardPanel.add(card, "card");
 
@@ -717,89 +738,123 @@ public class MenuPrincipal extends JFrame {
 	}
 
 	private void initializeListeners() {
-		lblFechar.addMouseListener(mouseListenerLabel(lblFechar));
-		lblMinimizar.addMouseListener(mouseListenerLabel(lblMinimizar));
+		mouseListenerLabel(lblFechar);
+		mouseListenerLabel(lblMinimizar);
 
 		// SISTEMA
-		lblStatusProd.addMouseListener(mouseListenerLabel(lblStatusProd));
-		lblUsuarios.addMouseListener(mouseListenerLabel(lblUsuarios));
-		lblManTable.addMouseListener(mouseListenerLabel(lblManTable));
-		lblPropriedades.addMouseListener(mouseListenerLabel(lblPropriedades));
+		mouseListenerLabel(lblStatusProd);
+		mouseListenerLabel(lblUsuarios);
+		mouseListenerLabel(lblManTable);
+		mouseListenerLabel(lblPropriedades);
 
 		// PRODUÇÃO
-//		lblImpressaoOrdem.addMouseListener(mouseListenerLabel(lblImpressaoOrdem));
-		lblReimpressao.addMouseListener(mouseListenerLabel(lblReimpressao));
-		lblApagarOrdem.addMouseListener(mouseListenerLabel(lblApagarOrdem));
+		// lblImpressaoOrdem.addMouseListener(mouseListenerLabel(lblImpressaoOrdem));
+		mouseListenerLabel(lblReimpressao);
+		mouseListenerLabel(lblApagarOrdem);
 
 		// EXPEDIÇÃO
-		lblSaidaGTM.addMouseListener(mouseListenerLabel(lblSaidaGTM));
-		lblReverseGTM.addMouseListener(mouseListenerLabel(lblReverseGTM));
+		mouseListenerLabel(lblSaidaGTM);
+		mouseListenerLabel(lblReverseGTM);
 
 		// CONTINGÊNCIA
-		lblMonitorCarga.addMouseListener(mouseListenerLabel(lblMonitorCarga));
-		lblOrdemManual.addMouseListener(mouseListenerLabel(lblOrdemManual));
-		lblOrdemBuffer.addMouseListener(mouseListenerLabel(lblOrdemBuffer));
-		lblSaidaBuffer.addMouseListener(mouseListenerLabel(lblSaidaBuffer));
+		mouseListenerLabel(lblMonitorCarga);
+		mouseListenerLabel(lblOrdemManual);
+		mouseListenerLabel(lblOrdemBuffer);
+		mouseListenerLabel(lblSaidaBuffer);
 	}
 
-	private MouseListener mouseListenerLabel(JLabel label) {
-		return new MouseListener() {
+	private boolean temPermissao(JLabel label) {
+		String consultaSQL = "SELECT * FROM Usuario WHERE usuario_codigo = '" + Login.getUsuario() + "'";
+		ResultSet rs = ConnectionFeps.query(consultaSQL);
+
+		try {
+			if (rs.next()) {
+			String[] tmpPrivilegio = rs.getString("privilegio").split("");
+			privilegio.clear();
+			for (int i = 0; i < tmpPrivilegio.length; i++) {
+				if (tmpPrivilegio[i].equals(String.valueOf(1)))
+					privilegio.add(new Boolean(true));
+				else
+					privilegio.add(new Boolean(false));
+				}
+			}
+		} catch(SQLException sqlE) {
+			sqlE.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Não foi possível retornar se o usuário tem permissão a esta área!");
+		}
+
+		return privilegio.get(listLabel.indexOf(label));
+	}
+
+	private void mouseListenerLabel(JLabel label) {
+		label.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
 				if (label == lblFechar)
 					fechar();
 				else if (label == lblMinimizar)
 					minimizar();
-				else if (label == lblStatusProd)
-					if (getStatus())
-						new EncerraSistema().setVisible(true);
-					else
-						new InicializaSistema().setVisible(true);
-
 				else {
+					if (temPermissao(label)) {
+						if (label == lblStatusProd) {
+							if (getStatus())
+								new EncerraSistema().setVisible(true);
+							else
+								new InicializaSistema().setVisible(true);
+						}
 
-					// SISTEMA
-					if (label == lblUsuarios)
-						;
-					else if (label == lblManTable)
-						;
-					else if (label == lblPropriedades) {
-						card.loadPreferences();
-						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
-						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
-					}
-					// PRODUÇÃO
-//					else if (label == lblImpressaoOrdem)
-//						;
-					else if (label == lblReimpressao)
-						;
-					else if (label == lblApagarOrdem)
-						;
+						else if (label == lblUsuarios) {
+							((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+							((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.USUARIO);
+						}
 
-					// EXPEDIÇÃO
-					else if (label == lblSaidaGTM) {
-						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
-						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.EMISSAOGTM);
-						card.emissaoStart();
-					}
-					
-					else if (label == lblReverseGTM)
-						;
+						else if (label == lblManTable) {
+							((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+							((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MANUT);
 
-					// CONTINGÊNCIA
-					else if (label == lblMonitorCarga) {
-						((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
-						((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MONITOR);
-						card.monitorStart();
+						} else if (label == lblPropriedades) {
+							card.loadPreferences();
+							((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+							((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.PREFERENCES);
 
-					} else if (label == lblOrdemManual)
-						;
-					else if (label == lblOrdemBuffer)
-						;
-					else if (label == lblSaidaBuffer)
-						;
+						}
+						// PRODUÇÃO
+						// else if (label == lblImpressaoOrdem)
+						// ;
+						else if (label == lblReimpressao)
+							;
+						else if (label == lblApagarOrdem)
+							;
+
+						// EXPEDIÇÃO
+						else if (label == lblSaidaGTM) {
+							((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+							((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.EMISSAOGTM);
+							card.defineEmissaoGTM();
+						}
+
+						else if (label == lblReverseGTM) {
+							((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+							((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.ESTORNA);
+							card.estornaStart();
+						}
+
+						// CONTINGÊNCIA
+						else if (label == lblMonitorCarga) {
+							((CardLayout) cardPanel.getLayout()).show(cardPanel, "card");
+							((CardLayout) card.getCardPanel().getLayout()).show(card.getCardPanel(), card.MONITOR);
+							card.monitorStart();
+
+						} else if (label == lblOrdemManual)
+							;
+						else if (label == lblOrdemBuffer)
+							;
+						else if (label == lblSaidaBuffer)
+							;
+					} else
+						JOptionPane.showMessageDialog(null,
+								"Você não tem permissão de acesso na área: " + label.getText());
 				}
 			}
 
@@ -824,8 +879,9 @@ public class MenuPrincipal extends JFrame {
 						lblPropriedades.setIcon(new ImageIcon("icofeps\\menu\\toolsClicked.png"));
 
 					// PRODUÇÃO
-//					else if (label == lblImpressaoOrdem)
-//						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrderClicked.png"));
+					// else if (label == lblImpressaoOrdem)
+					// lblImpressaoOrdem.setIcon(new
+					// ImageIcon("icofeps\\menu\\printOrderClicked.png"));
 					else if (label == lblReimpressao)
 						lblReimpressao.setIcon(new ImageIcon("icofeps\\menu\\reprintClicked.png"));
 					else if (label == lblApagarOrdem)
@@ -878,8 +934,8 @@ public class MenuPrincipal extends JFrame {
 						lblPropriedades.setIcon(new ImageIcon("icofeps\\menu\\tools.png"));
 
 					// PRODUÇÃO
-//					else if (label == lblImpressaoOrdem)
-//						lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrder.png"));
+					// else if (label == lblImpressaoOrdem)
+					// lblImpressaoOrdem.setIcon(new ImageIcon("icofeps\\menu\\printOrder.png"));
 					else if (label == lblReimpressao)
 						lblReimpressao.setIcon(new ImageIcon("icofeps\\menu\\reprint.png"));
 					else if (label == lblApagarOrdem)
@@ -914,7 +970,7 @@ public class MenuPrincipal extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				label.setBorder(null);
 			}
-		};
+		});
 	}
 
 	public void change() {
@@ -922,18 +978,18 @@ public class MenuPrincipal extends JFrame {
 			sistemaAberto(true);
 			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\stop.png"));
 		} else {
-			sistemaAberto(false); 
+			sistemaAberto(false);
 			lblStatusProd.setIcon(new ImageIcon("icofeps\\menu\\play.png"));
 		}
 	}
-	
+
 	public static void getMain() {
 		((CardLayout) cardPanel.getLayout()).show(cardPanel, "main");
 	}
 
 	private void sistemaAberto(boolean aberto) {
 		lblManTable.setVisible(aberto);
-//		lblImpressaoOrdem.setVisible(aberto);
+		// lblImpressaoOrdem.setVisible(aberto);
 		lblReimpressao.setVisible(aberto);
 		lblApagarOrdem.setVisible(aberto);
 		lblSaidaGTM.setVisible(aberto);
@@ -970,7 +1026,7 @@ public class MenuPrincipal extends JFrame {
 		dispose();
 		System.exit(0);
 	}
-	
+
 	private Object getParameter(String tmp) {
 		String consultaSQL = "SELECT * FROM parametros";
 		String parametro = null;
@@ -979,7 +1035,7 @@ public class MenuPrincipal extends JFrame {
 			rs = ConnectionFeps.query(consultaSQL);
 
 			if (rs.next())
-				if(rs.getString(tmp) == null)
+				if (rs.getString(tmp) == null)
 					parametro = "";
 				else
 					parametro = rs.getString(tmp).trim();
@@ -993,7 +1049,7 @@ public class MenuPrincipal extends JFrame {
 
 		return parametro;
 	}
-	
+
 	public boolean getStatus() {
 		String ret = ((String) getParameter("aberto"));
 		return ret != null && ret.equals("S");

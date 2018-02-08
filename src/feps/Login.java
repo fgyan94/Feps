@@ -8,8 +8,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,13 +39,10 @@ public class Login extends JFrame {
 	private JCheckBox chckbxTrocarSenha;
 	private PanelSlider42<JFrame> slider;
 	private JPanel panelSlider, login, trocaSenha;
-
 	// Troca Senha
 	private JLabel lblSenhaNova1, lblSenhaNova2, lblSenhaConfere;
 	private JPasswordField txtSenhaNova1, txtSenhaNova2;
 	private JButton btnOk2, btnCancel2;
-
-	ResultSet rs;
 
 	public Login() {
 		buildFrame();
@@ -69,11 +64,14 @@ public class Login extends JFrame {
 	private void inicializaComponents() {
 		login = new JPanel();
 		trocaSenha = new JPanel();
+
+		menu = new MenuPrincipal();
+		
 		txtUser = new JTextField();
 		txtSenha = new JPasswordField();
 		lblUsuario = new JLabel("Usuário:");
 		lblSenha = new JLabel("Senha:");
-		btnOk1 = new JButton("");
+		btnOk1 = new JButton(new ImageIcon("icoFeps\\forward_12.png"));
 		btnCancel1 = new JButton("Cancelar");
 		chckbxTrocarSenha = new JCheckBox("Trocar senha");
 		chckbxTrocarSenha.setHorizontalAlignment(SwingConstants.LEFT);
@@ -84,7 +82,7 @@ public class Login extends JFrame {
 		lblSenhaConfere = new JLabel("Senhas não conferem");
 		txtSenhaNova1 = new JPasswordField();
 		txtSenhaNova2 = new JPasswordField();
-		btnOk2 = new JButton(new ImageIcon("C:\\Users\\uid38129\\Desktop\\forward_12.png"));
+		btnOk2 = new JButton(new ImageIcon("icoFeps\\forward_12.png"));
 		btnCancel2 = new JButton("Cancelar");
 		
 		txtUser.setBounds(109, 46, 86, 25);
@@ -114,8 +112,6 @@ public class Login extends JFrame {
 
 		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
-
-		btnOk1.setIcon(new ImageIcon("C:\\Users\\uid38129\\Desktop\\forward_12.png"));
 
 		panelSlider.setBackground(new Color(150, 150, 150));
 		login.setBackground(new Color(150, 150, 150));
@@ -186,12 +182,6 @@ public class Login extends JFrame {
 	}
 
 	private void inicializaListeners() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				super.windowClosing(e);
-			}
-		});
 		txtUser.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -252,7 +242,7 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (new String(txtSenhaNova1.getPassword()).length() < 1
-						&& new String(txtSenhaNova2.getPassword()).length() < 1) {
+						|| new String(txtSenhaNova2.getPassword()).length() < 1) {
 					limpaCamposTrocaSenha();
 					JOptionPane.showMessageDialog(null, "Há um ou mais campos em branco!");
 				} else
@@ -331,7 +321,7 @@ public class Login extends JFrame {
 		}
 	}
 
-	public static String criptografa(String senha) {
+	public String criptografa(String senha) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
@@ -344,6 +334,7 @@ public class Login extends JFrame {
 
 	private boolean isOk() {
 		boolean b;
+		ResultSet rs;
 		String consultaSQL = "SELECT * FROM Usuario WHERE usuario_codigo = '" + user + "'" + "AND senha = '"
 				+ criptografa(new String(senha)) + "'";
 
@@ -365,7 +356,7 @@ public class Login extends JFrame {
 		return user;
 	}
 
-	public static String getSenha() {
+	public String getSenha() {
 		return criptografa(new String(senha));
 	}
 
@@ -384,12 +375,12 @@ public class Login extends JFrame {
 	private void validaNovaSenha() {
 		String senha1 = new String(txtSenhaNova1.getPassword());
 		String senha2 = new String(txtSenhaNova2.getPassword());
-		String senhaCrypt = Login.criptografa(senha1);
-		String loginSenha = Login.getSenha();
+		String senhaCrypt = criptografa(senha1);
+		String loginSenha = getSenha();
 
 		if (!senhaCrypt.equals(loginSenha)) {
 			if (senha1.equals(senha2)) {
-				String consultaSQL = "UPDATE Usuario SET senha = '" + senhaCrypt + "'" + "WHERE Usuario_codigo = '"
+				String consultaSQL = "UPDATE Usuario SET senha = '" + senhaCrypt + "'" + " WHERE Usuario_codigo = '"
 						+ Login.getUsuario() + "'";
 
 				if (ConnectionFeps.update(consultaSQL))
@@ -420,13 +411,13 @@ public class Login extends JFrame {
 			lblSenhaConfere.setForeground(new Color(178, 34, 34));
 		} else {
 			lblSenhaConfere.setText("Senhas conferem");
-			lblSenhaConfere.setForeground(new Color(0, 100, 0));
+			lblSenhaConfere.setForeground(new Color(0, 100, 0)); 
 		}
 	}
 
 	private void abreMonitor() {
 		dispose();
-		menu = new MenuPrincipal();
+		txtSenha.setText("");
 		menu.setVisible(true);
 	}
 

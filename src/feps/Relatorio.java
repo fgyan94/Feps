@@ -371,8 +371,11 @@ public class Relatorio {
 				String serieConti = rs.getString("ordem_conti_serie").trim();
 				int partNumber = rs.getInt("part_number_gm");
 				int numGtm = rs.getInt("num_gtm");
+				int qtde = rs.getInt("quantidade");
+				String dataHora = rs.getString("data_hora");
+				String dataSistemaGTM = rs.getString("data_sistema");
 				
-				GTM gtm = new GTM(seq, vin, serieConti, partNumber, numGtm);
+				GTM gtm = new GTM(seq, vin, serieConti, partNumber, numGtm, qtde, dataHora, dataSistemaGTM, lote);
 				gtmList.add(gtm);
 			}
 			

@@ -6,7 +6,6 @@ public class Ordem {
 
 	public Ordem(String partNumber, String apelido, String ordem_serie, String ordem_data, String ordem_entrada, String seq_dia, 
 			Integer qtde, String seq_gm, String status_cockpit) {
-		super();
 		this.partNumber = partNumber;
 		this.apelido = apelido;
 		this.ordem_serie = ordem_serie;
